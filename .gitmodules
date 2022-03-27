@@ -1,0 +1,3 @@
+[submodule "vendor/gumbo_query"]
+	path = vendor/gumbo_query
+	url = https://github.com/lazytiger/gumbo-query.git

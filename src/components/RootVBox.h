@@ -10,7 +10,7 @@
 
 namespace ps
 {
-    class RootVBox : public Gtk::Box
+    class RootVBox : public Gtk::Overlay
     {
     public:
         RootVBox();
@@ -20,6 +20,7 @@ namespace ps
         void handle_search();
 
     private:
+        Gtk::Box m_MainVBox;
         Gtk::Box m_SearchHBox;
         Gtk::Button m_SearchButton;
         Gtk::SearchEntry m_SearchEntry;

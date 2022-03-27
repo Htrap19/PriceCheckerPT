@@ -12,11 +12,14 @@ namespace ps
     class ProductComponent : public Gtk::Box
     {
     public:
-        ProductComponent(const std::string& productName, const std::string& price, const std::string& img_path);
+        ProductComponent(const std::string& productName, const std::string& price, const std::string& img_url);
 
         [[nodiscard]] inline std::string GetProductName() const { return m_ProductName.get_text(); }
         [[nodiscard]] inline std::string GetProductPrice() const { return m_ProductPrice.get_text(); }
         [[nodiscard]] inline std::string GetProductImagePath() const { return m_ProductImage.get_icon_name(); }
+
+    private:
+        void FetchImage(const std::string& img_url);
 
     private:
         Gtk::Image m_ProductImage;

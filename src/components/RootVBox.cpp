@@ -3,12 +3,12 @@
 //
 
 #include "RootVBox.h"
-#include <iostream>
+#include "InfoBar.h"
 
 namespace ps
 {
     RootVBox::RootVBox()
-        : Gtk::Box(Gtk::Orientation::VERTICAL, 10),
+        : m_MainVBox(Gtk::Orientation::VERTICAL, 10),
         m_SearchHBox(Gtk::Orientation::HORIZONTAL, 10),
         m_SearchButton("Search")
     {
@@ -23,9 +23,12 @@ namespace ps
         m_SearchBar.set_child(m_SearchHBox);
         m_SearchEntry.set_enable_undo(true);
 
-        prepend(m_SearchBar);
-        append(m_Content);
+        m_MainVBox.prepend(m_SearchBar);
+        m_MainVBox.append(m_Content);
         m_Content.set_expand();
+
+        set_child(m_MainVBox);
+        add_overlay(InfoBar::_());
     }
 
     void RootVBox::search_stop()

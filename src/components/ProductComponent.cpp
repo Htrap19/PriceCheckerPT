@@ -8,12 +8,12 @@ namespace ps
 {
     static constexpr uint32_t ImagePixelSize = 128;
 
-    ProductComponent::ProductComponent(const std::string& productName, const std::string& price, const std::string& img_path)
+    ProductComponent::ProductComponent(const std::string& productName, const std::string& price, const std::string& img_url)
         : Gtk::Box(Gtk::Orientation::VERTICAL, 10),
         m_HBox(Gtk::Orientation::HORIZONTAL, 10),
         m_ProductName(productName),
         m_ProductPrice(price),
-        m_ProductImage(img_path)
+        m_ProductImage(img_url)
     {
         m_ProductImage.set_pixel_size(ImagePixelSize);
         set_valign(Gtk::Align::CENTER);
@@ -27,5 +27,10 @@ namespace ps
         prepend(m_ProductImage);
         append(m_HBox);
         m_HBox.set_expand(true);
+    }
+
+    void ProductComponent::FetchImage(const std::string& img_url)
+    {
+        // not implemented yet
     }
 }

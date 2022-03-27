@@ -18,7 +18,7 @@ namespace ps
 
         void Search(const std::string& search_text) override;
         inline Widget& GetWidget() override { return *this; }
-        void FetchCallback(GumboNode* root) override;
+        void FetchCallback(CDocument& doc) override;
         void FetchErrCallback(const std::string &what) override;
 
     private:

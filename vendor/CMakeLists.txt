@@ -9,3 +9,9 @@ target_include_directories(curlpp PUBLIC curlpp/include)
 file(GLOB_RECURSE gumboFileList gumbo_parser/src/*)
 add_library(gumbo_parser STATIC ${gumboFileList})
 target_include_directories(gumbo_parser PUBLIC gumbo_parser/src)
+
+# gumbo_query
+file(GLOB_RECURSE gumboFileList gumbo_query/src/*.cpp)
+add_library(gumbo_query STATIC ${gumboFileList})
+target_include_directories(gumbo_query PUBLIC gumbo_parser/src)
+target_link_libraries(gumbo_query gumbo_parser)

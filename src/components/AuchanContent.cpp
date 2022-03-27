@@ -29,7 +29,7 @@ namespace ps
         std::cout << search_text << std::endl;
     }
 
-    void AuchanContent::FetchCallback(GumboNode *root)
+    void AuchanContent::FetchCallback(CDocument& doc)
     {
 
     }

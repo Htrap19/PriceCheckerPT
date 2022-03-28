@@ -15,8 +15,8 @@ namespace ps
     class Fetchable
     {
     protected:
+        virtual ~Fetchable() = default;
         virtual void FetchErrCallback(const std::string& what) = 0;
-
         virtual std::ostringstream FetchBase(const std::string& url)
         {
             std::ostringstream os;

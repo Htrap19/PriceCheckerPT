@@ -3,6 +3,7 @@
 //
 
 #include "Window.h"
+#include "RootVBox.h"
 
 namespace ps
 {
@@ -17,6 +18,6 @@ namespace ps
         set_default_size(640, 480);
 
         set_titlebar(m_TitleBar);
-        set_child(m_MainVBox);
+        set_child(RootVBox::_());
     }
 }

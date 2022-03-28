@@ -3,21 +3,13 @@
 //
 
 #include "AuchanContent.h"
+#include "InfoBar.h"
+#include "Node.h"
 
 namespace ps
 {
     AuchanContent::AuchanContent()
     {
-        m_Products.emplace_back("Something more and more", "45.00", "assets/imac.png");
-        m_Products.emplace_back("Else", "45.00", "assets/imac.png");
-        m_Products.emplace_back("Yo yo", "45.00", "assets/imac.png");
-        m_Products.emplace_back("Working", "45.00", "assets/imac.png");
-        m_Products.emplace_back("Testing", "45.00", "assets/imac.png");
-        m_Products.emplace_back("What is the for", "45.00", "assets/imac.png");
-
-        for (auto& productComp : m_Products)
-            m_FlowBox.append(productComp);
-
         m_FlowBox.set_homogeneous(true);
         m_FlowBox.set_valign(Gtk::Align::START);
         set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
@@ -26,16 +18,39 @@ namespace ps
 
     void AuchanContent::Search(const std::string& search_text)
     {
-        std::cout << search_text << std::endl;
+        auto productNameUrlFormat = ConvertToUrlQuery(search_text);
+        auto url = std::string("https://www.auchan.pt/pt/pesquisa?q=") + productNameUrlFormat + "&search-button=&lang=pt_PT";
+
+        InfoBar::_().Info("Fetching result from www.auchan.pt!");
+        Fetch(url);
     }
 
     void AuchanContent::FetchCallback(CDocument& doc)
     {
+        for (auto& productCom : m_Products)
+            m_FlowBox.remove(productCom);
+        m_Products.clear();
 
+        auto selection = doc.find("div.auc-product");
+        for (size_t i = 0; i < selection.nodeNum(); i++)
+        {
+            auto node = selection.nodeAt(i).find("img.tile-image");
+            auto imgNode = node.nodeAt(0);
+            auto productName = imgNode.attribute("title");
+            auto productImgSrc = imgNode.attribute("data-src");
+
+            auto priceNode = selection.nodeAt(i).find("span.sales").nodeAt(0);
+            auto price = priceNode.childAt(1).text();
+            price.erase(std::remove_if(price.begin(),
+                                       price.end(),
+                                       [](unsigned char x) { return std::isspace(x); }), price.end());
+            auto& productCom = m_Products.emplace_back(productName, price, productImgSrc);
+            m_FlowBox.append(productCom);
+        }
     }
 
-    void AuchanContent::FetchErrCallback(const std::string &what)
+    void AuchanContent::FetchErrCallback(const std::string& what)
     {
-        std::cout << "Error from Auchan: " << what << std::endl;
+        InfoBar::_().Error(what);
     }
 }

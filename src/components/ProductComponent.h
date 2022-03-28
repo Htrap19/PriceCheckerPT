@@ -6,20 +6,24 @@
 #define PRICECHECKER_PRODUCTCOMPONENT_H
 
 #include <gtkmm.h>
+#include "utils/Fetchable.h"
 
 namespace ps
 {
-    class ProductComponent : public Gtk::Box
+    class ProductComponent : public Gtk::Box, public Fetchable
     {
     public:
         ProductComponent(const std::string& productName, const std::string& price, const std::string& img_url);
 
         [[nodiscard]] inline std::string GetProductName() const { return m_ProductName.get_text(); }
         [[nodiscard]] inline std::string GetProductPrice() const { return m_ProductPrice.get_text(); }
-        [[nodiscard]] inline std::string GetProductImagePath() const { return m_ProductImage.get_icon_name(); }
+        [[nodiscard]] inline std::string GetProductImagePath() const { return m_ProductImage.get_name(); }
+
+    protected:
+        void FetchErrCallback(const std::string& what) override;
 
     private:
-        void FetchImage(const std::string& img_url);
+        void FetchImage(std::string img_url);
 
     private:
         Gtk::Image m_ProductImage;

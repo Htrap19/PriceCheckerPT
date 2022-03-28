@@ -4,6 +4,7 @@
 
 #include "RootVBox.h"
 #include "InfoBar.h"
+#include <thread>
 
 namespace ps
 {
@@ -15,6 +16,9 @@ namespace ps
         m_SearchHBox.set_halign(Gtk::Align::CENTER);
         m_SearchHBox.prepend(m_SearchEntry);
         m_SearchHBox.append(m_SearchButton);
+        m_SearchHBox.append(m_SearchingSpinner);
+        m_SearchingSpinner.set_valign(Gtk::Align::CENTER);
+        m_SearchingSpinner.set_halign(Gtk::Align::END);
 
         m_SearchButton.signal_clicked().connect(sigc::mem_fun(*this, &RootVBox::handle_search));
 
@@ -40,6 +44,9 @@ namespace ps
     {
         auto search_text = m_SearchEntry.get_text();
         if (!search_text.empty())
-            m_Content.Search(m_SearchEntry.get_text());
+        {
+            std::thread search_thread(&ContentVBox::Search, &m_Content, search_text);
+            search_thread.detach();
+        }
     }
 }

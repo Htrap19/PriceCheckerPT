@@ -83,7 +83,7 @@ static const GumboStringPiece kSystemIdLegacyCompat =
     GUMBO_STRING("about:legacy-compat");
 
 // The doctype arrays have an explicit terminator because we want to pass them
-// to a helper function, and passing them as a pointer discards sizeof
+// to a utils function, and passing them as a pointer discards sizeof
 // information.  The SVG arrays are used only by one-off functions, and so loops
 // over them use sizeof directly instead of a terminator.
 
@@ -557,7 +557,7 @@ static void set_insertion_mode(GumboParser* parser, GumboInsertionMode mode) {
 }
 
 // http://www.whatwg.org/specs/web-apps/current-work/complete/parsing.html#reset-the-insertion-mode-appropriately
-// This is a helper function that returns the appropriate insertion mode instead
+// This is a utils function that returns the appropriate insertion mode instead
 // of setting it.  Returns GUMBO_INSERTION_MODE_INITIAL as a sentinel value to
 // indicate that there is no appropriate insertion mode, and the loop should
 // continue.
@@ -2455,7 +2455,7 @@ static bool handle_in_body(GumboParser* parser, GumboToken* token) {
     clear_active_formatting_elements(parser);
 
     // Remove the body node.  We may want to factor this out into a generic
-    // helper, but right now this is the only code that needs to do this.
+    // utils, but right now this is the only code that needs to do this.
     GumboVector* children = &parser->_output->root->v.element.children;
     for (unsigned int i = 0; i < children->length; ++i) {
       if (children->data[i] == body_node) {
@@ -3888,7 +3888,7 @@ static bool handle_in_foreign_content(GumboParser* parser, GumboToken* token) {
       adjust_mathml_attributes(parser, token);
     }
     if (current_namespace == GUMBO_NAMESPACE_SVG) {
-      // Tag adjustment is left to the gumbo_normalize_svg_tagname helper
+      // Tag adjustment is left to the gumbo_normalize_svg_tagname utils
       // function.
       adjust_svg_attributes(parser, token);
     }

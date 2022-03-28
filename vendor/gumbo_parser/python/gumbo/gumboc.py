@@ -315,7 +315,7 @@ class Node(ctypes.Structure):
 
   def _contents(self):
     # Python3 enters an infinite loop if you use an @property within
-    # __getattr__, so we factor it out to a helper.
+    # __getattr__, so we factor it out to a utils.
     if self.type == NodeType.DOCUMENT:
       return self.v.document
     elif self.type in (NodeType.ELEMENT, NodeType.TEMPLATE):

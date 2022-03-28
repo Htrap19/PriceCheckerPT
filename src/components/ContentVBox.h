@@ -6,7 +6,7 @@
 #define PRICECHECKER_CONTENTVBOX_H
 
 #include <gtkmm.h>
-#include "helper/Searchable.h"
+#include "utils/Searchable.h"
 
 namespace ps
 {

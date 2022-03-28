@@ -3,6 +3,7 @@
 //
 
 #include "ContinenteContent.h"
+#include "InfoBar.h"
 #include <Node.h>
 #include <iostream>
 #include <cstring>
@@ -11,16 +12,6 @@ namespace ps
 {
     ContinenteContent::ContinenteContent()
     {
-//        m_Products.emplace_back("Something more and more", "45.00", "assets/imac.png");
-//        m_Products.emplace_back("Else", "45.00", "assets/imac.png");
-//        m_Products.emplace_back("Yo yo", "45.00", "assets/imac.png");
-//        m_Products.emplace_back("Working", "45.00", "assets/imac.png");
-//        m_Products.emplace_back("Testing", "45.00", "assets/imac.png");
-//        m_Products.emplace_back("What is the for", "45.00", "assets/imac.png");
-//
-//        for (auto& productComp : m_Products)
-//            m_FlowBox.append(productComp);
-
         m_FlowBox.set_homogeneous(true);
         m_FlowBox.set_valign(Gtk::Align::START);
         set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
@@ -29,14 +20,10 @@ namespace ps
 
     void ContinenteContent::Search(const std::string& search_text)
     {
-        std::stringstream productNameStr(search_text);
-        std::string token;
-        std::string productNameUrlFormat;
-        while (std::getline(productNameStr, token, ' '))
-            productNameUrlFormat += token + "+";
-        productNameUrlFormat = productNameUrlFormat.substr(0, productNameUrlFormat.size() - 1);
+        auto productNameUrlFormat = ConvertToUrlQuery(search_text);
         auto url = std::string("https://www.continente.pt/pesquisa/?q=") + productNameUrlFormat + "&start=0";
-        std::cout << url << std::endl;
+
+        InfoBar::_().Info("Fetching result from www.continente.pt!");
         Fetch(url);
     }
 
@@ -59,15 +46,13 @@ namespace ps
             formattedPrice.erase(std::remove_if(formattedPrice.begin(),
                                                 formattedPrice.end(),
                                                 [](unsigned char x) { return std::isspace(x); }), formattedPrice.end());
-            m_Products.emplace_back(productName, formattedPrice, "assets/imac.png");
-        }
-
-        for (auto& productCom : m_Products)
+            auto& productCom = m_Products.emplace_back(productName, formattedPrice, productImgSrc);
             m_FlowBox.append(productCom);
+        }
     }
 
     void ContinenteContent::FetchErrCallback(const std::string& what)
     {
-        std::cout << "Error from Continente: " << what << std::endl;
+        InfoBar::_().Error(what);
     }
 }

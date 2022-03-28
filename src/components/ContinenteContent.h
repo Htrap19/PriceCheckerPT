@@ -7,7 +7,7 @@
 
 #include <gtkmm.h>
 #include "ProductComponent.h"
-#include "helper/Searchable.h"
+#include "utils/Searchable.h"
 
 namespace ps
 {

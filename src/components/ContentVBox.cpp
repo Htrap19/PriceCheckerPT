@@ -5,6 +5,8 @@
 #include "ContentVBox.h"
 #include "ContinenteContent.h"
 #include "AuchanContent.h"
+#include "RootVBox.h"
+#include "InfoBar.h"
 
 namespace ps
 {
@@ -24,7 +26,13 @@ namespace ps
 
     void ContentVBox::Search(const std::string& search_text)
     {
+        auto& rootVBox = RootVBox::_();
+        rootVBox.SearchButtonSensitive(false);
+        rootVBox.SearchSpinnerStart();
         for (auto& searchEntity : m_SearchableList)
             searchEntity->Search(search_text);
+        rootVBox.SearchButtonSensitive(true);
+        InfoBar::_().Info("Search Completed!");
+        rootVBox.SearchSpinnerStop();
     }
 }

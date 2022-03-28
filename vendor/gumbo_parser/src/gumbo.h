@@ -189,7 +189,7 @@ void gumbo_tag_from_original_text(GumboStringPiece* text);
  * This is not done at parse time because there's no place to store a mutated
  * tag name.  tag_name is an enum (which will be TAG_UNKNOWN for most SVG tags
  * without special handling), while original_tag_name is a pointer into the
- * original buffer.  Instead, we provide this helper function that clients can
+ * original buffer.  Instead, we provide this utils function that clients can
  * use to rename SVG tags as appropriate.
  * Returns the case-normalized SVG tagname if a replacement is found, or NULL if
  * no normalization is called for.  The return value is static data and owned by

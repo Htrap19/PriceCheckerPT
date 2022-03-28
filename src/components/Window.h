@@ -6,7 +6,6 @@
 #define PRICECHECKER_WINDOW_H
 
 #include <gtkmm.h>
-#include "RootVBox.h"
 
 namespace ps
 {
@@ -18,7 +17,6 @@ namespace ps
     private:
         Gtk::Label m_TitleLabel;
         Gtk::HeaderBar m_TitleBar;
-        RootVBox m_MainVBox;
     };
 }
 

@@ -7,7 +7,7 @@
 
 #include <gtkmm.h>
 #include "ProductComponent.h"
-#include "helper/Searchable.h"
+#include "utils/Searchable.h"
 
 namespace ps
 {
@@ -19,7 +19,7 @@ namespace ps
         void Search(const std::string& search_text) override;
         inline Widget& GetWidget() override { return *this; }
         void FetchCallback(CDocument& doc) override;
-        void FetchErrCallback(const std::string &what) override;
+        void FetchErrCallback(const std::string& what) override;
 
     private:
         Gtk::FlowBox m_FlowBox;

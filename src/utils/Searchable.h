@@ -29,27 +29,21 @@ namespace ps
     protected:
         virtual void Fetch(const std::string& url)
         {
-//            try
-//            {
-//                curlpp::Cleanup cleanup;
-//                curlpp::Easy request;
-//                request.setOpt<curlpp::options::Url>(url);
-//                request.setOpt<curlpp::options::Verbose>(true);
-//                std::ostringstream os;
-//                os << request;
-                std::string page_content = FetchBase(url).str();
+            std::string page_content = FetchBase(url).str();
 
-                m_Doc.parse(page_content);
-                FetchCallback(m_Doc);
-//            }
-//            catch(curlpp::LogicError& e)
-//            {
-//                FetchErrCallback(e.what());
-//            }
-//            catch(curlpp::RuntimeError& e)
-//            {
-//                FetchErrCallback(e.what());
-//            }
+            m_Doc.parse(page_content);
+            FetchCallback(m_Doc);
+        }
+
+        virtual std::string ConvertToUrlQuery(const std::string& text)
+        {
+            std::stringstream txtStream(text);
+            std::string word;
+            std::string urlQueryStr;
+            while (std::getline(txtStream, word, ' '))
+                urlQueryStr += word + "+";
+            urlQueryStr = urlQueryStr.substr(0, urlQueryStr.size() - 1);
+            return urlQueryStr;
         }
 
     protected:

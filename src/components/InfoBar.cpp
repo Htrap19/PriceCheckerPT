@@ -15,6 +15,7 @@ namespace ps
 
         add_child(m_Message);
         set_show_close_button();
+        set_revealed(false);
     }
 
     void InfoBar::SetText(Gtk::MessageType messageType, const std::string& text)

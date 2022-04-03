@@ -4,7 +4,7 @@
 
 #include "InfoBar.h"
 
-namespace ps
+namespace PC
 {
     InfoBar::InfoBar()
     {
@@ -20,13 +20,11 @@ namespace ps
 
     void InfoBar::SetText(Gtk::MessageType messageType, const std::string& text)
     {
-        if (get_revealed())
-            set_revealed(false);
-
         set_message_type(messageType);
         m_Message.set_text(text);
 
-        set_revealed();
+        if (!get_revealed())
+            set_revealed();
     }
 
     void InfoBar::handle_on_response(int response_id)

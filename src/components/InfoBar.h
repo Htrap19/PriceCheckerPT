@@ -7,7 +7,7 @@
 
 #include <gtkmm.h>
 
-namespace ps
+namespace PC
 {
     class InfoBar : public Gtk::InfoBar // SingleTon
     {

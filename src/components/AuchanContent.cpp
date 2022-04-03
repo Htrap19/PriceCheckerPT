@@ -6,7 +6,7 @@
 #include "InfoBar.h"
 #include "Node.h"
 
-namespace ps
+namespace PC
 {
     AuchanContent::AuchanContent()
     {

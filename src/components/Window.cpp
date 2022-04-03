@@ -5,13 +5,13 @@
 #include "Window.h"
 #include "RootVBox.h"
 
-namespace ps
+namespace PC
 {
-    static const std::string window_title = "Price Checker PT";
+    static const std::string s_WindowTitle = "Price Checker PT";
 
     Window::Window()
     {
-        m_TitleLabel.set_label(window_title);
+        m_TitleLabel.set_label(s_WindowTitle);
         m_TitleBar.set_title_widget(m_TitleLabel);
         m_TitleBar.set_show_title_buttons(true);
 

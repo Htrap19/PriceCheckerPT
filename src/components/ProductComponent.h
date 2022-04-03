@@ -6,9 +6,10 @@
 #define PRICECHECKER_PRODUCTCOMPONENT_H
 
 #include <gtkmm.h>
+#include <mutex>
 #include "utils/Fetchable.h"
 
-namespace ps
+namespace PC
 {
     class ProductComponent : public Gtk::Box, public Fetchable
     {
@@ -30,6 +31,8 @@ namespace ps
         Gtk::Box m_HBox;
         Gtk::Label m_ProductName;
         Gtk::Label m_ProductPrice;
+
+        static std::mutex s_FileCacheMutex;
     };
 }
 

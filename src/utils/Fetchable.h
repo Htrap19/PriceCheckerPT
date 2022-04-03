@@ -10,7 +10,7 @@
 #include <curlpp/Easy.hpp>
 #include <curlpp/Options.hpp>
 
-namespace ps
+namespace PC
 {
     class Fetchable
     {
@@ -28,11 +28,7 @@ namespace ps
                 request.setOpt<curlpp::options::Verbose>(true);
                 os << request;
             }
-            catch(curlpp::LogicError& e)
-            {
-                FetchErrCallback(e.what());
-            }
-            catch(curlpp::RuntimeError& e)
+            catch(std::exception& e)
             {
                 FetchErrCallback(e.what());
             }

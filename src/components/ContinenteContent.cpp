@@ -5,10 +5,9 @@
 #include "ContinenteContent.h"
 #include "InfoBar.h"
 #include <Node.h>
-#include <iostream>
 #include <cstring>
 
-namespace ps
+namespace PC
 {
     ContinenteContent::ContinenteContent()
     {

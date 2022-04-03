@@ -8,7 +8,7 @@
 #include <gtkmm.h>
 #include "ContentVBox.h"
 
-namespace ps
+namespace PC
 {
     class RootVBox : public Gtk::Overlay // SingleTon
     {

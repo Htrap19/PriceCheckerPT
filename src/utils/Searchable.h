@@ -16,7 +16,7 @@
 #include "components/ProductComponent.h"
 #include "Fetchable.h"
 
-namespace ps
+namespace PC
 {
     class Searchable : public Fetchable
     {

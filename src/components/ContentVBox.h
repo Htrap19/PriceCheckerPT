@@ -8,7 +8,7 @@
 #include <gtkmm.h>
 #include "utils/Searchable.h"
 
-namespace ps
+namespace PC
 {
     class ContentVBox : public Gtk::Box
     {

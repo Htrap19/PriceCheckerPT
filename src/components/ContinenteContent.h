@@ -9,7 +9,7 @@
 #include "ProductComponent.h"
 #include "utils/Searchable.h"
 
-namespace ps
+namespace PC
 {
     class ContinenteContent : public Gtk::ScrolledWindow, public Searchable
     {

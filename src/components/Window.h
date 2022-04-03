@@ -7,7 +7,7 @@
 
 #include <gtkmm.h>
 
-namespace ps
+namespace PC
 {
     class Window : public Gtk::Window
     {
@@ -17,6 +17,8 @@ namespace ps
     private:
         Gtk::Label m_TitleLabel;
         Gtk::HeaderBar m_TitleBar;
+
+        Glib::RefPtr<Gtk::CssProvider> m_CssProvider;
     };
 }
 

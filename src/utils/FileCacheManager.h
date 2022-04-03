@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace ps
+namespace PC
 {
     class FileCacheManager // SingleTon
     {

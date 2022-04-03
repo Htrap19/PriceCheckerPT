@@ -6,7 +6,7 @@
 #include "InfoBar.h"
 #include <thread>
 
-namespace ps
+namespace PC
 {
     RootVBox::RootVBox()
         : m_MainVBox(Gtk::Orientation::VERTICAL, 10),

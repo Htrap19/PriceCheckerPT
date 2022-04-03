@@ -5,14 +5,12 @@
 #include "ProductComponent.h"
 #include "InfoBar.h"
 #include "utils/FileCacheManager.h"
-#include <fstream>
 #include <thread>
-#include <mutex>
 
-namespace ps
+namespace PC
 {
     static constexpr uint32_t s_ImagePixelSize = 128;
-//    static const std::string s_TempFolderLocation = ".cache/";
+    std::mutex ProductComponent::s_FileCacheMutex;
 
     ProductComponent::ProductComponent(const std::string& productName, const std::string& price, const std::string& img_url)
         : Gtk::Box(Gtk::Orientation::VERTICAL, 10),
@@ -58,10 +56,10 @@ namespace ps
         auto img_name = ExtractNameFromUrl(img_url);
 
         std::string data;
+
+        std::lock_guard lock(s_FileCacheMutex);
         auto& fcm = FileCacheManager::_();
-        if (fcm.Check(img_name))
-            data = fcm.Get(img_name);
-        else
+        if (!fcm.Check(img_name))
         {
             data = std::move(FetchBase(img_url).str());
             fcm.Set(img_name, data);

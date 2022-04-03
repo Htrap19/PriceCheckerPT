@@ -8,7 +8,7 @@
 #include "RootVBox.h"
 #include "InfoBar.h"
 
-namespace ps
+namespace PC
 {
     ContentVBox::ContentVBox()
         : Gtk::Box(Gtk::Orientation::VERTICAL, 10),

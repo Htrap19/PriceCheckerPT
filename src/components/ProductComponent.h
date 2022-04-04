@@ -11,7 +11,7 @@
 
 namespace PC
 {
-    class ProductComponent : public Gtk::Box, public Fetchable
+    class ProductComponent : public Gtk::ListBoxRow, public Fetchable
     {
     public:
         ProductComponent(const std::string& productName, const std::string& price, const std::string& img_url);
@@ -27,8 +27,9 @@ namespace PC
         void FetchImage(std::string img_url);
 
     private:
+        Gtk::Box m_MainHBox;
         Gtk::Image m_ProductImage;
-        Gtk::Box m_HBox;
+        Gtk::Box m_VBox;
         Gtk::Label m_ProductName;
         Gtk::Label m_ProductPrice;
 

@@ -7,6 +7,7 @@
 
 #include <gtkmm.h>
 #include "ProductComponent.h"
+#include "EmptyList.h"
 #include "utils/Searchable.h"
 
 namespace PC
@@ -21,8 +22,14 @@ namespace PC
         void FetchCallback(CDocument& doc) override;
         void FetchErrCallback(const std::string& what) override;
 
+        inline const std::string& GetName() const override { return m_Name; }
+        inline const std::string& GetTitle() const override { return m_Name; }
+
     private:
-        Gtk::FlowBox m_FlowBox;
+        Gtk::ListBox m_ListBox;
+        EmptyList m_EmptyWidget;
+
+        std::string m_Name = "Auchan";
     };
 }
 

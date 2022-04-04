@@ -5,31 +5,35 @@
 #include "ProductComponent.h"
 #include "InfoBar.h"
 #include "utils/FileCacheManager.h"
+#include "utils/CssProvider.h"
 #include <thread>
 
 namespace PC
 {
-    static constexpr uint32_t s_ImagePixelSize = 128;
+    static constexpr uint8_t s_ImagePixelSize = 64;
     std::mutex ProductComponent::s_FileCacheMutex;
 
     ProductComponent::ProductComponent(const std::string& productName, const std::string& price, const std::string& img_url)
-        : Gtk::Box(Gtk::Orientation::VERTICAL, 10),
-        m_HBox(Gtk::Orientation::HORIZONTAL, 10),
-        m_ProductName(productName),
-        m_ProductPrice(price)
+        : m_MainHBox(Gtk::Orientation::HORIZONTAL, 10),
+        m_VBox(Gtk::Orientation::VERTICAL),
+        m_ProductPrice(price, Gtk::Align::START)
     {
         m_ProductImage.set_pixel_size(s_ImagePixelSize);
-        set_valign(Gtk::Align::CENTER);
-        set_halign(Gtk::Align::CENTER);
+        CssProvider::LoadProvider((Gtk::Widget&)*this);
 
-        m_HBox.prepend(m_ProductName);
-        m_HBox.append(m_ProductPrice);
-        m_ProductName.set_expand(true);
-        m_ProductPrice.set_expand(true);
+        m_ProductName.set_markup("<b>" + productName + "</b>");
 
-        prepend(m_ProductImage);
-        append(m_HBox);
-        m_HBox.set_expand(true);
+        m_VBox.set_valign(Gtk::Align::CENTER);
+        m_VBox.set_halign(Gtk::Align::START);
+        m_VBox.prepend(m_ProductName);
+        m_VBox.append(m_ProductPrice);
+
+        m_MainHBox.prepend(m_ProductImage);
+        m_MainHBox.append(m_VBox);
+        m_VBox.set_expand();
+
+        set_child(m_MainHBox);
+        add_css_class("list_row");
 
         FetchImage(img_url);
     }

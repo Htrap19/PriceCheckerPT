@@ -6,35 +6,22 @@
 #define PRICECHECKER_FETCHABLE_H
 
 #include <sstream>
-#include <curlpp/cURLpp.hpp>
+#include <mutex>
 #include <curlpp/Easy.hpp>
-#include <curlpp/Options.hpp>
 
 namespace PC
 {
     class Fetchable
     {
     protected:
+        Fetchable() = default;
         virtual ~Fetchable() = default;
         virtual void FetchErrCallback(const std::string& what) = 0;
-        virtual std::ostringstream FetchBase(const std::string& url)
-        {
-            std::ostringstream os;
-            try
-            {
-                curlpp::Cleanup cleanup;
-                curlpp::Easy request;
-                request.setOpt<curlpp::options::Url>(url);
-                request.setOpt<curlpp::options::Verbose>(true);
-                os << request;
-            }
-            catch(std::exception& e)
-            {
-                FetchErrCallback(e.what());
-            }
+        virtual std::ostringstream FetchBase(const std::string& url);
 
-            return os;
-        }
+    private:
+        static curlpp::Easy m_Request;
+        static std::mutex m_RequestMutex;
     };
 }
 

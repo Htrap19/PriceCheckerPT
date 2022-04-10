@@ -10,6 +10,7 @@
 namespace PC
 {
     std::string FileCacheManager::s_TempFolderLocation = ".cache/";
+    std::mutex FileCacheManager::s_FileCacheMutex;
 
     FileCacheManager::FileCacheManager()
     {
@@ -19,6 +20,7 @@ namespace PC
 
     std::string FileCacheManager::Set(const std::string& filename, const std::string& data)
     {
+        std::lock_guard lock(s_FileCacheMutex);
         std::ofstream file(GetRelativePath(filename), std::ios::trunc | std::ios::out | std::ios::binary);
         if (file)
             file << data;
@@ -28,6 +30,7 @@ namespace PC
 
     std::string FileCacheManager::Get(const std::string& filename)
     {
+        std::lock_guard lock(s_FileCacheMutex);
         std::ifstream check_file(GetRelativePath(filename), std::ios::in | std::ios::binary);
         std::string data;
         if (check_file)
@@ -41,6 +44,7 @@ namespace PC
 
     bool FileCacheManager::Check(const std::string& filename)
     {
+        std::lock_guard lock(s_FileCacheMutex);
         std::ifstream check_file(GetRelativePath(filename));
         return check_file.is_open();
     }

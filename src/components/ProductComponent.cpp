@@ -11,7 +11,7 @@
 namespace PC
 {
     static constexpr uint8_t s_ImagePixelSize = 64;
-    std::mutex ProductComponent::s_FileCacheMutex;
+
 
     ProductComponent::ProductComponent(const std::string& productName, const std::string& price, const std::string& img_url)
         : m_MainHBox(Gtk::Orientation::HORIZONTAL, 10),
@@ -46,7 +46,10 @@ namespace PC
         auto lastSlash = url.find_last_of('/');
         lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
 
-        return url.substr(lastSlash);
+        auto name = url.substr(lastSlash);
+        std::string sizeStr = "?sw=" + std::to_string(s_ImagePixelSize) +"&sh=" + std::to_string(s_ImagePixelSize);
+        url += sizeStr;
+        return name;
     }
 
     void ProductComponent::FetchImage(std::string img_url)
@@ -61,7 +64,6 @@ namespace PC
 
         std::string data;
 
-        std::lock_guard lock(s_FileCacheMutex);
         auto& fcm = FileCacheManager::_();
         if (!fcm.Check(img_name))
         {

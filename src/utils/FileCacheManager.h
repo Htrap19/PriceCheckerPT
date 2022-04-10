@@ -6,6 +6,7 @@
 #define PRICECHECKER_FILECACHEMANAGER_H
 
 #include <string>
+#include <mutex>
 
 namespace PC
 {
@@ -29,6 +30,7 @@ namespace PC
 
     private:
         static std::string s_TempFolderLocation;
+        static std::mutex s_FileCacheMutex;
     };
 }
 

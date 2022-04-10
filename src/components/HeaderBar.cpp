@@ -4,7 +4,7 @@
 
 #include "HeaderBar.h"
 #include "RootContent.h"
-#include <thread>
+#include "utils/TaskQueue.h"
 
 namespace PC
 {
@@ -24,9 +24,6 @@ namespace PC
     {
         auto search_text = m_SearchEntry.get_text();
         if (!search_text.empty())
-        {
-            std::thread search_thread(&RootContent::Search, &RootContent::_(), search_text);
-            search_thread.detach();
-        }
+            TaskQueue::_().Push(&RootContent::Search, &RootContent::_(), search_text);
     }
 }

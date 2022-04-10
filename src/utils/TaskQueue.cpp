@@ -9,6 +9,7 @@ namespace PC
     TaskQueue::TaskQueue()
         : m_Thread(&TaskQueue::Update, this)
     {
+        m_ThisThreadID = m_Thread.get_id();
     }
 
     TaskQueue::~TaskQueue()

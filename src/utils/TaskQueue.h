@@ -29,8 +29,12 @@ namespace PC
         template<typename Callable, typename ... Args>
         void Push(Callable&& func, Args&& ... args)
         {
+            auto task = std::bind(func, args...);
+            // Check for deadlock safety
+            if (this->m_ThisThreadID == std::this_thread::get_id()) { task(); return; }
+
             std::unique_lock lock(m_Mutex);
-            m_TaskQueue.push(std::bind(func, args...));
+            m_TaskQueue.push(task);
             m_ConditionVariable.notify_one();
         }
 
@@ -44,6 +48,7 @@ namespace PC
         std::thread m_Thread;
         std::condition_variable m_ConditionVariable;
         bool m_Running = true;
+        std::thread::id m_ThisThreadID;
     };
 }
 

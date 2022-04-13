@@ -10,11 +10,13 @@ This is a cross-platform web-scraping software used to check prices from online 
 - Mac OS
 
 ## Stores
-- www.continente.pt
-- www.auchan.pt
+- [Continente](https://www.continente.pt)
+- [Auchan](https://www.auchan.pt)
+- [MiniPreco](https://www.lojaonline.minipreco.pt)
 
-### Comming Soon
-- www.lojaonline.minipreco.pt
+### Coming Soon
+- [Mercadao](https://mercadao.pt/store/pingo-doce)
+- [Elcorteingles](https://www.elcorteingles.pt/supermercado)
 
-## Installation
-Download the lastest [release](https://github.com/Htrap19/PriceCheckerPT/releases) 
+## Install/Download
+Download the latest [release](https://github.com/Htrap19/PriceCheckerPT/releases) 

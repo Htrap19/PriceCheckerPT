@@ -26,7 +26,6 @@ namespace PC
         m_ProductPackaging((productPackaging.empty() ? "-" : productPackaging)),
         m_ProductPriceVBox(Gtk::Orientation::VERTICAL, 10),
         m_ProductActualPrice(actualPrice, Gtk::Align::CENTER, Gtk::Align::CENTER),
-        m_ProductOriginalPrice(originalPrice, Gtk::Align::CENTER, Gtk::Align::CENTER),
         m_ProductSecondaryPriceDesc(secondaryPriceDesc, Gtk::Align::CENTER, Gtk::Align::CENTER),
         m_ProductPriceSep(Gtk::Orientation::VERTICAL)
     {
@@ -51,7 +50,7 @@ namespace PC
         m_MainHBox.append(m_VBox);
         m_VBox.set_expand();
 
-        m_ProductOriginalPrice.set_markup("<span strikethrough='true'><small>" + originalPrice + "</small></span>");
+        m_ProductOriginalPrice.set_markup("<span strikethrough='true'><small>" + (originalPrice.empty() ? "-" : originalPrice) + "</small></span>");
 
         m_ProductPriceVBox.set_valign(Gtk::Align::CENTER);
         m_ProductPriceVBox.set_halign(Gtk::Align::CENTER);

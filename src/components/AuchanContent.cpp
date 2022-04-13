@@ -11,15 +11,8 @@
 namespace PC
 {
     AuchanContent::AuchanContent()
+        : SearchableContent("Auchan")
     {
-        CssProvider::LoadProvider(m_ListBox);
-        m_ListBox.add_css_class("padding-10");
-        m_ListBox.set_selection_mode(Gtk::SelectionMode::NONE);
-        m_ListBox.set_placeholder(m_EmptyWidget);
-        m_ListBox.set_show_separators();
-
-        set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
-        set_child(m_ListBox);
     }
 
     void AuchanContent::Search(const std::string& search_text)
@@ -33,9 +26,7 @@ namespace PC
 
     void AuchanContent::FetchCallback(CDocument& doc)
     {
-        for (auto& productCom : m_Products)
-            m_ListBox.remove(productCom);
-        m_Products.clear();
+        ClearProductList();
 
         auto selection = doc.find("div.auc-product");
         for (size_t i = 0; i < selection.nodeNum(); i++)
@@ -84,12 +75,6 @@ namespace PC
             }
         }
 
-        if (m_Products.empty())
-            m_EmptyWidget.SetLabel("Product not found!");
-    }
-
-    void AuchanContent::FetchErrCallback(const std::string& what)
-    {
-        InfoBar::_().Error(what);
+        SearchableContent::FetchCallback(doc);
     }
 }

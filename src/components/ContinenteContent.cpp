@@ -4,22 +4,14 @@
 
 #include "ContinenteContent.h"
 #include "InfoBar.h"
-#include "utils/CssProvider.h"
 #include "utils/Utils.h"
 #include <Node.h>
 
 namespace PC
 {
     ContinenteContent::ContinenteContent()
+        : SearchableContent("Continente")
     {
-        CssProvider::LoadProvider(m_ListBox);
-        m_ListBox.add_css_class("padding-10");
-        m_ListBox.set_selection_mode(Gtk::SelectionMode::NONE);
-        m_ListBox.set_placeholder(m_EmptyWidget);
-        m_ListBox.set_show_separators();
-
-        set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
-        set_child(m_ListBox);
     }
 
     void ContinenteContent::Search(const std::string& search_text)
@@ -33,9 +25,7 @@ namespace PC
 
     void ContinenteContent::FetchCallback(CDocument& doc)
     {
-        for (auto& productCom : m_Products)
-            m_ListBox.remove(productCom);
-        m_Products.clear();
+        ClearProductList();
 
         auto selection = doc.find("div.product");
         for (size_t i = 0; i < selection.nodeNum(); i++)
@@ -57,7 +47,7 @@ namespace PC
                 Utils::RemoveEmptySpace(actualFormattedPrice);
 
                 auto originalPriceNode = node.find("span.ct-tile--price-value");
-                std::string originalPrice = "-";
+                std::string originalPrice;
                 if (originalPriceNode.nodeNum() > 0)
                 {
                     auto originalPriceNodeValue = originalPriceNode.nodeAt(0);
@@ -94,12 +84,6 @@ namespace PC
             }
         }
 
-        if (m_Products.empty())
-            m_EmptyWidget.SetLabel("Product not found!");
-    }
-
-    void ContinenteContent::FetchErrCallback(const std::string& what)
-    {
-        InfoBar::_().Error(what);
+        SearchableContent::FetchCallback(doc);
     }
 }

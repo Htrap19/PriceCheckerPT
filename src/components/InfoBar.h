@@ -20,7 +20,11 @@ namespace PC
         inline static InfoBar& _() { static InfoBar instance; return instance; }
 
         inline void Info(const std::string& info_text) { SetText(Gtk::MessageType::INFO, info_text); }
+#ifdef PC_PLATFORM_WINDOWS
+        inline void Error(const std::string& error_text) { SetText(Gtk::MessageType::INFO, error_text); } // TODO: Check this issue for MessageType::Error enum on msys2(Windows)
+#else
         inline void Error(const std::string& error_text) { SetText(Gtk::MessageType::ERROR, error_text); }
+#endif
         inline void Warn(const std::string& warning_text) { SetText(Gtk::MessageType::WARNING, warning_text); }
         inline void Question(const std::string& question_text) { SetText(Gtk::MessageType::QUESTION, question_text); }
         inline void Text(const std::string& text) { SetText(Gtk::MessageType::OTHER, text); }

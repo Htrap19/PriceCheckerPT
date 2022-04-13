@@ -6,31 +6,63 @@
 #include "InfoBar.h"
 #include "utils/FileCacheManager.h"
 #include "utils/CssProvider.h"
-#include <thread>
 
 namespace PC
 {
     static constexpr uint8_t s_ImagePixelSize = 64;
 
-
-    ProductComponent::ProductComponent(const std::string& productName, const std::string& price, const std::string& img_url)
+    ProductComponent::ProductComponent(const std::string& productName,
+                                       const std::string& productBrand,
+                                       const std::string& productPackaging,
+                                       const std::string& originalPrice,
+                                       const std::string& actualPrice,
+                                       const std::string& secondaryPriceDesc,
+                                       const std::string& img_url)
         : m_MainHBox(Gtk::Orientation::HORIZONTAL, 10),
+        m_ProductName(productName, Gtk::Align::START),
         m_VBox(Gtk::Orientation::VERTICAL),
-        m_ProductPrice(price, Gtk::Align::START)
+        m_ProductDescHBox(Gtk::Orientation::HORIZONTAL, 10),
+        m_ProductBrand((productBrand.empty() ? "-" : productBrand), Gtk::Align::START, Gtk::Align::CENTER),
+        m_ProductPackaging((productPackaging.empty() ? "-" : productPackaging)),
+        m_ProductPriceVBox(Gtk::Orientation::VERTICAL, 10),
+        m_ProductActualPrice(actualPrice, Gtk::Align::CENTER, Gtk::Align::CENTER),
+        m_ProductOriginalPrice(originalPrice, Gtk::Align::CENTER, Gtk::Align::CENTER),
+        m_ProductSecondaryPriceDesc(secondaryPriceDesc, Gtk::Align::CENTER, Gtk::Align::CENTER),
+        m_ProductPriceSep(Gtk::Orientation::VERTICAL)
     {
         m_ProductImage.set_pixel_size(s_ImagePixelSize);
         CssProvider::LoadProvider((Gtk::Widget&)*this);
 
         m_ProductName.set_markup("<b>" + productName + "</b>");
 
+        m_ProductPackaging.set_markup("<small>" + productPackaging + "</small>");
+
+        m_ProductDescHBox.prepend(m_ProductBrand);
+        m_ProductDescHBox.append(m_ProductPackaging);
+        if (productBrand.empty() && productPackaging.empty())
+            m_ProductDescHBox.unmap();
+
         m_VBox.set_valign(Gtk::Align::CENTER);
         m_VBox.set_halign(Gtk::Align::START);
         m_VBox.prepend(m_ProductName);
-        m_VBox.append(m_ProductPrice);
+        m_VBox.append(m_ProductDescHBox);
 
         m_MainHBox.prepend(m_ProductImage);
         m_MainHBox.append(m_VBox);
         m_VBox.set_expand();
+
+        m_ProductOriginalPrice.set_markup("<span strikethrough='true'><small>" + originalPrice + "</small></span>");
+
+        m_ProductPriceVBox.set_valign(Gtk::Align::CENTER);
+        m_ProductPriceVBox.set_halign(Gtk::Align::CENTER);
+        m_ProductPriceVBox.prepend(m_ProductOriginalPrice);
+        m_ProductPriceVBox.append(m_ProductActualPrice);
+
+        m_ProductPriceSep.set_margin_start(10);
+        m_ProductPriceSep.set_margin_end(10);
+        m_MainHBox.append(m_ProductSecondaryPriceDesc);
+        m_MainHBox.append(m_ProductPriceSep);
+        m_MainHBox.append(m_ProductPriceVBox);
 
         set_child(m_MainHBox);
         add_css_class("list_row");
@@ -62,16 +94,14 @@ namespace PC
 
         auto img_name = ExtractNameFromUrl(img_url);
 
-        std::string data;
-
         auto& fcm = FileCacheManager::_();
         if (!fcm.Check(img_name))
         {
-            data = std::move(FetchBase(img_url).str());
+            std::string data = std::move(FetchBase(img_url).str());
             fcm.Set(img_name, data);
         }
 
-        m_ProductImage.set(Gdk::Pixbuf::create_from_file(fcm.GetRelativePath(img_name)));
+        m_ProductImage.set(fcm.GetRelativePath(img_name));
     }
 
     void ProductComponent::FetchErrCallback(const std::string& what)

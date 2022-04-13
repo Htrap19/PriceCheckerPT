@@ -5,8 +5,8 @@
 #include "ContinenteContent.h"
 #include "InfoBar.h"
 #include "utils/CssProvider.h"
+#include "utils/Utils.h"
 #include <Node.h>
-#include <cstring>
 
 namespace PC
 {
@@ -16,6 +16,7 @@ namespace PC
         m_ListBox.add_css_class("padding-10");
         m_ListBox.set_selection_mode(Gtk::SelectionMode::NONE);
         m_ListBox.set_placeholder(m_EmptyWidget);
+        m_ListBox.set_show_separators();
 
         set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
         set_child(m_ListBox);
@@ -39,18 +40,58 @@ namespace PC
         auto selection = doc.find("div.product");
         for (size_t i = 0; i < selection.nodeNum(); i++)
         {
-            auto node = selection.nodeAt(i).find("img.ct-tile-image");
-            auto imgNode = node.nodeAt(0);
-            auto productName = imgNode.attribute("title");
-            auto productImgSrc = imgNode.attribute("data-src");
+            try
+            {
+                auto node = selection.nodeAt(i);
+                auto imgNode = node.find("img.ct-tile-image").nodeAt(0);
 
-            auto priceNode = selection.nodeAt(i).find("span.sales span.value").nodeAt(0);
-            auto formattedPrice = priceNode.childAt(0).text() + priceNode.childAt(1).text();
-            formattedPrice.erase(std::remove_if(formattedPrice.begin(),
-                                                formattedPrice.end(),
-                                                [](unsigned char x) { return std::isspace(x); }), formattedPrice.end());
-            auto& productCom = m_Products.emplace_back(productName, formattedPrice, productImgSrc);
-            m_ListBox.append(productCom);
+                // Product Name
+                auto productName = imgNode.attribute("title");
+
+                // Product Img
+                auto productImgSrc = imgNode.attribute("data-src");
+
+                // Product Prices
+                auto priceNode = node.find("span.sales span.value").nodeAt(0);
+                auto actualFormattedPrice = priceNode.childAt(1).text() + priceNode.childAt(3).text();
+                Utils::RemoveEmptySpace(actualFormattedPrice);
+
+                auto originalPriceNode = node.find("span.ct-tile--price-value");
+                std::string originalPrice = "-";
+                if (originalPriceNode.nodeNum() > 0)
+                {
+                    auto originalPriceNodeValue = originalPriceNode.nodeAt(0);
+                    originalPrice = originalPriceNodeValue.childAt(2).text() + originalPriceNodeValue.childAt(3).text();
+                    Utils::RemoveEmptySpace(originalPrice);
+                }
+
+                auto secondaryPriceDescNode = node.find("div.ct-tile--price-secondary");
+                auto secondaryPriceDesc = secondaryPriceDescNode.nodeAt(0).childAt(1).text() + secondaryPriceDescNode.nodeAt(0).childAt(3).text();
+                Utils::RemoveEmptySpace(secondaryPriceDesc);
+
+                // Product Branding
+                auto productBrand = node.find("p.ct-tile--brand").nodeAt(0).text();
+
+                // Product Packaging
+                auto productPackaging = node.find("p.ct-tile--quantity").nodeAt(0).text();
+
+                auto& productCom = m_Products.emplace_back(
+                        productName,
+                        productBrand,
+                        productPackaging,
+                        originalPrice,
+                        actualFormattedPrice,
+                        secondaryPriceDesc,
+                        productImgSrc);
+                m_ListBox.append(productCom);
+            }
+            catch(std::exception& e)
+            {
+#ifdef PC_DEBUG
+                std::cout << e.what() << std::endl;
+#endif
+                FetchErrCallback(e.what());
+            }
         }
 
         if (m_Products.empty())

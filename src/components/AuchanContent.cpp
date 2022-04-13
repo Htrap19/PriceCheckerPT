@@ -6,6 +6,7 @@
 #include "InfoBar.h"
 #include "Node.h"
 #include "utils/CssProvider.h"
+#include "utils/Utils.h"
 
 namespace PC
 {
@@ -15,6 +16,7 @@ namespace PC
         m_ListBox.add_css_class("padding-10");
         m_ListBox.set_selection_mode(Gtk::SelectionMode::NONE);
         m_ListBox.set_placeholder(m_EmptyWidget);
+        m_ListBox.set_show_separators();
 
         set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
         set_child(m_ListBox);
@@ -38,18 +40,48 @@ namespace PC
         auto selection = doc.find("div.auc-product");
         for (size_t i = 0; i < selection.nodeNum(); i++)
         {
-            auto node = selection.nodeAt(i).find("img.tile-image");
-            auto imgNode = node.nodeAt(0);
-            auto productName = imgNode.attribute("title");
-            auto productImgSrc = imgNode.attribute("data-src");
+            try
+            {
+                auto node = selection.nodeAt(i);
+                auto imgNode = node.find("img.tile-image").nodeAt(0);
 
-            auto priceNode = selection.nodeAt(i).find("span.sales").nodeAt(0);
-            auto price = priceNode.childAt(1).text();
-            price.erase(std::remove_if(price.begin(),
-                                       price.end(),
-                                       [](unsigned char x) { return std::isspace(x); }), price.end());
-            auto& productCom = m_Products.emplace_back(productName, price, productImgSrc);
-            m_ListBox.append(productCom);
+                // Product Name
+                auto productName = imgNode.attribute("title");
+
+                // Product Image
+                auto productImgSrc = imgNode.attribute("data-src");
+
+                // Product Price
+                auto priceNode = node.find("span.sales").nodeAt(0);
+                auto price = priceNode.childAt(1).text();
+                Utils::RemoveEmptySpace(price);
+
+                auto originalPriceNode = node.find("span.strike-through");
+                std::string originalPrice = "-";
+                if (originalPriceNode.nodeNum() > 0)
+                    originalPrice = originalPriceNode.nodeAt(0).childAt(1).childAt(2).text();
+                Utils::RemoveEmptySpace(originalPrice);
+
+                auto secondaryPriceDescNode = node.find("div.auc-measures");
+                auto secondaryPriceDesc = secondaryPriceDescNode.nodeAt(0).text();
+
+                auto& productCom = m_Products.emplace_back(
+                        productName,
+                        "",
+                        "",
+                        originalPrice,
+                        price,
+                        secondaryPriceDesc,
+                        productImgSrc);
+                m_ListBox.append(productCom);
+            }
+            catch(std::exception& e)
+            {
+#ifdef PC_DEBUG
+                std::cout << e.what() << std::endl;
+#endif
+                FetchErrCallback(e.what());
+            }
         }
 
         if (m_Products.empty())

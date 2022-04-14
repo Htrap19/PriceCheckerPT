@@ -80,7 +80,7 @@ namespace PC
 #ifdef PC_DEBUG
                 std::cout << e.what() << std::endl;
 #endif
-                FetchErrCallback(e.what());
+                SearchableContent::FetchErrCallback(e.what());
             }
         }
 

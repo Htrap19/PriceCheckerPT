@@ -7,7 +7,8 @@
 #include "HeaderBar.h"
 #include "ContinenteContent.h"
 #include "AuchanContent.h"
-#include "MiniPreco.h"
+#include "MiniprecoContent.h"
+#include "ElcorteinglesContent.h"
 
 namespace PC
 {
@@ -16,7 +17,8 @@ namespace PC
     {
         m_SearchableList.emplace_back(std::make_shared<ContinenteContent>());
         m_SearchableList.emplace_back(std::make_shared<AuchanContent>());
-        m_SearchableList.emplace_back(std::make_shared<MiniPreco>());
+        m_SearchableList.emplace_back(std::make_shared<MiniprecoContent>());
+        m_SearchableList.emplace_back(std::make_shared<ElcorteinglesContent>());
 
         for (auto& searchable : m_SearchableList)
             m_Stack.add(searchable->GetWidget(), searchable->GetName(), searchable->GetTitle());

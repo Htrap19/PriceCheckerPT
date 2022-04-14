@@ -19,13 +19,14 @@ namespace PC
                          const std::string& originalPrice,
                          const std::string& actualPrice,
                          const std::string& secondaryPriceDesc,
-                         const std::string& img_url);
+                         const std::string& img_url,
+                         bool img_resize = true);
 
     protected:
         void FetchErrCallback(const std::string& what) override;
 
     private:
-        void FetchImage(std::string img_url);
+        void FetchImage(std::string img_url, bool img_resize);
 
     private:
         Gtk::Box m_MainHBox;

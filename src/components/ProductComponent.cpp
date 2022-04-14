@@ -17,7 +17,8 @@ namespace PC
                                        const std::string& originalPrice,
                                        const std::string& actualPrice,
                                        const std::string& secondaryPriceDesc,
-                                       const std::string& img_url)
+                                       const std::string& img_url,
+                                       bool img_resize)
         : m_MainHBox(Gtk::Orientation::HORIZONTAL, 10),
         m_ProductName(productName, Gtk::Align::START),
         m_VBox(Gtk::Orientation::VERTICAL),
@@ -66,10 +67,10 @@ namespace PC
         set_child(m_MainHBox);
         add_css_class("list_row");
 
-        FetchImage(img_url);
+        FetchImage(img_url, img_resize);
     }
 
-    static std::string ExtractNameFromUrl(std::string& url)
+    static std::string ExtractNameFromUrl(std::string& url, bool img_resize)
     {
         auto lastQuesMark = url.rfind('?');
         if (lastQuesMark != std::string::npos) url.erase(lastQuesMark);
@@ -78,12 +79,15 @@ namespace PC
         lastSlash = lastSlash == std::string::npos ? 0 : lastSlash + 1;
 
         auto name = url.substr(lastSlash);
-        std::string sizeStr = "?sw=" + std::to_string(s_ImagePixelSize) +"&sh=" + std::to_string(s_ImagePixelSize);
-        url += sizeStr;
+        if (img_resize)
+        {
+            std::string sizeStr = "?sw=" + std::to_string(s_ImagePixelSize) +"&sh=" + std::to_string(s_ImagePixelSize);
+            url += sizeStr;
+        }
         return name;
     }
 
-    void ProductComponent::FetchImage(std::string img_url)
+    void ProductComponent::FetchImage(std::string img_url, bool img_resize)
     {
         if (img_url.find("http") == std::string::npos)
         {
@@ -91,7 +95,7 @@ namespace PC
             return;
         }
 
-        auto img_name = ExtractNameFromUrl(img_url);
+        auto img_name = ExtractNameFromUrl(img_url, img_resize);
 
         auto& fcm = FileCacheManager::_();
         if (!fcm.Check(img_name))

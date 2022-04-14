@@ -10,6 +10,7 @@
 namespace PC
 {
     static constexpr uint8_t s_ImagePixelSize = 64;
+    static Glib::RefPtr<Gtk::SizeGroup> s_PriceSizeGroup = Gtk::SizeGroup::create(Gtk::SizeGroup::Mode::BOTH);
 
     ProductComponent::ProductComponent(const std::string& productName,
                                        const std::string& productBrand,
@@ -57,6 +58,7 @@ namespace PC
         m_ProductPriceVBox.set_halign(Gtk::Align::CENTER);
         m_ProductPriceVBox.prepend(m_ProductOriginalPrice);
         m_ProductPriceVBox.append(m_ProductActualPrice);
+        s_PriceSizeGroup->add_widget(m_ProductPriceVBox);
 
         m_ProductPriceSep.set_margin_start(10);
         m_ProductPriceSep.set_margin_end(10);
@@ -100,7 +102,7 @@ namespace PC
         auto& fcm = FileCacheManager::_();
         if (!fcm.Check(img_name))
         {
-            std::string data = std::move(FetchBase(img_url).str());
+            std::string data = std::move(FetchBase(img_url, true).str());
             fcm.Set(img_name, data);
         }
 

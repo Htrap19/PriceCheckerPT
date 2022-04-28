@@ -13,10 +13,10 @@ This is a cross-platform web-scraping software used to check prices from online 
 - [Continente](https://www.continente.pt)
 - [Auchan](https://www.auchan.pt)
 - [MiniPreco](https://www.lojaonline.minipreco.pt)
+- [Elcorteingles](https://www.elcorteingles.pt/supermercado)
 
 ### Coming Soon
 - [Mercadao](https://mercadao.pt/store/pingo-doce)
-- [Elcorteingles](https://www.elcorteingles.pt/supermercado)
 
 ## Install/Download
 Download the latest [release](https://github.com/Htrap19/PriceCheckerPT/releases) 

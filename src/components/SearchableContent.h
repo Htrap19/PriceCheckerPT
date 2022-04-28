@@ -17,6 +17,7 @@ namespace PC
         virtual ~SearchableContent() = default;
         inline Gtk::Widget& GetWidget() override { return *this; }
         void FetchCallback(CDocument& doc) override;
+        virtual void ParseSearchableContent(CDocument& doc) = 0;
         [[nodiscard]] inline const std::string& GetName() const override { return m_Name; }
         [[nodiscard]] inline const std::string& GetTitle() const override { return m_Name; }
 
@@ -26,6 +27,8 @@ namespace PC
         void ClearProductList();
 
     protected:
+        std::vector<ProductComponent> m_Products;
+
         Gtk::ListBox m_ListBox;
         EmptyList m_EmptyWidget;
 

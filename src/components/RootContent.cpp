@@ -5,10 +5,10 @@
 #include "RootContent.h"
 #include "InfoBar.h"
 #include "HeaderBar.h"
-#include "ContinenteContent.h"
-#include "AuchanContent.h"
-#include "MiniprecoContent.h"
-#include "ElcorteinglesContent.h"
+#include "components/stores/ContinenteContent.h"
+#include "components/stores/AuchanContent.h"
+#include "components/stores/MiniprecoContent.h"
+#include "components/stores/ElcorteinglesContent.h"
 
 namespace PC
 {
@@ -36,10 +36,10 @@ namespace PC
 
     void RootContent::Search(const std::string& search_text)
     {
-        HeaderBar::_().ToggleSearching();
+        HeaderBar::_(*this).ToggleSearching();
         for (auto& searchEntity : m_SearchableList)
             searchEntity->Search(search_text);
         InfoBar::_().Info("Search Finished!");
-        HeaderBar::_().ToggleSearching(false);
+        HeaderBar::_(*this).ToggleSearching(false);
     }
 }

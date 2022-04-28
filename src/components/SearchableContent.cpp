@@ -23,6 +23,10 @@ namespace PC
 
     void SearchableContent::FetchCallback(CDocument& doc)
     {
+        ClearProductList();
+
+        ParseSearchableContent(doc);
+
         if (m_Products.empty())
             m_EmptyWidget.SetLabel("Product Not Found!");
     }

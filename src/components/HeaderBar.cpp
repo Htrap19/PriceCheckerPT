@@ -8,10 +8,12 @@
 
 namespace PC
 {
-    HeaderBar::HeaderBar()
+    HeaderBar::HeaderBar(Gtk::Widget& key_capture_widget)
         : m_SearchButton("_Search", true)
     {
         m_SearchButton.signal_clicked().connect(sigc::mem_fun(*this, &HeaderBar::handle_search));
+        m_SearchEntry.property_activates_default().set_value(true);
+        m_SearchEntry.set_key_capture_widget(key_capture_widget);
 
         set_title_widget(m_TitleLabel);
         set_show_title_buttons(true);

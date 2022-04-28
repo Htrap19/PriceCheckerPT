@@ -3,9 +3,9 @@
 //
 
 #include "ElcorteinglesContent.h"
-#include "InfoBar.h"
+#include "components/InfoBar.h"
 #include "utils/Utils.h"
-#include <Node.h>
+#include "Node.h"
 
 namespace PC
 {
@@ -23,10 +23,8 @@ namespace PC
         Fetch(url);
     }
 
-    void ElcorteinglesContent::FetchCallback(CDocument& doc)
+    void ElcorteinglesContent::ParseSearchableContent(CDocument& doc)
     {
-        ClearProductList();
-
         auto selection = doc.find("div.product_tile");
         for (size_t i = 0; i < selection.nodeNum(); i++)
         {
@@ -77,7 +75,5 @@ namespace PC
                 SearchableContent::FetchErrCallback(e.what());
             }
         }
-
-        SearchableContent::FetchCallback(doc);
     }
 }

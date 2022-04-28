@@ -3,9 +3,9 @@
 //
 
 #include "MiniprecoContent.h"
-#include "InfoBar.h"
+#include "components/InfoBar.h"
 #include "utils/Utils.h"
-#include <Node.h>
+#include "Node.h"
 
 namespace PC
 {
@@ -23,10 +23,8 @@ namespace PC
         Fetch(url);
     }
 
-    void MiniprecoContent::FetchCallback(CDocument& doc)
+    void MiniprecoContent::ParseSearchableContent(CDocument& doc)
     {
-        ClearProductList();
-
         auto selection = doc.find("div.product-list__item");
         for (size_t i = 0; i < selection.nodeNum(); i++)
         {
@@ -82,7 +80,5 @@ namespace PC
 #endif
             }
         }
-
-        SearchableContent::FetchCallback(doc);
     }
 }

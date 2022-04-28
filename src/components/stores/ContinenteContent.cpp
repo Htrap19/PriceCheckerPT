@@ -3,9 +3,9 @@
 //
 
 #include "ContinenteContent.h"
-#include "InfoBar.h"
+#include "components/InfoBar.h"
 #include "utils/Utils.h"
-#include <Node.h>
+#include "Node.h"
 
 namespace PC
 {
@@ -23,10 +23,8 @@ namespace PC
         Fetch(url);
     }
 
-    void ContinenteContent::FetchCallback(CDocument& doc)
+    void ContinenteContent::ParseSearchableContent(CDocument& doc)
     {
-        ClearProductList();
-
         auto selection = doc.find("div.product");
         for (size_t i = 0; i < selection.nodeNum(); i++)
         {
@@ -42,7 +40,7 @@ namespace PC
                 auto productImgSrc = imgNode.attribute("data-src");
 
                 // Product Prices
-                auto priceNode = node.find("span.sales span.value").nodeAt(0);
+                auto priceNode = node.find("span.value").nodeAt(0);
                 auto actualFormattedPrice = priceNode.childAt(1).text() + priceNode.childAt(3).text();
                 Utils::RemoveEmptySpace(actualFormattedPrice);
 
@@ -56,7 +54,9 @@ namespace PC
                 }
 
                 auto secondaryPriceDescNode = node.find("div.ct-tile--price-secondary");
-                auto secondaryPriceDesc = secondaryPriceDescNode.nodeAt(0).childAt(1).text() + secondaryPriceDescNode.nodeAt(0).childAt(3).text();
+                std::string secondaryPriceDesc;
+                if (secondaryPriceDescNode.nodeNum() > 0)
+                    secondaryPriceDesc = secondaryPriceDescNode.nodeAt(0).childAt(1).text() + secondaryPriceDescNode.nodeAt(0).childAt(3).text();
                 Utils::RemoveEmptySpace(secondaryPriceDesc);
 
                 // Product Branding
@@ -83,7 +83,5 @@ namespace PC
                 SearchableContent::FetchErrCallback(e.what());
             }
         }
-
-        SearchableContent::FetchCallback(doc);
     }
 }

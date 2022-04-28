@@ -3,7 +3,7 @@
 //
 
 #include "AuchanContent.h"
-#include "InfoBar.h"
+#include "components/InfoBar.h"
 #include "Node.h"
 #include "utils/CssProvider.h"
 #include "utils/Utils.h"
@@ -24,10 +24,8 @@ namespace PC
         Fetch(url);
     }
 
-    void AuchanContent::FetchCallback(CDocument& doc)
+    void AuchanContent::ParseSearchableContent(CDocument& doc)
     {
-        ClearProductList();
-
         auto selection = doc.find("div.auc-product");
         for (size_t i = 0; i < selection.nodeNum(); i++)
         {
@@ -55,6 +53,7 @@ namespace PC
 
                 auto secondaryPriceDescNode = node.find("div.auc-measures");
                 auto secondaryPriceDesc = secondaryPriceDescNode.nodeAt(0).text();
+                Utils::RemoveEmptySpace(secondaryPriceDesc);
 
                 auto& productCom = m_Products.emplace_back(
                         productName,
@@ -74,7 +73,5 @@ namespace PC
                 SearchableContent::FetchErrCallback(e.what());
             }
         }
-
-        SearchableContent::FetchCallback(doc);
     }
 }

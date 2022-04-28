@@ -6,7 +6,7 @@
 #define PRICECHECKER_CONTINENTECONTENT_H
 
 #include <gtkmm.h>
-#include "SearchableContent.h"
+#include "components/SearchableContent.h"
 
 namespace PC
 {
@@ -16,7 +16,7 @@ namespace PC
         ContinenteContent();
 
         void Search(const std::string& search_text) override;
-        void FetchCallback(CDocument& doc) override;
+        void ParseSearchableContent(CDocument& doc) override;
     };
 }
 

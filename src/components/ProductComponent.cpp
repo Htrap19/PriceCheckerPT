@@ -28,7 +28,7 @@ namespace PC
         m_ProductPackaging((productPackaging.empty() ? "-" : productPackaging)),
         m_ProductPriceVBox(Gtk::Orientation::VERTICAL, 10),
         m_ProductActualPrice(actualPrice, Gtk::Align::CENTER, Gtk::Align::CENTER),
-        m_ProductSecondaryPriceDesc(secondaryPriceDesc, Gtk::Align::CENTER, Gtk::Align::CENTER),
+        m_ProductSecondaryPriceDesc((secondaryPriceDesc.empty() ? "-" : secondaryPriceDesc), Gtk::Align::CENTER, Gtk::Align::CENTER),
         m_ProductPriceSep(Gtk::Orientation::VERTICAL)
     {
         m_ProductImage.set_pixel_size(s_ImagePixelSize);

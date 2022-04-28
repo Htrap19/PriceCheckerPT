@@ -24,7 +24,7 @@ namespace PC
 
         inline static TaskQueue& _() { static TaskQueue instance; return instance; }
 
-        inline void Quit();
+        void Quit();
 
         template<typename Callable, typename ... Args>
         void Push(Callable&& func, Args&& ... args)

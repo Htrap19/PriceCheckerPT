@@ -5,7 +5,7 @@
 #ifndef PRICECHECKER_ELCORTEINGLESCONTENT_H
 #define PRICECHECKER_ELCORTEINGLESCONTENT_H
 
-#include "SearchableContent.h"
+#include "components/SearchableContent.h"
 
 namespace PC
 {
@@ -15,7 +15,7 @@ namespace PC
         ElcorteinglesContent();
 
         void Search(const std::string& search_text) override;
-        void FetchCallback(CDocument &doc) override;
+        void ParseSearchableContent(CDocument& doc) override;
     };
 }
 

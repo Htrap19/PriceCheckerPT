@@ -29,27 +29,8 @@ namespace PC
         [[nodiscard]] virtual const std::string& GetTitle() const = 0;
 
     protected:
-        virtual void Fetch(const std::string& url)
-        {
-            std::string page_content = FetchBase(url).str();
-
-            m_Doc.parse(page_content);
-            FetchCallback(m_Doc);
-        }
-
-        virtual std::string ConvertToUrlQuery(const std::string& text)
-        {
-            std::stringstream txtStream(text);
-            std::string word;
-            std::string urlQueryStr;
-            while (std::getline(txtStream, word, ' '))
-                urlQueryStr += word + "+";
-            urlQueryStr = urlQueryStr.substr(0, urlQueryStr.size() - 1);
-            return urlQueryStr;
-        }
-
-    protected:
-        std::vector<ProductComponent> m_Products;
+        virtual void Fetch(const std::string& url);
+        virtual std::string ConvertToUrlQuery(const std::string& text);
 
     private:
         CDocument m_Doc;

@@ -29,15 +29,25 @@ namespace PC
         inline void Question(const std::string& question_text) { SetText(Gtk::MessageType::QUESTION, question_text); }
         inline void Text(const std::string& text) { SetText(Gtk::MessageType::OTHER, text); }
 
+        template <typename Callable, typename ... Args>
+        void Ask(const std::string& question, Callable&& func, Args&& ... args)
+        {
+            m_Yes.show();
+            m_No.show();
+            Question(question);
+            set_show_close_button(false);
+            m_ConfirmCallback = std::bind(func, std::forward<Args>(args)...);
+        }
+
     private:
         InfoBar();
-
         void SetText(Gtk::MessageType messageType, const std::string& text);
-
         void handle_on_response(int response_id);
 
     private:
         Gtk::Label m_Message;
+        Gtk::Button m_Yes, m_No;
+        std::function<void()> m_ConfirmCallback;
     };
 }
 

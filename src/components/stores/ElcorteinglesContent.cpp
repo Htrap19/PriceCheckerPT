@@ -63,8 +63,7 @@ namespace PC
                                         originalPrice,
                                         actualPrice,
                                         secondaryPriceDesc,
-                                        productImgSrc,
-                                        false);
+                                        productImgSrc);
                 m_ListBox.append(comp);
             }
             catch (std::exception& e)

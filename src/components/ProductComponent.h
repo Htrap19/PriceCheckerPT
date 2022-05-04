@@ -20,7 +20,7 @@ namespace PC
                          const std::string& actualPrice,
                          const std::string& secondaryPriceDesc,
                          const std::string& img_url,
-                         bool img_resize = true);
+                         bool img_resize = false);
 
     protected:
         void FetchErrCallback(const std::string& what) override;

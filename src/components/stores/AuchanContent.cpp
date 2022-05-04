@@ -48,7 +48,7 @@ namespace PC
                 auto originalPriceNode = node.find("span.strike-through");
                 std::string originalPrice = "-";
                 if (originalPriceNode.nodeNum() > 0)
-                    originalPrice = originalPriceNode.nodeAt(0).childAt(1).childAt(2).text();
+                    originalPrice = originalPriceNode.nodeAt(0).childAt(2).text();
                 Utils::RemoveEmptySpace(originalPrice);
 
                 auto secondaryPriceDescNode = node.find("div.auc-measures");

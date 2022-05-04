@@ -2,6 +2,7 @@
 // Created by htrap19 on 4/3/22.
 //
 
+#include <thread>
 #include "RootContent.h"
 #include "InfoBar.h"
 #include "HeaderBar.h"
@@ -9,6 +10,7 @@
 #include "components/stores/AuchanContent.h"
 #include "components/stores/MiniprecoContent.h"
 #include "components/stores/ElcorteinglesContent.h"
+#include "utils/TaskQueue.h"
 
 namespace PC
 {

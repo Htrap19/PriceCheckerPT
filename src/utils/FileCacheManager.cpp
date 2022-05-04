@@ -4,17 +4,15 @@
 
 #include "FileCacheManager.h"
 #include <fstream>
-#include <filesystem>
 #include <iostream>
 
 namespace PC
 {
-    std::string FileCacheManager::s_TempFolderLocation = ".cache/";
+    fs::path FileCacheManager::s_CacheFolder = ".cache/";
 
     FileCacheManager::FileCacheManager()
     {
-        namespace fs = std::filesystem;
-        fs::create_directory(".cache");
+        fs::create_directory(s_CacheFolder);
     }
 
     std::string FileCacheManager::Set(const std::string& filename, const std::string& data)
@@ -41,7 +39,6 @@ namespace PC
 
     bool FileCacheManager::Check(const std::string& filename)
     {
-        std::ifstream check_file(GetRelativePath(filename));
-        return check_file.is_open();
+        return fs::exists(GetRelativePath(filename));
     }
 }

@@ -6,7 +6,7 @@
 #define PRICECHECKER_ROOTCONTENT_H
 
 #include <gtkmm.h>
-#include "utils/Searchable.h"
+#include "SearchableContent.h"
 
 namespace PC
 {
@@ -30,7 +30,7 @@ namespace PC
         Gtk::Stack m_Stack;
         Gtk::StackSidebar m_StackSidebar;
 
-        std::vector<Glib::RefPtr<Searchable>> m_SearchableList;
+        std::vector<Glib::RefPtr<SearchableContent>> m_SearchableList;
     };
 }
 

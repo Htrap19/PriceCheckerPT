@@ -20,7 +20,7 @@ namespace PC
         inline static HeaderBar& _(Gtk::Widget& key_capture_widget) { static HeaderBar instance(key_capture_widget); return instance; }
 
         inline void SetTitle(const std::string& title) { m_TitleLabel.set_label(title); }
-        inline void ToggleSearching(bool toggle = true) { m_SearchButton.set_sensitive(!toggle); m_SearchEntry.set_sensitive(!toggle); (toggle ? m_Spinner.start() : m_Spinner.stop()); }
+        void ToggleSearching(bool toggle = true);
         inline Gtk::Button& GetSearchButton() { return m_SearchButton; }
 
     protected:
@@ -28,12 +28,17 @@ namespace PC
 
     private:
         explicit HeaderBar(Gtk::Widget& key_capture_widget);
+        void ClearCache();
 
     private:
         Gtk::SearchEntry m_SearchEntry;
         Gtk::Button m_SearchButton;
         Gtk::Label m_TitleLabel;
         Gtk::Spinner m_Spinner;
+        Gtk::PopoverMenu m_SettingsMenu;
+        Gtk::MenuButton m_SettingsButton;
+
+        Glib::RefPtr<Gio::SimpleActionGroup> m_SettingsActionGroup;
     };
 }
 

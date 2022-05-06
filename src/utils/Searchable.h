@@ -8,9 +8,6 @@
 #include <iostream>
 #include <sstream>
 #include <gtkmm/widget.h>
-#include <curlpp/cURLpp.hpp>
-#include <curlpp/Easy.hpp>
-#include <curlpp/Options.hpp>
 #include <Document.h>
 #include <functional>
 #include "components/ProductComponent.h"

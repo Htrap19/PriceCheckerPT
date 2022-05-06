@@ -5,7 +5,8 @@
 #include "ContinenteContent.h"
 #include "components/InfoBar.h"
 #include "utils/Utils.h"
-#include "Node.h"
+#include "utils/LanguageManager.h"
+#include <Node.h>
 
 namespace PC
 {
@@ -19,7 +20,7 @@ namespace PC
         auto productNameUrlFormat = ConvertToUrlQuery(search_text);
         auto url = std::string("https://www.continente.pt/pesquisa/?q=") + productNameUrlFormat + "&start=0";
 
-        InfoBar::_().Info("Fetching result from www.continente.pt!");
+        INFO_BAR(Info, LANGUAGE(fetching_result_from) + " www.continente.pt!");
         Fetch(url);
     }
 

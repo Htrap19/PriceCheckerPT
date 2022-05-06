@@ -5,6 +5,7 @@
 #include "MiniprecoContent.h"
 #include "components/InfoBar.h"
 #include "utils/Utils.h"
+#include "utils/LanguageManager.h"
 #include "Node.h"
 
 namespace PC
@@ -19,7 +20,7 @@ namespace PC
         auto productNameUrlFormat = ConvertToUrlQuery(search_text);
         auto url = std::string("https://lojaonline.minipreco.pt/search?text=") + productNameUrlFormat;
 
-        InfoBar::_().Info("Fetching result from www.lojaonline.minipreco.pt!");
+        INFO_BAR(Info, LANGUAGE(fetching_result_from) + " www.lojaonline.minipreco.pt!");
         Fetch(url);
     }
 

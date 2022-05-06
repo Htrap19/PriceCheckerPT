@@ -54,5 +54,7 @@ namespace PC
 
         m_Message.set_text("");
         set_revealed(false);
+        m_Yes.hide();
+        m_No.hide();
     }
 }

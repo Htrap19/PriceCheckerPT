@@ -11,6 +11,7 @@
 #include "components/stores/MiniprecoContent.h"
 #include "components/stores/ElcorteinglesContent.h"
 #include "utils/TaskQueue.h"
+#include "utils/LanguageManager.h"
 
 namespace PC
 {
@@ -41,7 +42,7 @@ namespace PC
         HeaderBar::_(*this).ToggleSearching();
         for (auto& searchEntity : m_SearchableList)
             searchEntity->Search(search_text);
-        InfoBar::_().Info("Search Finished!");
+        INFO_BAR(Info, LANGUAGE(search_finished));
         HeaderBar::_(*this).ToggleSearching(false);
     }
 }

@@ -6,13 +6,14 @@
 #define PRICECHECKER_EMPTYLIST_H
 
 #include <gtkmm.h>
+#include "utils/LanguageManager.h"
 
 namespace PC
 {
     class EmptyList : public Gtk::Box
     {
     public:
-        explicit EmptyList(const std::string& nothing_label = "Nothing Todo");
+        explicit EmptyList(const std::string& nothing_label = LANGUAGE(nothing_todo));
 
         inline void SetLabel(const std::string& label) { m_Nothing.set_label(label); }
 

@@ -5,8 +5,8 @@
 #include "AuchanContent.h"
 #include "components/InfoBar.h"
 #include "Node.h"
-#include "utils/CssProvider.h"
 #include "utils/Utils.h"
+#include "utils/LanguageManager.h"
 
 namespace PC
 {
@@ -20,7 +20,7 @@ namespace PC
         auto productNameUrlFormat = ConvertToUrlQuery(search_text);
         auto url = std::string("https://www.auchan.pt/pt/pesquisa?q=") + productNameUrlFormat + "&search-button=&lang=pt_PT";
 
-        InfoBar::_().Info("Fetching result from www.auchan.pt!");
+        INFO_BAR(Info, LANGUAGE(fetching_result_from) + " www.auchan.pt!");
         Fetch(url);
     }
 

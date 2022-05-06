@@ -6,6 +6,7 @@
 #include "InfoBar.h"
 #include "utils/FileCacheManager.h"
 #include "utils/CssProvider.h"
+#include "utils/LanguageManager.h"
 
 namespace PC
 {
@@ -93,7 +94,7 @@ namespace PC
     {
         if (img_url.find("http") == std::string::npos)
         {
-            FetchErrCallback("Url validation failed!");
+            FetchErrCallback(LANGUAGE(url_validation_failed));
             return;
         }
 
@@ -111,6 +112,6 @@ namespace PC
 
     void ProductComponent::FetchErrCallback(const std::string& what)
     {
-        InfoBar::_().Error(what);
+        INFO_BAR(Error,what);
     }
 }

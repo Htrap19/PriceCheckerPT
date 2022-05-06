@@ -20,7 +20,7 @@ namespace PC
         std::string Set(const std::string& filename, const std::string& data);
         std::string Get(const std::string& filename);
         bool Check(const std::string& filename);
-        inline std::string GetRelativePath(const std::string& filename) { return s_CacheFolder / filename; }
+        inline std::string GetRelativePath(const std::string& filename) { return (s_CacheFolder / fs::path(filename)).generic_string(); }
         inline void ClearCache() const { fs::remove_all(s_CacheFolder); }
 
     private:

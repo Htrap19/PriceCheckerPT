@@ -5,6 +5,7 @@
 #include "SearchableContent.h"
 #include "InfoBar.h"
 #include "utils/CssProvider.h"
+#include "utils/LanguageManager.h"
 
 namespace PC
 {
@@ -28,12 +29,12 @@ namespace PC
         ParseSearchableContent(doc);
 
         if (m_Products.empty())
-            m_EmptyWidget.SetLabel("Product Not Found!");
+            m_EmptyWidget.SetLabel(LANGUAGE(product_not_found));
     }
 
     void SearchableContent::FetchErrCallback(const std::string& what)
     {
-        InfoBar::_().Error(what);
+        INFO_BAR(Error, what);
     }
 
     void SearchableContent::ClearProductList()

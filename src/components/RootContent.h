@@ -7,18 +7,14 @@
 
 #include <gtkmm.h>
 #include "SearchableContent.h"
+#include "utils/Utils.h"
 
 namespace PC
 {
     class RootContent : public Gtk::Overlay // Single-Ton
     {
     public:
-        RootContent(RootContent&) = delete;
-        RootContent(RootContent&&) = delete;
-        RootContent& operator=(RootContent&) = delete;
-        RootContent& operator=(RootContent&&) = delete;
-
-        inline static RootContent& _() { static RootContent instance; return instance; }
+        SINGLE_TON(RootContent)
 
         void Search(const std::string& search_text);
 

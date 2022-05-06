@@ -6,12 +6,14 @@
 #include "RootContent.h"
 #include "utils/TaskQueue.h"
 #include "utils/FileCacheManager.h"
+#include "utils/LanguageManager.h"
+#include "utils/ConfigManager.h"
 #include "InfoBar.h"
 
 namespace PC
 {
     HeaderBar::HeaderBar(Gtk::Widget& key_capture_widget)
-        : m_SearchButton("_Search", true)
+        : m_SearchButton("_" + LANGUAGE(search_button_text), true)
     {
         m_SearchButton.signal_clicked().connect(sigc::mem_fun(*this, &HeaderBar::handle_search));
         m_SearchEntry.property_activates_default().set_value(true);
@@ -21,14 +23,27 @@ namespace PC
         m_SettingsButton.set_popover(m_SettingsMenu);
 
         m_SettingsActionGroup = Gio::SimpleActionGroup::create();
-        m_SettingsActionGroup->add_action("clear_cache", sigc::mem_fun(*this, &HeaderBar::ClearCache));
+        m_SettingsActionGroup->add_action("clear_cache", sigc::mem_fun(*this, &HeaderBar::ClearCache));;
 
         auto utilsSection = Gio::Menu::create();
-        utilsSection->append_item(Gio::MenuItem::create("Compare", "settings.compare"));
+        utilsSection->append_item(Gio::MenuItem::create(LANGUAGE(compare), "settings.compare"));
 
         auto settingsSection = Gio::Menu::create();
-        settingsSection->append_item(Gio::MenuItem::create("Clear Cache", "settings.clear_cache"));
-        settingsSection->append_item(Gio::MenuItem::create("About", "settings.about"));
+        auto languageMenuItem = Gio::MenuItem::create(LANGUAGE(language), "");
+        auto languageSelectionMenu = Gio::Menu::create();
+        for (auto& lang : LANG(GetLangPacks))
+        {
+            auto action_name = "lang_" + lang;
+            m_SettingsActionGroup->add_action(action_name, [lang]()
+            {
+                CONFIG(SetLang, lang);
+            });
+            languageSelectionMenu->append_item(Gio::MenuItem::create(lang + " - " + LANG(GetFullNameOfLang, lang), "settings." + action_name));
+        }
+        languageMenuItem->set_submenu(languageSelectionMenu);
+        settingsSection->append_item(languageMenuItem);
+        settingsSection->append_item(Gio::MenuItem::create(LANGUAGE(clear_cache), "settings.clear_cache"));
+        settingsSection->append_item(Gio::MenuItem::create(LANGUAGE(about), "settings.about"));
 
         auto settingsMenuModel = Gio::Menu::create();
         settingsMenuModel->append_section(utilsSection);
@@ -64,6 +79,6 @@ namespace PC
 
     void HeaderBar::ClearCache()
     {
-        InfoBar::_().Ask("Do want to clear the cache ?", &FileCacheManager::ClearCache, &FileCacheManager::_());
+        InfoBar::_().Ask(LANGUAGE(clear_cache_question), &FileCacheManager::ClearCache, &FileCacheManager::_());
     }
 }

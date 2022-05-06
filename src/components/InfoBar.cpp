@@ -3,14 +3,15 @@
 //
 
 #include "InfoBar.h"
+#include "utils/LanguageManager.h"
 
 namespace PC
 {
     static Glib::RefPtr<Gtk::SizeGroup> s_ButtonSizeGroup = Gtk::SizeGroup::create(Gtk::SizeGroup::Mode::BOTH);
 
     InfoBar::InfoBar()
-        : m_Yes("_Yes", true),
-        m_No("_No", true)
+        : m_Yes("_" + LANGUAGE(yes), true),
+        m_No("_" + LANGUAGE(no), true)
     {
         set_valign(Gtk::Align::END);
         set_halign(Gtk::Align::FILL);

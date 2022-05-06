@@ -1,0 +1,16 @@
+{
+  "fullname": "English",
+  "strings":
+  {
+    "app_title": "Price Checker PT",
+    "search_button_text": "Search",
+    "compare": "Compare",
+    "clear_cache": "Clear Cache",
+    "clear_cache_question": "Do want to clear the cache ?",
+    "about": "About",
+    "yes": "Yes",
+    "no": "No",
+    "language": "Language",
+    "after_language_changed_text": "This changes will be applied after restart!"
+  }
+}

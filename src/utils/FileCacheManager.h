@@ -7,6 +7,7 @@
 
 #include <string>
 #include <filesystem>
+#include "utils/Utils.h"
 
 namespace PC
 {
@@ -14,12 +15,7 @@ namespace PC
     class FileCacheManager // Single-Ton
     {
     public:
-        FileCacheManager(FileCacheManager&) = delete;
-        FileCacheManager(FileCacheManager&&) = delete;
-        FileCacheManager& operator=(FileCacheManager&) = delete;
-        FileCacheManager& operator=(FileCacheManager&&) = delete;
-
-        inline static FileCacheManager& _() { static FileCacheManager instance; return instance; }
+        SINGLE_TON(FileCacheManager)
 
         std::string Set(const std::string& filename, const std::string& data);
         std::string Get(const std::string& filename);

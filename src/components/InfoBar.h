@@ -6,18 +6,14 @@
 #define PRICECHECKER_INFOBAR_H
 
 #include <gtkmm.h>
+#include "utils/Utils.h"
 
 namespace PC
 {
     class InfoBar : public Gtk::InfoBar // SingleTon
     {
     public:
-        InfoBar(InfoBar&) = delete;
-        InfoBar(InfoBar&&) = delete;
-        InfoBar& operator=(InfoBar&) = delete;
-        InfoBar& operator=(InfoBar&&) = delete;
-
-        inline static InfoBar& _() { static InfoBar instance; return instance; }
+        SINGLE_TON(InfoBar)
 
         inline void Info(const std::string& info_text) { SetText(Gtk::MessageType::INFO, info_text); }
 #ifdef PC_PLATFORM_WINDOWS
@@ -50,5 +46,7 @@ namespace PC
         std::function<void()> m_ConfirmCallback;
     };
 }
+
+#define INFO_BAR(func, ...) InfoBar::_().func(__VA_ARGS__)
 
 #endif //PRICECHECKER_INFOBAR_H

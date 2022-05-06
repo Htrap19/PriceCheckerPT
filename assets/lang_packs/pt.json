@@ -1,0 +1,16 @@
+{
+  "fullname": "Portuguese",
+  "strings":
+  {
+    "app_title": "Verificador de preços",
+    "search_button_text": "Procurar",
+    "compare": "Comparar",
+    "clear_cache": "Limpar Cache",
+    "clear_cache_question": "Quer limpar o cache ?",
+    "about": "Sobre",
+    "yes": "Sim",
+    "no": "Não",
+    "language": "Linguagem",
+    "after_language_changed_text": "Essas alterações serão aplicadas após a reinicialização!"
+  }
+}

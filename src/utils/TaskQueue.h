@@ -10,6 +10,7 @@
 #include <mutex>
 #include <thread>
 #include <functional>
+#include "utils/Utils.h"
 
 namespace PC
 {
@@ -17,12 +18,7 @@ namespace PC
     {
     public:
         ~TaskQueue();
-        TaskQueue(TaskQueue&) = delete;
-        TaskQueue(TaskQueue&&) = delete;
-        TaskQueue& operator=(TaskQueue&) = delete;
-        TaskQueue& operator=(TaskQueue&&) = delete;
-
-        inline static TaskQueue& _() { static TaskQueue instance; return instance; }
+        SINGLE_TON(TaskQueue)
 
         void Quit();
 

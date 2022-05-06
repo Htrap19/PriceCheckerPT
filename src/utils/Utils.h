@@ -16,4 +16,10 @@ namespace PC
     };
 }
 
+#define SINGLE_TON(className) className(className&) = delete; \
+    className(className&&) = delete;                          \
+    className& operator=(className&) = delete;                \
+    className& operator=(className&&) = delete;               \
+    inline static className& _() { static className instance; return instance; }
+
 #endif //PRICECHECKER_UTILS_H

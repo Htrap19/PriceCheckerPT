@@ -16,6 +16,7 @@
     "product_not_found": "Produto não encontrado",
     "fetching_result_from": "Buscando resultado de",
     "search_finished": "Pesquisa concluída!",
-    "url_validation_failed": "Falha na validação de URL!"
+    "url_validation_failed": "Falha na validação de URL!",
+    "clear_result": "Limpar resultado"
   }
 }

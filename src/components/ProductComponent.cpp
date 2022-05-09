@@ -7,6 +7,7 @@
 #include "utils/FileCacheManager.h"
 #include "utils/CssProvider.h"
 #include "utils/LanguageManager.h"
+#include "utils/TaskQueue.h"
 
 namespace PC
 {
@@ -33,7 +34,6 @@ namespace PC
         m_ProductPriceSep(Gtk::Orientation::VERTICAL)
     {
         m_ProductImage.set_pixel_size(s_ImagePixelSize);
-        CssProvider::LoadProvider((Gtk::Widget&)*this);
 
         m_ProductName.set_markup("<b>" + productName + "</b>");
 
@@ -67,8 +67,10 @@ namespace PC
         m_MainHBox.append(m_ProductPriceSep);
         m_MainHBox.append(m_ProductPriceVBox);
 
+        m_MainHBox.set_margin(10);
         set_child(m_MainHBox);
-        add_css_class("list_row");
+//        CssProvider::LoadProvider((Gtk::Widget&)*this);
+//        add_css_class("list_row");
 
         FetchImage(img_url, img_resize);
     }
@@ -112,6 +114,6 @@ namespace PC
 
     void ProductComponent::FetchErrCallback(const std::string& what)
     {
-        INFO_BAR(Error,what);
+        INFO_BAR(Error, what);
     }
 }

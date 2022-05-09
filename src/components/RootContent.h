@@ -17,6 +17,7 @@ namespace PC
         SINGLE_TON(RootContent)
 
         void Search(const std::string& search_text);
+        void Clear();
 
     private:
         RootContent();

@@ -10,6 +10,7 @@
 #include "components/stores/AuchanContent.h"
 #include "components/stores/MiniprecoContent.h"
 #include "components/stores/ElcorteinglesContent.h"
+#include "components/stores/SparContent.h"
 #include "utils/TaskQueue.h"
 #include "utils/LanguageManager.h"
 
@@ -22,6 +23,7 @@ namespace PC
         m_SearchableList.emplace_back(std::make_shared<AuchanContent>());
         m_SearchableList.emplace_back(std::make_shared<MiniprecoContent>());
         m_SearchableList.emplace_back(std::make_shared<ElcorteinglesContent>());
+        m_SearchableList.emplace_back(std::make_shared<SparContent>());
 
         for (auto& searchable : m_SearchableList)
             m_Stack.add(searchable->GetWidget(), searchable->GetName(), searchable->GetTitle());
@@ -41,8 +43,20 @@ namespace PC
     {
         HeaderBar::_(*this).ToggleSearching();
         for (auto& searchEntity : m_SearchableList)
+        {
             searchEntity->Search(search_text);
-        INFO_BAR(Info, LANGUAGE(search_finished));
-        HeaderBar::_(*this).ToggleSearching(false);
+            std::this_thread::sleep_for(std::chrono::milliseconds(250)); // TODO: Check if this make any difference
+        }
+        TaskQueue::_().SetIdleCallback([&]()
+        {
+            INFO_BAR(Info, LANGUAGE(search_finished));
+            HeaderBar::_(*this).ToggleSearching(false);
+        });
+    }
+
+    void RootContent::Clear()
+    {
+        for (auto& searchEntity : m_SearchableList)
+            searchEntity->ClearProductList();
     }
 }

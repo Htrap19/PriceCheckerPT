@@ -24,9 +24,11 @@ namespace PC
 
         m_SettingsActionGroup = Gio::SimpleActionGroup::create();
         m_SettingsActionGroup->add_action("clear_cache", sigc::mem_fun(*this, &HeaderBar::ClearCache));;
+        m_SettingsActionGroup->add_action("clear_result", sigc::mem_fun(RootContent::_(), &RootContent::Clear));
 
         auto utilsSection = Gio::Menu::create();
         utilsSection->append_item(Gio::MenuItem::create(LANGUAGE(compare), "settings.compare"));
+        utilsSection->append_item(Gio::MenuItem::create(LANGUAGE(clear_result), "settings.clear_result"));
 
         auto settingsSection = Gio::Menu::create();
         auto languageMenuItem = Gio::MenuItem::create(LANGUAGE(language), "");

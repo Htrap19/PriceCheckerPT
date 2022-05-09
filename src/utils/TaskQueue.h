@@ -26,13 +26,15 @@ namespace PC
         void Push(Callable&& func, Args&& ... args)
         {
             auto task = std::bind(func, args...);
-            // Check for deadlock safety
-            if (this->m_ThisThreadID == std::this_thread::get_id()) { task(); return; }
 
-            std::unique_lock lock(m_Mutex);
+            std::unique_lock lock(m_QueueMutex);
             m_TaskQueue.push(task);
-            m_ConditionVariable.notify_one();
+            if (this->m_ThisThreadID != std::this_thread::get_id())
+                m_ConditionVariable.notify_one();
         }
+
+        template <typename Callable, typename ... Args>
+        inline void SetIdleCallback(Callable&& func, Args&& ... args) { m_IdleCallback = std::bind(func, args...); }
 
     private:
         TaskQueue();
@@ -40,11 +42,12 @@ namespace PC
 
     private:
         std::queue<std::function<void()>> m_TaskQueue;
-        std::mutex m_Mutex;
+        std::mutex m_TaskMutex, m_QueueMutex;
         std::thread m_Thread;
         std::condition_variable m_ConditionVariable;
         bool m_Running = true;
         std::thread::id m_ThisThreadID;
+        std::function<void()> m_IdleCallback;
     };
 }
 

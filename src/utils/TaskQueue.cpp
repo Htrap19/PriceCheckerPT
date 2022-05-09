@@ -10,6 +10,7 @@ namespace PC
         : m_Thread(&TaskQueue::Update, this)
     {
         m_ThisThreadID = m_Thread.get_id();
+        m_IdleCallback = []() {};
     }
 
     TaskQueue::~TaskQueue()
@@ -31,10 +32,18 @@ namespace PC
     {
         while (m_Running)
         {
-            std::unique_lock lock(m_Mutex);
-            m_ConditionVariable.wait(lock, [&]() { return !m_TaskQueue.empty(); });
+            std::unique_lock lock(m_TaskMutex);
+            m_ConditionVariable.wait(lock, [&]()
+            {
+                m_IdleCallback();
+                m_IdleCallback = []() {};
+                return !m_TaskQueue.empty();
+            });
+            std::unique_lock queue_lock(m_QueueMutex);
             auto task = m_TaskQueue.front();
+            queue_lock.unlock();
             task();
+            queue_lock.lock();
             m_TaskQueue.pop();
         }
     }

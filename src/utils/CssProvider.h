@@ -5,7 +5,6 @@
 #ifndef PRICECHECKER_CSSPROVIDER_H
 #define PRICECHECKER_CSSPROVIDER_H
 
-#include <iostream>
 #include <gtkmm.h>
 
 namespace PC

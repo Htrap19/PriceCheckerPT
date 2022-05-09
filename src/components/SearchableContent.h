@@ -20,11 +20,11 @@ namespace PC
         virtual void ParseSearchableContent(CDocument& doc) = 0;
         [[nodiscard]] inline const std::string& GetName() const override { return m_Name; }
         [[nodiscard]] inline const std::string& GetTitle() const override { return m_Name; }
+        void ClearProductList();
 
     protected:
         explicit SearchableContent(const std::string& name);
         void FetchErrCallback(const std::string& what) override;
-        void ClearProductList();
 
     protected:
         std::vector<ProductComponent> m_Products;

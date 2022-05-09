@@ -12,8 +12,8 @@ namespace PC
     SearchableContent::SearchableContent(const std::string& name)
         : m_Name(name)
     {
-        CssProvider::LoadProvider(m_ListBox);
-        m_ListBox.add_css_class("padding-10");
+//        CssProvider::LoadProvider(m_ListBox);
+//        m_ListBox.add_css_class("padding-10");
         m_ListBox.set_selection_mode(Gtk::SelectionMode::NONE);
         m_ListBox.set_placeholder(m_EmptyWidget);
         m_ListBox.set_show_separators();

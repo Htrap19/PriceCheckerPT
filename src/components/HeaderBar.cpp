@@ -70,6 +70,7 @@ namespace PC
         m_SearchEntry.set_sensitive(!toggle);
         (toggle ? m_Spinner.start() : m_Spinner.stop());
         m_SettingsActionGroup->action_enabled_changed("clear_cache", !toggle);
+        m_SettingsActionGroup->action_enabled_changed("clear_result", !toggle);
     }
 
     void HeaderBar::handle_search()

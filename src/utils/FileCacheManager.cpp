@@ -36,9 +36,4 @@ namespace PC
 
         return "";
     }
-
-    bool FileCacheManager::Check(const std::string& filename)
-    {
-        return fs::exists(GetRelativePath(filename));
-    }
 }

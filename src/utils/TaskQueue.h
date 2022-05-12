@@ -6,10 +6,10 @@
 #define PRICECHECKER_TASKQUEUE_H
 
 #include <queue>
-#include <future>
 #include <mutex>
 #include <thread>
 #include <functional>
+#include <condition_variable>
 #include "utils/Utils.h"
 
 namespace PC
@@ -28,7 +28,7 @@ namespace PC
             auto task = std::bind(func, args...);
 
             std::unique_lock lock(m_QueueMutex);
-            m_TaskQueue.push(task);
+            m_TaskQueue.template emplace(task);
             if (this->m_ThisThreadID != std::this_thread::get_id())
                 m_ConditionVariable.notify_one();
         }

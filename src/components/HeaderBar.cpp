@@ -12,12 +12,11 @@
 
 namespace PC
 {
-    HeaderBar::HeaderBar(Gtk::Widget& key_capture_widget)
+    HeaderBar::HeaderBar()
         : m_SearchButton("_" + LANGUAGE(search_button_text), true)
     {
         m_SearchButton.signal_clicked().connect(sigc::mem_fun(*this, &HeaderBar::handle_search));
         m_SearchEntry.property_activates_default().set_value(true);
-        m_SearchEntry.set_key_capture_widget(key_capture_widget);
 
         m_SettingsButton.set_icon_name("open-menu");
         m_SettingsButton.set_popover(m_SettingsMenu);
@@ -36,10 +35,7 @@ namespace PC
         for (auto& lang : LANG(GetLangPacks))
         {
             auto action_name = "lang_" + lang;
-            m_SettingsActionGroup->add_action(action_name, [lang]()
-            {
-                CONFIG(SetLang, lang);
-            });
+            m_SettingsActionGroup->add_action(action_name, [lang]() { CONFIG(SetLang, lang); });
             languageSelectionMenu->append_item(Gio::MenuItem::create(lang + " - " + LANG(GetFullNameOfLang, lang), "settings." + action_name));
         }
         languageMenuItem->set_submenu(languageSelectionMenu);
@@ -56,12 +52,15 @@ namespace PC
         m_SettingsMenu.set_position(Gtk::PositionType::BOTTOM);
         m_SettingsMenu.insert_action_group("settings", m_SettingsActionGroup);
 
+        m_Spinner.set_margin_end(10);
+
         set_title_widget(m_TitleLabel);
         set_show_title_buttons(true);
         pack_start(m_SearchEntry);
         pack_start(m_SearchButton);
         pack_end(m_SettingsButton);
         pack_end(m_Spinner);
+        pack_end(m_LoadingLabel);
     }
 
     void HeaderBar::ToggleSearching(bool toggle)
@@ -71,6 +70,7 @@ namespace PC
         (toggle ? m_Spinner.start() : m_Spinner.stop());
         m_SettingsActionGroup->action_enabled_changed("clear_cache", !toggle);
         m_SettingsActionGroup->action_enabled_changed("clear_result", !toggle);
+        (toggle ? m_LoadingLabel.show() : m_LoadingLabel.hide());
     }
 
     void HeaderBar::handle_search()
@@ -82,6 +82,6 @@ namespace PC
 
     void HeaderBar::ClearCache()
     {
-        InfoBar::_().Ask(LANGUAGE(clear_cache_question), &FileCacheManager::ClearCache, &FileCacheManager::_());
+        INFO_BAR(Ask, LANGUAGE(clear_cache_question), &FileCacheManager::ClearCache, &FileCacheManager::_());
     }
 }

@@ -6,20 +6,18 @@
 #define PRICECHECKER_HEADERBAR_H
 
 #include <gtkmm.h>
+#include "utils/Utils.h"
 
 namespace PC
 {
     class HeaderBar : public Gtk::HeaderBar // Single-Ton
     {
     public:
-        HeaderBar(HeaderBar&) = delete;
-        HeaderBar(HeaderBar&&) = delete;
-        HeaderBar& operator=(HeaderBar&) = delete;
-        HeaderBar& operator=(HeaderBar&&) = delete;
-
-        inline static HeaderBar& _(Gtk::Widget& key_capture_widget) { static HeaderBar instance(key_capture_widget); return instance; }
+        SINGLE_TON(HeaderBar)
 
         inline void SetTitle(const std::string& title) { m_TitleLabel.set_label(title); }
+        inline void SetLoadingText(const std::string& text) { m_LoadingLabel.set_label(text); }
+        inline void SetKeyCaptureWidget(Gtk::Widget& key_capture_widget) { m_SearchEntry.set_key_capture_widget(key_capture_widget); }
         void ToggleSearching(bool toggle = true);
         inline Gtk::Button& GetSearchButton() { return m_SearchButton; }
 
@@ -27,7 +25,7 @@ namespace PC
         void handle_search();
 
     private:
-        explicit HeaderBar(Gtk::Widget& key_capture_widget);
+        explicit HeaderBar();
         void ClearCache();
 
     private:
@@ -35,11 +33,14 @@ namespace PC
         Gtk::Button m_SearchButton;
         Gtk::Label m_TitleLabel;
         Gtk::Spinner m_Spinner;
+        Gtk::Label m_LoadingLabel;
         Gtk::PopoverMenu m_SettingsMenu;
         Gtk::MenuButton m_SettingsButton;
 
         Glib::RefPtr<Gio::SimpleActionGroup> m_SettingsActionGroup;
     };
 }
+
+#define HEADER_BAR(func, ...) HeaderBar::_().func(__VA_ARGS__)
 
 #endif //PRICECHECKER_HEADERBAR_H

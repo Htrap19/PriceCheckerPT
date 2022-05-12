@@ -11,7 +11,7 @@
 namespace PC
 {
     ContinenteContent::ContinenteContent()
-        : SearchableContent("Continente")
+        : SearchableContent("Continente", "www.continente.pt")
     {
     }
 
@@ -20,8 +20,7 @@ namespace PC
         auto productNameUrlFormat = ConvertToUrlQuery(search_text);
         auto url = std::string("https://www.continente.pt/pesquisa/?q=") + productNameUrlFormat + "&start=0";
 
-        INFO_BAR(Info, LANGUAGE(fetching_result_from) + " www.continente.pt!");
-        Fetch(url);
+        SearchableContent::Search(url);
     }
 
     void ContinenteContent::ParseSearchableContent(CDocument& doc)
@@ -66,16 +65,15 @@ namespace PC
                 // Product Packaging
                 auto productPackaging = node.find("p.ct-tile--quantity").nodeAt(0).text();
 
-                auto& productCom = m_Products.emplace_back(
-                        productName,
-                        productBrand,
-                        productPackaging,
-                        originalPrice,
-                        actualFormattedPrice,
-                        secondaryPriceDesc,
-                        productImgSrc,
-                        true);
-                m_ListBox.append(productCom);
+                PushProduct({
+                            productName,
+                            productBrand,
+                            productPackaging,
+                            originalPrice,
+                            actualFormattedPrice,
+                            secondaryPriceDesc,
+                            productImgSrc,
+                            true});
             }
             catch(std::exception& e)
             {

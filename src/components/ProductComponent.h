@@ -13,6 +13,23 @@ namespace PC
     class ProductComponent : public Gtk::ListBoxRow, public Fetchable
     {
     public:
+        struct Data
+        {
+            std::string productName;
+            std::string productBrand;
+            std::string productPackaging;
+            std::string originalPrice;
+            std::string actualPrice;
+            std::string secondaryPriceDesc;
+            std::string img_url;
+            bool img_resize = false;
+
+            Data(const Data&) = default;
+            inline bool operator ==(const Data& other) const { return productName == other.productName && img_url == other.img_url; }
+        };
+
+    public:
+        explicit ProductComponent(const ProductComponent::Data& data);
         ProductComponent(const std::string& productName,
                          const std::string& productBrand,
                          const std::string& productPackaging,

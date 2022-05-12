@@ -12,7 +12,7 @@ namespace PC
 {
 
     ElcorteinglesContent::ElcorteinglesContent()
-        : SearchableContent("Elcorteingles")
+        : SearchableContent("Elcorteingles", "www.elcorteingles.pt")
     {
     }
 
@@ -21,8 +21,7 @@ namespace PC
         auto productNameUrlFormat = ConvertToUrlQuery(search_text);
         auto url = std::string("https://www.elcorteingles.pt/supermercado/pesquisar/?term=") + productNameUrlFormat + "&search=text";
 
-        INFO_BAR(Info, LANGUAGE(fetching_result_from) + " www.elcorteingles.pt!");
-        Fetch(url);
+        SearchableContent::Search(url);
     }
 
     void ElcorteinglesContent::ParseSearchableContent(CDocument& doc)
@@ -59,14 +58,14 @@ namespace PC
                 Utils::RemoveEmptySpace(actualPrice);
                 Utils::RemoveEmptySpace(secondaryPriceDesc);
 
-                auto& comp = m_Products.emplace_back(productName,
-                                        "",
-                                        "",
-                                        originalPrice,
-                                        actualPrice,
-                                        secondaryPriceDesc,
-                                        productImgSrc);
-                m_ListBox.append(comp);
+                PushProduct({
+                            productName,
+                            "",
+                            "",
+                            originalPrice,
+                            actualPrice,
+                            secondaryPriceDesc,
+                            productImgSrc});
             }
             catch (std::exception& e)
             {

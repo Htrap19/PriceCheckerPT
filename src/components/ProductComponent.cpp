@@ -5,7 +5,7 @@
 #include "ProductComponent.h"
 #include "InfoBar.h"
 #include "utils/FileCacheManager.h"
-#include "utils/CssProvider.h"
+//#include "utils/CssProvider.h"
 #include "utils/LanguageManager.h"
 #include "utils/TaskQueue.h"
 
@@ -13,6 +13,18 @@ namespace PC
 {
     static constexpr uint8_t s_ImagePixelSize = 64;
     static Glib::RefPtr<Gtk::SizeGroup> s_PriceSizeGroup = Gtk::SizeGroup::create(Gtk::SizeGroup::Mode::BOTH);
+
+    ProductComponent::ProductComponent(const ProductComponent::Data& data)
+        : ProductComponent(data.productName,
+                           data.productBrand,
+                           data.productPackaging,
+                           data.originalPrice,
+                           data.actualPrice,
+                           data.secondaryPriceDesc,
+                           data.img_url,
+                           data.img_resize)
+    {
+    }
 
     ProductComponent::ProductComponent(const std::string& productName,
                                        const std::string& productBrand,

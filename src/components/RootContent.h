@@ -27,7 +27,7 @@ namespace PC
         Gtk::Stack m_Stack;
         Gtk::StackSidebar m_StackSidebar;
 
-        std::vector<Glib::RefPtr<SearchableContent>> m_SearchableList;
+        std::list<Glib::RefPtr<SearchableContent>> m_SearchableList;
     };
 }
 

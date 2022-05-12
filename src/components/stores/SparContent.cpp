@@ -10,7 +10,7 @@
 namespace PC
 {
     SparContent::SparContent()
-        : SearchableContent("Spar")
+        : SearchableContent("Spar", "www.spar.pt")
     {
     }
 
@@ -19,8 +19,7 @@ namespace PC
         auto productNameUrlFormat = ConvertToUrlQuery(search_text);
         auto url = "https://www.spar.pt/search?q=" + productNameUrlFormat + "&pagesize=12";
 
-        INFO_BAR(Info, LANGUAGE(fetching_result_from) + " www.spar.pt!");
-        Fetch(url);
+        SearchableContent::Search(url);
     }
 
     void SparContent::ParseSearchableContent(CDocument& doc)
@@ -50,14 +49,13 @@ namespace PC
                 if (secondaryPriceNode.nodeNum() > 0)
                     secondaryPrice = secondaryPriceNode.nodeAt(0).text();
 
-                auto& comp = m_Products.emplace_back(
-                        productName,
-                        "", "",
-                        oldPrice,
-                        actualPrice,
-                        secondaryPrice,
-                        productImageSrc);
-                m_ListBox.append(comp);
+                PushProduct({
+                         productName,
+                         "", "",
+                         oldPrice,
+                         actualPrice,
+                         secondaryPrice,
+                         productImageSrc});
             }
             catch (std::exception& e)
             {

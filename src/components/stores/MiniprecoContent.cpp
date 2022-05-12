@@ -11,7 +11,7 @@
 namespace PC
 {
     MiniprecoContent::MiniprecoContent()
-        : SearchableContent("Minipreco")
+        : SearchableContent("Minipreco", "www.lojaonline.minipreco.pt")
     {
     }
 
@@ -20,8 +20,7 @@ namespace PC
         auto productNameUrlFormat = ConvertToUrlQuery(search_text);
         auto url = std::string("https://lojaonline.minipreco.pt/search?text=") + productNameUrlFormat;
 
-        INFO_BAR(Info, LANGUAGE(fetching_result_from) + " www.lojaonline.minipreco.pt!");
-        Fetch(url);
+        SearchableContent::Search(url);
     }
 
     void MiniprecoContent::ParseSearchableContent(CDocument& doc)
@@ -63,15 +62,14 @@ namespace PC
                     secondaryPriceDesc = secondaryPriceDescNode.childAt(2).text();
                 Utils::RemoveEmptySpace(secondaryPriceDesc);
 
-                auto& comp = m_Products.emplace_back(
-                        productName,
-                        "",
-                        "",
-                        originalPrice,
-                        actualPrice,
-                        secondaryPriceDesc,
-                        productImgSrc);
-                m_ListBox.append(comp);
+                PushProduct({
+                            productName,
+                            "",
+                            "",
+                            originalPrice,
+                            actualPrice,
+                            secondaryPriceDesc,
+                            productImgSrc});
             }
             catch (std::exception& e)
             {

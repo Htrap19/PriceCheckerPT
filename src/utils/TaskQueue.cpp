@@ -40,7 +40,7 @@ namespace PC
                 return !m_TaskQueue.empty();
             });
             std::unique_lock queue_lock(m_QueueMutex);
-            auto task = m_TaskQueue.front();
+            auto task = std::move(m_TaskQueue.front());
             queue_lock.unlock();
             task();
             queue_lock.lock();

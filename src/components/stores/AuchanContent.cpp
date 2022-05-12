@@ -11,7 +11,7 @@
 namespace PC
 {
     AuchanContent::AuchanContent()
-        : SearchableContent("Auchan")
+        : SearchableContent("Auchan", "www.auchan.pt")
     {
     }
 
@@ -20,8 +20,7 @@ namespace PC
         auto productNameUrlFormat = ConvertToUrlQuery(search_text);
         auto url = std::string("https://www.auchan.pt/pt/pesquisa?q=") + productNameUrlFormat + "&search-button=&lang=pt_PT";
 
-        INFO_BAR(Info, LANGUAGE(fetching_result_from) + " www.auchan.pt!");
-        Fetch(url);
+        SearchableContent::Search(url);
     }
 
     void AuchanContent::ParseSearchableContent(CDocument& doc)
@@ -55,15 +54,13 @@ namespace PC
                 auto secondaryPriceDesc = secondaryPriceDescNode.nodeAt(0).text();
                 Utils::RemoveEmptySpace(secondaryPriceDesc);
 
-                auto& productCom = m_Products.emplace_back(
-                        productName,
-                        "",
-                        "",
-                        originalPrice,
-                        price,
-                        secondaryPriceDesc,
-                        productImgSrc);
-                m_ListBox.append(productCom);
+                PushProduct({
+                            productName,
+                "", "",
+                            originalPrice,
+                            price,
+                            secondaryPriceDesc,
+                            productImgSrc});
             }
             catch(std::exception& e)
             {

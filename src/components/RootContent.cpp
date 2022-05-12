@@ -41,16 +41,13 @@ namespace PC
 
     void RootContent::Search(const std::string& search_text)
     {
-        HeaderBar::_(*this).ToggleSearching();
+        HEADER_BAR(ToggleSearching);
         for (auto& searchEntity : m_SearchableList)
-        {
             searchEntity->Search(search_text);
-            std::this_thread::sleep_for(std::chrono::milliseconds(250)); // TODO: Check if this make any difference
-        }
         TaskQueue::_().SetIdleCallback([&]()
         {
             INFO_BAR(Info, LANGUAGE(search_finished));
-            HeaderBar::_(*this).ToggleSearching(false);
+            HEADER_BAR(ToggleSearching, false);
         });
     }
 

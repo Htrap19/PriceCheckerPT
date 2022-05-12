@@ -3,9 +3,7 @@
 //
 
 #include "ElcorteinglesContent.h"
-#include "components/InfoBar.h"
-#include "utils/Utils.h"
-#include "utils/LanguageManager.h"
+#include "utils/UIQueue.h"
 #include <Node.h>
 
 namespace PC
@@ -58,14 +56,15 @@ namespace PC
                 Utils::RemoveEmptySpace(actualPrice);
                 Utils::RemoveEmptySpace(secondaryPriceDesc);
 
-                PushProduct({
+                auto& comp = m_Products.emplace_back(
                             productName,
                             "",
                             "",
                             originalPrice,
                             actualPrice,
                             secondaryPriceDesc,
-                            productImgSrc});
+                            productImgSrc);
+                UIQueue::_().Push([&]() { m_ListBox.append(comp); });
             }
             catch (std::exception& e)
             {

@@ -21,19 +21,13 @@ namespace PC
         virtual void ParseSearchableContent(CDocument& doc) = 0;
         [[nodiscard]] inline const std::string& GetName() const override { return m_Name; }
         [[nodiscard]] inline const std::string& GetTitle() const override { return m_Name; }
-        void PushProduct(const ProductComponent::Data& data);
         void ClearProductList();
 
     protected:
         SearchableContent(const std::string& name, const std::string& briefUrl);
         void FetchErrCallback(const std::string& what) override;
-        bool AppendProductsOnIdle();
 
     protected:
-        std::mutex m_ProductDataMutex;
-        std::list<ProductComponent::Data> m_ProductsData;
-
-    private:
         std::list<ProductComponent> m_Products;
         Gtk::ListBox m_ListBox;
         EmptyList m_EmptyWidget;

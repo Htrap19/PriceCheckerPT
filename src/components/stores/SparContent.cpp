@@ -3,8 +3,7 @@
 //
 
 #include "SparContent.h"
-#include "components/InfoBar.h"
-#include "utils/LanguageManager.h"
+#include "utils/UIQueue.h"
 #include <Node.h>
 
 namespace PC
@@ -49,13 +48,14 @@ namespace PC
                 if (secondaryPriceNode.nodeNum() > 0)
                     secondaryPrice = secondaryPriceNode.nodeAt(0).text();
 
-                PushProduct({
+                auto& comp = m_Products.emplace_back(
                          productName,
                          "", "",
                          oldPrice,
                          actualPrice,
                          secondaryPrice,
-                         productImageSrc});
+                         productImageSrc);
+                UIQueue::_().Push([&]() { m_ListBox.append(comp); });
             }
             catch (std::exception& e)
             {

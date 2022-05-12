@@ -3,9 +3,7 @@
 //
 
 #include "ContinenteContent.h"
-#include "components/InfoBar.h"
-#include "utils/Utils.h"
-#include "utils/LanguageManager.h"
+#include "utils/UIQueue.h"
 #include <Node.h>
 
 namespace PC
@@ -65,7 +63,7 @@ namespace PC
                 // Product Packaging
                 auto productPackaging = node.find("p.ct-tile--quantity").nodeAt(0).text();
 
-                PushProduct({
+                auto& comp = m_Products.emplace_back(
                             productName,
                             productBrand,
                             productPackaging,
@@ -73,7 +71,8 @@ namespace PC
                             actualFormattedPrice,
                             secondaryPriceDesc,
                             productImgSrc,
-                            true});
+                            true);
+                UIQueue::_().Push([&]() { m_ListBox.append(comp); });
             }
             catch(std::exception& e)
             {

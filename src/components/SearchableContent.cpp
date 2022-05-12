@@ -48,36 +48,8 @@ namespace PC
         m_Products.clear();
     }
 
-    void SearchableContent::PushProduct(const ProductComponent::Data& data)
-    {
-        std::lock_guard lock(m_ProductDataMutex);
-        m_ProductsData.push_back(data);
-        if (!m_ProductAppendConnection)
-            m_ProductAppendConnection = Glib::signal_idle().connect(sigc::mem_fun(*this, &SearchableContent::AppendProductsOnIdle));
-    }
-
     void SearchableContent::FetchErrCallback(const std::string& what)
     {
         INFO_BAR(Error, what);
-    }
-
-    bool SearchableContent::AppendProductsOnIdle()
-    {
-        std::lock_guard lock(m_ProductDataMutex);
-        for (auto& productData : m_ProductsData)
-        {
-            try
-            {
-                auto& comp = m_Products.emplace_back(productData);
-                m_ListBox.append(comp);
-            }
-            catch (std::exception& e)
-            {
-                FetchErrCallback(e.what());
-            }
-        }
-
-        m_ProductsData.clear();
-        return false; // Disconnects the signal handler
     }
 }

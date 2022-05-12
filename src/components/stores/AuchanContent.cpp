@@ -3,10 +3,8 @@
 //
 
 #include "AuchanContent.h"
-#include "components/InfoBar.h"
-#include "Node.h"
-#include "utils/Utils.h"
-#include "utils/LanguageManager.h"
+#include "utils/UIQueue.h"
+#include <Node.h>
 
 namespace PC
 {
@@ -54,13 +52,14 @@ namespace PC
                 auto secondaryPriceDesc = secondaryPriceDescNode.nodeAt(0).text();
                 Utils::RemoveEmptySpace(secondaryPriceDesc);
 
-                PushProduct({
+                auto& comp = m_Products.emplace_back(
                             productName,
-                "", "",
+                            "", "",
                             originalPrice,
                             price,
                             secondaryPriceDesc,
-                            productImgSrc});
+                            productImgSrc);
+                UIQueue::_().Push([&]() { m_ListBox.append(comp); });
             }
             catch(std::exception& e)
             {

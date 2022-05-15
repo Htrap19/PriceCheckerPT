@@ -19,7 +19,7 @@ namespace PC
         SINGLE_TON(UIQueue)
 
         template <typename Callable, typename ... Args>
-        void Push(Callable&& func, Args&& ... args)
+        inline void Push(Callable&& func, Args&& ... args)
         {
             auto task = std::bind(func, args...);
 

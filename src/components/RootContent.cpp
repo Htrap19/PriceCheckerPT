@@ -13,6 +13,9 @@
 #include "components/stores/SparContent.h"
 #include "utils/TaskQueue.h"
 #include "utils/LanguageManager.h"
+#include "utils/UIQueue.h"
+
+extern Glib::RefPtr<Gtk::Application> app;
 
 namespace PC
 {
@@ -41,6 +44,9 @@ namespace PC
 
     void RootContent::Search(const std::string& search_text)
     {
+        UIQueue::_().Push([&]() { ClearResult(); });
+        app->get_active_window()->set_resizable(false);
+
         HEADER_BAR(ToggleSearching);
         for (auto& searchEntity : m_SearchableList)
             searchEntity->Search(search_text);
@@ -48,10 +54,11 @@ namespace PC
         {
             INFO_BAR(Info, LANGUAGE(search_finished));
             HEADER_BAR(ToggleSearching, false);
+            app->get_active_window()->set_resizable();
         });
     }
 
-    void RootContent::Clear()
+    void RootContent::ClearResult()
     {
         for (auto& searchEntity : m_SearchableList)
             searchEntity->ClearProductList();

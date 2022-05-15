@@ -14,11 +14,7 @@ namespace PC
     class Window : public Gtk::Window
     {
     public:
-        static bool Closed;
-
-    public:
         Window();
-        ~Window();
 
     private:
         HeaderBar& m_TitleBar;

@@ -16,6 +16,7 @@ namespace PC
             task();
             lock.lock();
             m_TaskQueue.pop();
+            g_main_context_iteration(nullptr, false);
         }
 
         return false;

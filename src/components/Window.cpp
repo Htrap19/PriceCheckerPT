@@ -7,9 +7,6 @@
 
 namespace PC
 {
-    static const std::string s_WindowTitle = "Price Checker PT";
-    bool Window::Closed = false;
-
     Window::Window()
         : m_RootContent(RootContent::_()),
           m_TitleBar(HeaderBar::_())
@@ -22,10 +19,5 @@ namespace PC
 
         set_titlebar(m_TitleBar);
         set_child(m_RootContent);
-    }
-
-    Window::~Window()
-    {
-        Closed = false;
     }
 }

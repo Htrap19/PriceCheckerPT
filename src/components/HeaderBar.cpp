@@ -23,7 +23,7 @@ namespace PC
 
         m_SettingsActionGroup = Gio::SimpleActionGroup::create();
         m_SettingsActionGroup->add_action("clear_cache", sigc::mem_fun(*this, &HeaderBar::ClearCache));;
-        m_SettingsActionGroup->add_action("clear_result", sigc::mem_fun(RootContent::_(), &RootContent::Clear));
+        m_SettingsActionGroup->add_action("clear_result", sigc::mem_fun(RootContent::_(), &RootContent::ClearResult));
 
         auto utilsSection = Gio::Menu::create();
         utilsSection->append_item(Gio::MenuItem::create(LANGUAGE(compare), "settings.compare"));
@@ -76,8 +76,9 @@ namespace PC
     void HeaderBar::handle_search()
     {
         auto search_text = m_SearchEntry.get_text();
-        if (!search_text.empty())
+        if (!search_text.empty() && search_text != m_LastSearchedText)
             TaskQueue::_().Push(&RootContent::Search, &RootContent::_(), search_text);
+        m_LastSearchedText = search_text;
     }
 
     void HeaderBar::ClearCache()

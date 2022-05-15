@@ -36,6 +36,7 @@ add_custom_command(TARGET PriceChecker
         COMMAND cd ${default_config_file_path} && ${ld_command} ${default_config_file_name} -o ${default_config_output_file})
 
 # compile lang_packs
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/assets/lang_packs)
 file(GLOB_RECURSE lang_packs_json_list assets/lang_packs/*.json)
 foreach(file ${lang_packs_json_list})
     get_filename_component(lang_file_name ${file} NAME)

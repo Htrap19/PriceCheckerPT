@@ -25,7 +25,7 @@ namespace PC
         void handle_search();
 
     private:
-        explicit HeaderBar();
+        HeaderBar();
         void ClearCache();
 
     private:
@@ -38,6 +38,7 @@ namespace PC
         Gtk::MenuButton m_SettingsButton;
 
         Glib::RefPtr<Gio::SimpleActionGroup> m_SettingsActionGroup;
+        Glib::ustring m_LastSearchedText;
     };
 }
 

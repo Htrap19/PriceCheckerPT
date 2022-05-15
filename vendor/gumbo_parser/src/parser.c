@@ -1231,7 +1231,7 @@ GumboNode* clone_node(
   *new_node = *node;
   new_node->parent = NULL;
   new_node->index_within_parent = -1;
-  // Clear the GUMBO_INSERTION_IMPLICIT_END_TAG flag, as the cloned node may
+  // ClearResult the GUMBO_INSERTION_IMPLICIT_END_TAG flag, as the cloned node may
   // have a separate end tag.
   new_node->parse_flags &= ~GUMBO_INSERTION_IMPLICIT_END_TAG;
   new_node->parse_flags |= reason | GUMBO_INSERTION_BY_PARSER;

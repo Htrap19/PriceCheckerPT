@@ -5,9 +5,9 @@
 #include "SearchableContent.h"
 #include "InfoBar.h"
 #include "HeaderBar.h"
-#include "Window.h"
 //#include "utils/CssProvider.h"
 #include "utils/LanguageManager.h"
+#include "utils/UIQueue.h"
 
 namespace PC
 {
@@ -26,15 +26,16 @@ namespace PC
 
     void SearchableContent::Search(const std::string& url)
     {
-        HEADER_BAR(SetLoadingText, m_Name);
-        INFO_BAR(Info, LANGUAGE(fetching_result_from) + " " + m_BriefUrl + "!");
+        UIQueue::_().Push([&]()
+        {
+            HEADER_BAR(SetLoadingText, m_Name);
+            INFO_BAR(Info, LANGUAGE(fetching_result_from) + " " + m_BriefUrl + "!");
+        });
         Fetch(url);
     }
 
     void SearchableContent::FetchCallback(CDocument& doc)
     {
-        ClearProductList();
-
         ParseSearchableContent(doc);
 
         if (m_Products.empty())

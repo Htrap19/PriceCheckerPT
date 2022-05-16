@@ -15,8 +15,6 @@
 #include "utils/LanguageManager.h"
 #include "utils/UIQueue.h"
 
-extern Glib::RefPtr<Gtk::Application> app;
-
 namespace PC
 {
     RootContent::RootContent()
@@ -44,17 +42,17 @@ namespace PC
 
     void RootContent::Search(const std::string& search_text)
     {
-        UIQueue::_().Push([&]() { ClearResult(); });
-        app->get_active_window()->set_resizable(false);
+        UIQueue::_().Push([&]() { ClearResult(); HEADER_BAR(ToggleSearching); });
 
-        HEADER_BAR(ToggleSearching);
         for (auto& searchEntity : m_SearchableList)
             searchEntity->Search(search_text);
         TaskQueue::_().SetIdleCallback([&]()
         {
-            INFO_BAR(Info, LANGUAGE(search_finished));
-            HEADER_BAR(ToggleSearching, false);
-            app->get_active_window()->set_resizable();
+            UIQueue::_().Push([&]()
+            {
+                INFO_BAR(Info, LANGUAGE(search_finished));
+                HEADER_BAR(ToggleSearching, false);
+            });
         });
     }
 

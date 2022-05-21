@@ -30,13 +30,21 @@ namespace PC
             try
             {
                 auto node = selection.nodeAt(i);
+                if (!node.valid() || node.childNum() == 0)
+                    continue;
 
-                auto imgNode = node.find("div.picture").nodeAt(0).childAt(0);
+                auto imgNodeSelection = node.find("div.picture");
+                if (imgNodeSelection.nodeNum() == 0 || imgNodeSelection.nodeAt(0).childNum() == 0)
+                    continue;
+                auto imgNode = imgNodeSelection.nodeAt(0).childAt(0);
                 auto productName = imgNode.attribute("title");
                 auto productImageSrc = imgNode.childAt(1).attribute("src");
 
                 auto detailsNode = node.find("div.details");
-                std::string actualPrice = detailsNode.find("span.actual-price").nodeAt(0).text();
+                auto actualPriceNodeSelection = detailsNode.find("span.actual-price");
+                if (actualPriceNodeSelection.nodeNum() == 0)
+                    continue;
+                std::string actualPrice = actualPriceNodeSelection.nodeAt(0).text();
 
                 std::string oldPrice;
                 auto oldPriceNode = detailsNode.find("span.old-price");
@@ -55,7 +63,11 @@ namespace PC
                          actualPrice,
                          secondaryPrice,
                          productImageSrc);
-                UIQueue::_().Push([&]() { m_ListBox.append(comp); });
+                UIQueue::_().Push([&]()
+                {
+                    comp.AddToSizeGroup();
+                    m_ListBox.append(comp);
+                });
             }
             catch (std::exception& e)
             {

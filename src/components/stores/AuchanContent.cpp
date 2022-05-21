@@ -29,7 +29,14 @@ namespace PC
             try
             {
                 auto node = selection.nodeAt(i);
-                auto imgNode = node.find("img.tile-image").nodeAt(0);
+                if (!node.valid() || node.childNum() == 0)
+                    continue;
+
+                auto imgNodeSelection = node.find("img.tile-image");
+                if (imgNodeSelection.nodeNum() == 0)
+                    continue;
+
+                auto imgNode = imgNodeSelection.nodeAt(0);
 
                 // Product Name
                 auto productName = imgNode.attribute("title");
@@ -38,7 +45,10 @@ namespace PC
                 auto productImgSrc = imgNode.attribute("data-src");
 
                 // Product Price
-                auto priceNode = node.find("span.sales").nodeAt(0);
+                auto priceNodeSelection = node.find("span.sales");
+                if (priceNodeSelection.nodeNum() == 0 || priceNodeSelection.nodeAt(0).childNum() == 0)
+                    continue;
+                auto priceNode = priceNodeSelection.nodeAt(0);
                 auto price = priceNode.childAt(1).text();
                 Utils::RemoveEmptySpace(price);
 
@@ -59,7 +69,11 @@ namespace PC
                             price,
                             secondaryPriceDesc,
                             productImgSrc);
-                UIQueue::_().Push([&]() { m_ListBox.append(comp); });
+                UIQueue::_().Push([&]()
+                {
+                    comp.AddToSizeGroup();
+                    m_ListBox.append(comp);
+                });
             }
             catch(std::exception& e)
             {

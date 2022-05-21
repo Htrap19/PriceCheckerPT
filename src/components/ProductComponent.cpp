@@ -14,18 +14,6 @@ namespace PC
     static constexpr uint8_t s_ImagePixelSize = 64;
     static Glib::RefPtr<Gtk::SizeGroup> s_PriceSizeGroup = Gtk::SizeGroup::create(Gtk::SizeGroup::Mode::BOTH);
 
-    ProductComponent::ProductComponent(const ProductComponent::Data& data)
-        : ProductComponent(data.productName,
-                           data.productBrand,
-                           data.productPackaging,
-                           data.originalPrice,
-                           data.actualPrice,
-                           data.secondaryPriceDesc,
-                           data.img_url,
-                           data.img_resize)
-    {
-    }
-
     ProductComponent::ProductComponent(const std::string& productName,
                                        const std::string& productBrand,
                                        const std::string& productPackaging,
@@ -71,7 +59,6 @@ namespace PC
         m_ProductPriceVBox.set_halign(Gtk::Align::CENTER);
         m_ProductPriceVBox.prepend(m_ProductOriginalPrice);
         m_ProductPriceVBox.append(m_ProductActualPrice);
-        s_PriceSizeGroup->add_widget(m_ProductPriceVBox);
 
         m_ProductPriceSep.set_margin_start(10);
         m_ProductPriceSep.set_margin_end(10);
@@ -85,6 +72,11 @@ namespace PC
 //        add_css_class("list_row");
 
         FetchImage(img_url, img_resize);
+    }
+
+    void ProductComponent::AddToSizeGroup()
+    {
+        s_PriceSizeGroup->add_widget(m_ProductPriceVBox);
     }
 
     static std::string ExtractNameFromUrl(std::string& url, bool img_resize)

@@ -30,7 +30,14 @@ namespace PC
             try
             {
                 auto node = selection.nodeAt(i);
-                auto imgNode = node.find("a.js-product-link").nodeAt(0).childAt(0);
+                if (!node.valid() || node.childNum() == 0)
+                    continue;
+
+                auto imgNodeSelection = node.find("a.js-product-link");
+                if (imgNodeSelection.nodeNum() == 0 || imgNodeSelection.nodeAt(0).childNum() == 0)
+                    continue;
+
+                auto imgNode = imgNodeSelection.nodeAt(0).childAt(0);
 
                 // Product Name
                 auto productName = imgNode.attribute("title");
@@ -39,7 +46,11 @@ namespace PC
                 auto productImgSrc = "https:" + imgNode.attribute("src");
 
                 // Product Prices
-                auto priceNode = node.find("div.product_tile-prices").nodeAt(0).childAt(0);
+                auto priceNodeSelection = node.find("div.product_tile-prices");
+                if (priceNodeSelection.nodeNum() <= 0 || priceNodeSelection.nodeAt(0).childNum() <= 0)
+                    continue;
+
+                auto priceNode = priceNodeSelection.nodeAt(0).childAt(0);
                 std::string actualPrice, originalPrice, secondaryPriceDesc;
                 if (priceNode.childNum() >= 2 && priceNode.childNum() < 6)
                 {
@@ -48,9 +59,14 @@ namespace PC
                 }
                 else
                 {
-                    originalPrice = priceNode.childAt(0).text();
-                    actualPrice = priceNode.childAt(2).text();
-                    secondaryPriceDesc = priceNode.childAt(3).text();
+                    if (priceNode.childNum() > 1)
+                    {
+                        originalPrice = priceNode.childAt(0).text();
+                        actualPrice = priceNode.childAt(2).text();
+                        secondaryPriceDesc = priceNode.childAt(3).text();
+                    }
+                    else
+                        actualPrice = priceNode.childAt(0).text();
                 }
                 Utils::RemoveEmptySpace(originalPrice);
                 Utils::RemoveEmptySpace(actualPrice);
@@ -64,7 +80,11 @@ namespace PC
                             actualPrice,
                             secondaryPriceDesc,
                             productImgSrc);
-                UIQueue::_().Push([&]() { m_ListBox.append(comp); });
+                UIQueue::_().Push([&]()
+                {
+                    comp.AddToSizeGroup();
+                    m_ListBox.append(comp);
+                });
             }
             catch (std::exception& e)
             {

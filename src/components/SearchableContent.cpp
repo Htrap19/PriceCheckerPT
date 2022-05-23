@@ -16,9 +16,10 @@ namespace PC
     {
 //        CssProvider::LoadProvider(m_ListBox);
 //        m_ListBox.add_css_class("padding-10");
-        m_ListBox.set_selection_mode(Gtk::SelectionMode::NONE);
+        m_ListBox.set_selection_mode(Gtk::SelectionMode::MULTIPLE);
         m_ListBox.set_placeholder(m_EmptyWidget);
         m_ListBox.set_show_separators();
+        m_ListBox.set_activate_on_single_click();
 
         set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
         set_child(m_ListBox);

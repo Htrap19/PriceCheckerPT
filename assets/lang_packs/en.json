@@ -17,6 +17,10 @@
     "fetching_result_from": "Fetching result from",
     "search_finished": "Search Finished!",
     "url_validation_failed": "Url validation failed!",
-    "clear_result": "Clear Result"
+    "clear_result": "Clear Result",
+    "name": "Name",
+    "price_desc": "Price Description",
+    "original_price": "Original Price",
+    "actual_price": "Actual Price"
   }
 }

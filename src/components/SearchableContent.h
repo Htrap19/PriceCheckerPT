@@ -21,6 +21,8 @@ namespace PC
         virtual void ParseSearchableContent(CDocument& doc) = 0;
         [[nodiscard]] inline const std::string& GetName() const override { return m_Name; }
         [[nodiscard]] inline const std::string& GetTitle() const override { return m_Name; }
+        inline Gtk::ListBox& GetListBox() { return m_ListBox; }
+        inline const Gtk::ListBox& GetListBox() const { return m_ListBox; }
         void ClearProductList();
 
     protected:
@@ -34,7 +36,6 @@ namespace PC
 
         std::string m_Name;
         std::string m_BriefUrl;
-        sigc::connection m_ProductAppendConnection;
     };
 }
 

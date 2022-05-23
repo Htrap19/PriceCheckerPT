@@ -3,12 +3,13 @@
 //
 
 #include "HeaderBar.h"
-#include "RootContent.h"
+#include "components/RootContent.h"
+#include "components/InfoBar.h"
+#include "components/CompareComponent.h"
 #include "utils/TaskQueue.h"
 #include "utils/FileCacheManager.h"
 #include "utils/LanguageManager.h"
 #include "utils/ConfigManager.h"
-#include "InfoBar.h"
 
 namespace PC
 {
@@ -24,6 +25,11 @@ namespace PC
         m_SettingsActionGroup = Gio::SimpleActionGroup::create();
         m_SettingsActionGroup->add_action("clear_cache", sigc::mem_fun(*this, &HeaderBar::ClearCache));;
         m_SettingsActionGroup->add_action("clear_result", sigc::mem_fun(RootContent::_(), &RootContent::ClearResult));
+        m_SettingsActionGroup->add_action("compare", []()
+        {
+            CompareComponent::_().SetSearchableContentList(RootContent::_().GetSearchableList());
+            RootContent::_().NavigateToCompare();
+        });
 
         auto utilsSection = Gio::Menu::create();
         utilsSection->append_item(Gio::MenuItem::create(LANGUAGE(compare), "settings.compare"));
@@ -70,6 +76,7 @@ namespace PC
         (toggle ? m_Spinner.start() : m_Spinner.stop());
         m_SettingsActionGroup->action_enabled_changed("clear_cache", !toggle);
         m_SettingsActionGroup->action_enabled_changed("clear_result", !toggle);
+        m_SettingsActionGroup->action_enabled_changed("compare", !toggle);
         (toggle ? m_LoadingLabel.show() : m_LoadingLabel.hide());
     }
 

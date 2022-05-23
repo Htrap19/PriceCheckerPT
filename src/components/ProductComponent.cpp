@@ -14,13 +14,13 @@ namespace PC
     static constexpr uint8_t s_ImagePixelSize = 64;
     static Glib::RefPtr<Gtk::SizeGroup> s_PriceSizeGroup = Gtk::SizeGroup::create(Gtk::SizeGroup::Mode::BOTH);
 
-    ProductComponent::ProductComponent(const std::string& productName,
-                                       const std::string& productBrand,
-                                       const std::string& productPackaging,
-                                       const std::string& originalPrice,
-                                       const std::string& actualPrice,
-                                       const std::string& secondaryPriceDesc,
-                                       const std::string& img_url,
+    ProductComponent::ProductComponent(const Glib::ustring& productName,
+                                       const Glib::ustring& productBrand,
+                                       const Glib::ustring& productPackaging,
+                                       const Glib::ustring& originalPrice,
+                                       const Glib::ustring& actualPrice,
+                                       const Glib::ustring& secondaryPriceDesc,
+                                       const Glib::ustring& img_url,
                                        bool img_resize)
         : m_MainHBox(Gtk::Orientation::HORIZONTAL, 10),
         m_ProductName(productName, Gtk::Align::START),
@@ -35,9 +35,9 @@ namespace PC
     {
         m_ProductImage.set_pixel_size(s_ImagePixelSize);
 
-        m_ProductName.set_markup("<b>" + productName + "</b>");
+        m_ProductName.set_markup(Glib::locale_to_utf8("<b>" + productName + "</b>"));
 
-        m_ProductPackaging.set_markup("<small>" + productPackaging + "</small>");
+        m_ProductPackaging.set_markup(Glib::locale_to_utf8("<small>" + productPackaging + "</small>"));
 
         m_ProductDescHBox.prepend(m_ProductBrand);
         m_ProductDescHBox.append(m_ProductPackaging);
@@ -53,7 +53,7 @@ namespace PC
         m_MainHBox.append(m_VBox);
         m_VBox.set_expand();
 
-        m_ProductOriginalPrice.set_markup("<span strikethrough='true'><small>" + (originalPrice.empty() ? "-" : originalPrice) + "</small></span>");
+        m_ProductOriginalPrice.set_markup(Glib::locale_to_utf8("<span strikethrough='true'><small>" + (originalPrice.empty() ? "-" : originalPrice) + "</small></span>"));
 
         m_ProductPriceVBox.set_valign(Gtk::Align::CENTER);
         m_ProductPriceVBox.set_halign(Gtk::Align::CENTER);

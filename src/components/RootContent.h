@@ -6,7 +6,7 @@
 #define PRICECHECKER_ROOTCONTENT_H
 
 #include <gtkmm.h>
-#include "SearchableContent.h"
+#include "components/SearchableContent.h"
 #include "utils/Utils.h"
 
 namespace PC
@@ -18,6 +18,8 @@ namespace PC
 
         void Search(const std::string& search_text);
         void ClearResult();
+        inline void NavigateToCompare() { m_Stack.set_visible_child("compare", Gtk::StackTransitionType::SLIDE_LEFT_RIGHT); }
+        inline const std::list<Glib::RefPtr<SearchableContent>>& GetSearchableList() const { return m_SearchableList; }
 
     private:
         RootContent();

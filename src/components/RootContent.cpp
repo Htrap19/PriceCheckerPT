@@ -11,6 +11,7 @@
 #include "components/stores/MiniprecoContent.h"
 #include "components/stores/ElcorteinglesContent.h"
 #include "components/stores/SparContent.h"
+#include "components/CompareComponent.h"
 #include "utils/TaskQueue.h"
 #include "utils/LanguageManager.h"
 #include "utils/UIQueue.h"
@@ -28,6 +29,8 @@ namespace PC
 
         for (auto& searchable : m_SearchableList)
             m_Stack.add(searchable->GetWidget(), searchable->GetName(), searchable->GetTitle());
+
+        m_Stack.add(CompareComponent::_(), "compare");
 
         m_StackSidebar.set_stack(m_Stack);
         m_Stack.set_transition_type(Gtk::StackTransitionType::SLIDE_UP_DOWN);

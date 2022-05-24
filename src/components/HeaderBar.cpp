@@ -84,7 +84,8 @@ namespace PC
     {
         auto search_text = m_SearchEntry.get_text();
         if (!search_text.empty() && search_text != m_LastSearchedText)
-            TaskQueue::_().Push(&RootContent::Search, &RootContent::_(), search_text);
+//            TaskQueue::_().Push(&RootContent::Search, &RootContent::_(), search_text);
+            RootContent::_().Search(search_text);
         m_LastSearchedText = search_text;
     }
 

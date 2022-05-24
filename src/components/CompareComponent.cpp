@@ -13,6 +13,8 @@ namespace PC
         m_TreeView(m_TreeModel)
     {
         AppendCol(LANGUAGE(name), m_Columns.m_ColName);
+        AppendCol(LANGUAGE(brand), m_Columns.m_ColBrand);
+        AppendCol(LANGUAGE(packaging), m_Columns.m_ColPackaging);
         AppendCol(LANGUAGE(price_desc), m_Columns.m_ColPriceDesc);
         AppendCol(LANGUAGE(original_price), m_Columns.m_ColOriginalPrice);
         AppendCol(LANGUAGE(actual_price), m_Columns.m_ColActualPrice);
@@ -31,10 +33,18 @@ namespace PC
         return row;
     }
 
-    Gtk::TreeRow CompareComponent::AppendChild(Gtk::TreeRow& main_row, const Glib::ustring& name, const Glib::ustring& price_desc, const Glib::ustring& original_price, const Glib::ustring& actual_price)
+    Gtk::TreeRow CompareComponent::AppendChild(Gtk::TreeRow& main_row,
+                                               const Glib::ustring& name,
+                                               const Glib::ustring& brand,
+                                               const Glib::ustring& packaging,
+                                               const Glib::ustring& price_desc,
+                                               const Glib::ustring& original_price,
+                                               const Glib::ustring& actual_price)
     {
         auto childRow = *m_TreeModel->append(main_row.children());
         childRow[m_Columns.m_ColName] = name;
+        childRow[m_Columns.m_ColBrand] = brand;
+        childRow[m_Columns.m_ColPackaging] = packaging;
         childRow[m_Columns.m_ColPriceDesc] = price_desc;
         childRow[m_Columns.m_ColOriginalPrice] = original_price;
         childRow[m_Columns.m_ColActualPrice] = actual_price;
@@ -53,6 +63,8 @@ namespace PC
                 auto productComponent = dynamic_cast<ProductComponent*>(row);
                 AppendChild(main_row,
                             productComponent->GetProductName(),
+                            productComponent->GetProductBrand(),
+                            productComponent->GetProductPackaging(),
                             productComponent->GetProductSecondaryPriceDesc(),
                             productComponent->GetProductOriginalPrice(),
                             productComponent->GetProductActualPrice());

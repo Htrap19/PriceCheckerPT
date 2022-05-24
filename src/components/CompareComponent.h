@@ -17,10 +17,20 @@ namespace PC
         class CompareColumns : public Gtk::TreeModelColumnRecord
         {
         public:
-            CompareColumns() { add(m_ColName); add(m_ColPriceDesc); add(m_ColOriginalPrice); add(m_ColActualPrice); }
+            CompareColumns()
+            {
+                add(m_ColName);
+                add(m_ColBrand);
+                add(m_ColPackaging);
+                add(m_ColPriceDesc);
+                add(m_ColOriginalPrice);
+                add(m_ColActualPrice);
+            }
 
         public:
             Gtk::TreeModelColumn<Glib::ustring> m_ColName;
+            Gtk::TreeModelColumn<Glib::ustring> m_ColBrand;
+            Gtk::TreeModelColumn<Glib::ustring> m_ColPackaging;
             Gtk::TreeModelColumn<Glib::ustring> m_ColPriceDesc;
             Gtk::TreeModelColumn<Glib::ustring> m_ColOriginalPrice;
             Gtk::TreeModelColumn<Glib::ustring> m_ColActualPrice;
@@ -43,6 +53,8 @@ namespace PC
         Gtk::TreeRow AppendMain(const Glib::ustring& name);
         Gtk::TreeRow AppendChild(Gtk::TreeRow& main_row,
                                  const Glib::ustring& name,
+                                 const Glib::ustring& brand,
+                                 const Glib::ustring& packaging,
                                  const Glib::ustring& price_desc,
                                  const Glib::ustring& original_price,
                                  const Glib::ustring& actual_price);

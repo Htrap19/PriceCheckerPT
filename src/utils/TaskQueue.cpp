@@ -3,14 +3,20 @@
 //
 
 #include "TaskQueue.h"
+#include <iostream>
 
 namespace PC
 {
     TaskQueue::TaskQueue()
-        : m_Thread(&TaskQueue::Update, this)
     {
-        m_ThisThreadID = m_Thread.get_id();
-        m_IdleCallback = []() {};
+        uint32_t hardware_concurrency = std::thread::hardware_concurrency();
+        if (hardware_concurrency <= 0)
+            hardware_concurrency = 1;
+
+        for (uint32_t i = 0; i < hardware_concurrency; i++)
+            m_Threads.emplace_back(&TaskQueue::Update, this);
+
+//        m_IdleCallback = []() {};
     }
 
     TaskQueue::~TaskQueue()
@@ -21,30 +27,30 @@ namespace PC
     void TaskQueue::Quit()
     {
         m_Running = false;
-        // pushing an empty function(task) to meet the predicate condition of the condition_variable
-        Push([]() {});
         m_ConditionVariable.notify_all();
-        if (m_Thread.joinable())
-            m_Thread.join();
+        for (auto& thread : m_Threads)
+            if (thread.joinable())
+                thread.join();
     }
 
     void TaskQueue::Update()
     {
         while (m_Running)
         {
-            std::unique_lock lock(m_TaskMutex);
+            std::unique_lock lock(m_Mutex);
             m_ConditionVariable.wait(lock, [&]()
             {
-                m_IdleCallback();
-                m_IdleCallback = []() {};
-                return !m_TaskQueue.empty();
+//                m_IdleCallback();
+//                m_IdleCallback = []() {};
+                return m_Running ? !m_TaskQueue.empty() : !m_Running;
             });
-            std::unique_lock queue_lock(m_QueueMutex);
+            if (!m_Running)
+                break;
+
             auto task = std::move(m_TaskQueue.front());
-            queue_lock.unlock();
-            task();
-            queue_lock.lock();
             m_TaskQueue.pop();
+            lock.unlock();
+            task();
         }
     }
 }

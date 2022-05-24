@@ -11,6 +11,7 @@
 
 namespace PC
 {
+    static std::mutex s_FileCacheMutex;
     static constexpr uint8_t s_ImagePixelSize = 64;
     static Glib::RefPtr<Gtk::SizeGroup> s_PriceSizeGroup = Gtk::SizeGroup::create(Gtk::SizeGroup::Mode::BOTH);
 
@@ -106,6 +107,7 @@ namespace PC
 
         auto img_name = ExtractNameFromUrl(img_url, img_resize);
 
+        std::lock_guard lock(s_FileCacheMutex);
         auto& fcm = FileCacheManager::_();
         if (!fcm.Check(img_name))
         {

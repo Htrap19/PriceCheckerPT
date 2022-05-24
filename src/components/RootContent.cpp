@@ -48,15 +48,23 @@ namespace PC
         UIQueue::_().Push([&]() { ClearResult(); HEADER_BAR(ToggleSearching); });
 
         for (auto& searchEntity : m_SearchableList)
-            searchEntity->Search(search_text);
-        TaskQueue::_().SetIdleCallback([&]()
+            TaskQueue::_().Push([&](const std::string& search_text) { searchEntity->Search(search_text); }, search_text);
+        TaskQueue::_().Push([]()
         {
-            UIQueue::_().Push([&]()
+            UIQueue::_().Push([]()
             {
                 INFO_BAR(Info, LANGUAGE(search_finished));
                 HEADER_BAR(ToggleSearching, false);
             });
         });
+//        TaskQueue::_().SetIdleCallback([&]()
+//        {
+//            UIQueue::_().Push([&]()
+//            {
+//                INFO_BAR(Info, LANGUAGE(search_finished));
+//                HEADER_BAR(ToggleSearching, false);
+//            });
+//        });
     }
 
     void RootContent::ClearResult()

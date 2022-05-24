@@ -23,6 +23,8 @@ namespace PC
         [[nodiscard]] inline const std::string& GetTitle() const override { return m_Name; }
         inline Gtk::ListBox& GetListBox() { return m_ListBox; }
         inline const Gtk::ListBox& GetListBox() const { return m_ListBox; }
+        inline Gtk::Spinner& GetSpinner() { return m_Spinner; }
+        inline const Gtk::Spinner& GetSpinner() const { return m_Spinner; }
         void ClearProductList();
 
     protected:
@@ -33,6 +35,7 @@ namespace PC
         std::list<ProductComponent> m_Products;
         Gtk::ListBox m_ListBox;
         EmptyList m_EmptyWidget;
+        Gtk::Spinner m_Spinner;
 
         std::string m_Name;
         std::string m_BriefUrl;

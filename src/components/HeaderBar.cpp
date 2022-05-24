@@ -58,26 +58,26 @@ namespace PC
         m_SettingsMenu.set_position(Gtk::PositionType::BOTTOM);
         m_SettingsMenu.insert_action_group("settings", m_SettingsActionGroup);
 
-        m_Spinner.set_margin_end(10);
+//        m_Spinner.set_margin_end(10);
 
         set_title_widget(m_TitleLabel);
         set_show_title_buttons(true);
         pack_start(m_SearchEntry);
         pack_start(m_SearchButton);
         pack_end(m_SettingsButton);
-        pack_end(m_Spinner);
-        pack_end(m_LoadingLabel);
+//        pack_end(m_Spinner);
+//        pack_end(m_LoadingLabel);
     }
 
     void HeaderBar::ToggleSearching(bool toggle)
     {
         m_SearchButton.set_sensitive(!toggle);
         m_SearchEntry.set_sensitive(!toggle);
-        (toggle ? m_Spinner.start() : m_Spinner.stop());
+//        (toggle ? m_Spinner.start() : m_Spinner.stop());
         m_SettingsActionGroup->action_enabled_changed("clear_cache", !toggle);
         m_SettingsActionGroup->action_enabled_changed("clear_result", !toggle);
         m_SettingsActionGroup->action_enabled_changed("compare", !toggle);
-        (toggle ? m_LoadingLabel.show() : m_LoadingLabel.hide());
+//        (toggle ? m_LoadingLabel.show() : m_LoadingLabel.hide());
     }
 
     void HeaderBar::handle_search()

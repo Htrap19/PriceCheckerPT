@@ -5,7 +5,7 @@
 #include "SearchableContent.h"
 #include "InfoBar.h"
 #include "HeaderBar.h"
-//#include "utils/CssProvider.h"
+#include "utils/CssProvider.h"
 #include "utils/LanguageManager.h"
 #include "utils/UIQueue.h"
 
@@ -14,8 +14,8 @@ namespace PC
     SearchableContent::SearchableContent(const std::string& name, const std::string& briefUrl)
         : m_Name(name), m_BriefUrl(briefUrl)
     {
-//        CssProvider::LoadProvider(m_ListBox);
-//        m_ListBox.add_css_class("padding-10");
+        CssProvider::LoadProvider(m_ListBox);
+        m_ListBox.add_css_class("padding-10");
         m_ListBox.set_selection_mode(Gtk::SelectionMode::MULTIPLE);
         m_ListBox.set_placeholder(m_EmptyWidget);
         m_ListBox.set_show_separators();
@@ -29,8 +29,9 @@ namespace PC
     {
         UIQueue::_().Push([&]()
         {
-            HEADER_BAR(SetLoadingText, m_Name);
+//            HEADER_BAR(SetLoadingText, m_Name);
             INFO_BAR(Info, LANGUAGE(fetching_result_from) + " " + m_BriefUrl + "!");
+            m_Spinner.start();
         });
         Fetch(url);
     }
@@ -41,6 +42,7 @@ namespace PC
 
         if (m_Products.empty())
             m_EmptyWidget.SetLabel(LANGUAGE(product_not_found));
+        m_Spinner.stop();
     }
 
     void SearchableContent::ClearProductList()
@@ -53,5 +55,6 @@ namespace PC
     void SearchableContent::FetchErrCallback(const std::string& what)
     {
         INFO_BAR(Error, what);
+        m_Spinner.stop();
     }
 }

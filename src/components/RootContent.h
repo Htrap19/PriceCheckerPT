@@ -23,11 +23,13 @@ namespace PC
 
     private:
         RootContent();
+        static Gtk::ListBoxRow* MakeSidebarItem(const Glib::RefPtr<SearchableContent>& searchable_content);
 
     private:
         Gtk::Box m_MainHBox;
         Gtk::Stack m_Stack;
-        Gtk::StackSidebar m_StackSidebar;
+//        Gtk::StackSidebar m_StackSidebar;
+        Gtk::ListBox m_SidebarVBox;
 
         std::list<Glib::RefPtr<SearchableContent>> m_SearchableList;
     };

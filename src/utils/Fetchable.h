@@ -6,7 +6,6 @@
 #define PRICECHECKER_FETCHABLE_H
 
 #include <sstream>
-#include <mutex>
 #include <curlpp/Easy.hpp>
 
 namespace PC
@@ -20,8 +19,7 @@ namespace PC
         virtual std::ostringstream FetchBase(const std::string& url, bool use_encoding = false);
 
     private:
-        static curlpp::Easy m_Request;
-        static std::mutex m_RequestMutex;
+        curlpp::Easy m_Request;
     };
 }
 

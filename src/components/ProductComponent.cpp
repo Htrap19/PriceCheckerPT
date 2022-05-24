@@ -5,7 +5,7 @@
 #include "ProductComponent.h"
 #include "InfoBar.h"
 #include "utils/FileCacheManager.h"
-//#include "utils/CssProvider.h"
+#include "utils/CssProvider.h"
 #include "utils/LanguageManager.h"
 #include "utils/TaskQueue.h"
 
@@ -67,10 +67,10 @@ namespace PC
         m_MainHBox.append(m_ProductPriceSep);
         m_MainHBox.append(m_ProductPriceVBox);
 
-        m_MainHBox.set_margin(10);
+//        m_MainHBox.set_margin(10);
         set_child(m_MainHBox);
-//        CssProvider::LoadProvider((Gtk::Widget&)*this);
-//        add_css_class("list_row");
+        CssProvider::LoadProvider((Gtk::Widget&)*this);
+        add_css_class("list_row");
 
         FetchImage(img_url, img_resize);
     }

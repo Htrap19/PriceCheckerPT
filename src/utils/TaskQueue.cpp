@@ -13,6 +13,7 @@ namespace PC
         if (hardware_concurrency <= 0)
             hardware_concurrency = 1;
 
+        m_Threads.reserve(hardware_concurrency);
         for (uint32_t i = 0; i < hardware_concurrency; i++)
             m_Threads.emplace_back(&TaskQueue::Update, this);
 

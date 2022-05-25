@@ -24,6 +24,7 @@ namespace PC
     void MiniprecoContent::ParseSearchableContent(CDocument& doc)
     {
         auto selection = doc.find("div.product-list__item");
+        SetTotalItemsCount(selection.nodeNum());
         for (size_t i = 0; i < selection.nodeNum(); i++)
         {
             try
@@ -81,6 +82,7 @@ namespace PC
                 {
                     comp.AddToSizeGroup();
                     m_ListBox.append(comp);
+                    Increment(); // Progressbar
                 });
             }
             catch (std::exception& e)

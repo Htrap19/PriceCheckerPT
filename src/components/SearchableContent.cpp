@@ -4,7 +4,6 @@
 
 #include "SearchableContent.h"
 #include "InfoBar.h"
-#include "HeaderBar.h"
 #include "utils/CssProvider.h"
 #include "utils/LanguageManager.h"
 #include "utils/UIQueue.h"
@@ -14,12 +13,15 @@ namespace PC
     SearchableContent::SearchableContent(const std::string& name, const std::string& briefUrl)
         : m_Name(name), m_BriefUrl(briefUrl)
     {
+        m_Spinner.set_expand();
+        m_Spinner.set_halign(Gtk::Align::END);
+
         CssProvider::LoadProvider(m_ListBox);
         m_ListBox.add_css_class("padding-10");
         m_ListBox.set_selection_mode(Gtk::SelectionMode::MULTIPLE);
         m_ListBox.set_placeholder(m_EmptyWidget);
         m_ListBox.set_show_separators();
-        m_ListBox.set_activate_on_single_click();
+        m_ListBox.set_activate_on_single_click(false);
 
         set_policy(Gtk::PolicyType::AUTOMATIC, Gtk::PolicyType::AUTOMATIC);
         set_child(m_ListBox);
@@ -29,7 +31,6 @@ namespace PC
     {
         UIQueue::_().Push([&]()
         {
-//            HEADER_BAR(SetLoadingText, m_Name);
             INFO_BAR(Info, LANGUAGE(fetching_result_from) + " " + m_BriefUrl + "!");
             m_Spinner.start();
         });
@@ -45,11 +46,21 @@ namespace PC
         m_Spinner.stop();
     }
 
+    void SearchableContent::Increment()
+    {
+        if (m_TotalItemCount == 0)
+            return;
+
+        auto fraction = m_ProgressBar.get_fraction();
+        m_ProgressBar.set_fraction(fraction + (1.0 / m_TotalItemCount));
+    }
+
     void SearchableContent::ClearProductList()
     {
         for (auto& productCom : m_Products)
             m_ListBox.remove(productCom);
         m_Products.clear();
+        SetTotalItemsCount(0);
     }
 
     void SearchableContent::FetchErrCallback(const std::string& what)

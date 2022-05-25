@@ -91,6 +91,6 @@ namespace PC
 
     void HeaderBar::ClearCache()
     {
-        INFO_BAR(Ask, LANGUAGE(clear_cache_question), &FileCacheManager::ClearCache, &FileCacheManager::_());
+        INFO_BAR(Ask, LANGUAGE(clear_cache_question), &FileCacheManager::ClearCache);
     }
 }

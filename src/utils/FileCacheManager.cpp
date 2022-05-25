@@ -10,7 +10,7 @@ namespace PC
 {
     fs::path FileCacheManager::s_CacheFolder = ".cache/";
 
-    FileCacheManager::FileCacheManager()
+    void FileCacheManager::Init()
     {
         fs::create_directory(s_CacheFolder);
     }
@@ -26,14 +26,11 @@ namespace PC
 
     std::string FileCacheManager::Get(const std::string& filename)
     {
-        std::ifstream check_file(GetRelativePath(filename), std::ios::in | std::ios::binary);
+        std::ifstream file(GetRelativePath(filename), std::ios::in | std::ios::binary);
         std::string data;
-        if (check_file)
-        {
-            check_file >> data;
-            return data;
-        }
+        if (file)
+            file >> data;
 
-        return "";
+        return data;
     }
 }

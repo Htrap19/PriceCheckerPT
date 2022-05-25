@@ -32,9 +32,6 @@ namespace PC
             m_ConditionVariable.notify_one();
         }
 
-//        template <typename Callable, typename ... Args>
-//        inline void SetIdleCallback(Callable&& func, Args&& ... args) { m_IdleCallback = std::bind(func, args...); }
-
     private:
         TaskQueue();
         void Update();
@@ -45,7 +42,6 @@ namespace PC
         std::vector<std::thread> m_Threads;
         std::condition_variable m_ConditionVariable;
         bool m_Running = true;
-//        std::function<void()> m_IdleCallback;
     };
 }
 

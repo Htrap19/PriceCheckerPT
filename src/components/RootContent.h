@@ -28,8 +28,7 @@ namespace PC
     private:
         Gtk::Box m_MainHBox;
         Gtk::Stack m_Stack;
-//        Gtk::StackSidebar m_StackSidebar;
-        Gtk::ListBox m_SidebarVBox;
+        Gtk::ListBox m_SidebarListBox;
 
         std::list<Glib::RefPtr<SearchableContent>> m_SearchableList;
     };

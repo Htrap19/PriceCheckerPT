@@ -2,6 +2,7 @@
 
 #include "src/components/Window.h"
 #include "src/components/InfoBar.h"
+#include "src/utils/FileCacheManager.h"
 
 #if defined(PC_PLATFORM_WINDOWS) && defined(PC_RELEASE)
 #include <windows.h>
@@ -16,6 +17,7 @@ int main(int argc, char* argv[])
 #endif
     try
     {
+        PC::FileCacheManager::Init();
         app = Gtk::Application::create("price.checker");
         return app->make_window_and_run<PC::Window>(argc, argv);
     }

@@ -16,8 +16,6 @@ namespace PC
         m_Threads.reserve(hardware_concurrency);
         for (uint32_t i = 0; i < hardware_concurrency; i++)
             m_Threads.emplace_back(&TaskQueue::Update, this);
-
-//        m_IdleCallback = []() {};
     }
 
     TaskQueue::~TaskQueue()
@@ -39,12 +37,7 @@ namespace PC
         while (m_Running)
         {
             std::unique_lock lock(m_Mutex);
-            m_ConditionVariable.wait(lock, [&]()
-            {
-//                m_IdleCallback();
-//                m_IdleCallback = []() {};
-                return m_Running ? !m_TaskQueue.empty() : !m_Running;
-            });
+            m_ConditionVariable.wait(lock, [&](){ return m_Running ? !m_TaskQueue.empty() : !m_Running; });
             if (!m_Running)
                 break;
 

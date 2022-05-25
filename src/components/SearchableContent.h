@@ -22,9 +22,10 @@ namespace PC
         [[nodiscard]] inline const std::string& GetName() const override { return m_Name; }
         [[nodiscard]] inline const std::string& GetTitle() const override { return m_Name; }
         inline Gtk::ListBox& GetListBox() { return m_ListBox; }
-        inline const Gtk::ListBox& GetListBox() const { return m_ListBox; }
         inline Gtk::Spinner& GetSpinner() { return m_Spinner; }
-        inline const Gtk::Spinner& GetSpinner() const { return m_Spinner; }
+        inline Gtk::ProgressBar& GetProgressBar() { return m_ProgressBar; }
+        inline void SetTotalItemsCount(uint32_t total_item_count) { m_TotalItemCount = total_item_count; m_ProgressBar.set_fraction(0.0); }
+        void Increment();
         void ClearProductList();
 
     protected:
@@ -36,9 +37,13 @@ namespace PC
         Gtk::ListBox m_ListBox;
         EmptyList m_EmptyWidget;
         Gtk::Spinner m_Spinner;
+        Gtk::ProgressBar m_ProgressBar;
 
         std::string m_Name;
         std::string m_BriefUrl;
+
+        // Progress bar
+        uint32_t m_TotalItemCount;
     };
 }
 

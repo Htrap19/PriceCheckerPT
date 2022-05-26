@@ -32,6 +32,13 @@ namespace PC
                 thread.join();
     }
 
+    void TaskQueue::Clear()
+    {
+        std::unique_lock lock(m_Mutex);
+        std::queue<std::function<void()>> empty_queue;
+        std::swap(m_TaskQueue, empty_queue);
+    }
+
     void TaskQueue::Update()
     {
         while (m_Running)

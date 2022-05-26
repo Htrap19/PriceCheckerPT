@@ -12,7 +12,7 @@
 #include "components/stores/SparContent.h"
 #include "components/CompareComponent.h"
 #include "utils/TaskQueue.h"
-//#include "utils/LanguageManager.h"
+#include "utils/LanguageManager.h"
 #include "utils/UIQueue.h"
 #include "utils/CssProvider.h"
 
@@ -74,15 +74,28 @@ namespace PC
 
     void RootContent::Search(const std::string& search_text)
     {
-        UIQueue::_().Push([&]() { ClearResult(); HEADER_BAR(ToggleSearching); });
+        ToggleSearching();
 
         for (auto& searchEntity : m_SearchableList)
             TaskQueue::_().Push([&](const std::string& search_text) { searchEntity->Search(search_text); }, search_text);
-        TaskQueue::_().Push([]()
+
+        ToggleSearching(false);
+    }
+
+    void RootContent::ToggleSearching(bool toggle)
+    {
+        if (toggle)
         {
-            UIQueue::_().Push([]()
+            UI([&]() { ClearResult(); HEADER_BAR(ToggleSearching); });
+            return;
+        }
+
+        TaskQueue::_().Push([&]()
+        {
+            while (std::any_of(m_SearchableList.begin(), m_SearchableList.end(), [](const Glib::RefPtr<SearchableContent>& searchEntity) { return searchEntity->IsRunning(); }));
+            UI([]()
             {
-//                INFO_BAR(Info, LANGUAGE(search_finished));
+                INFO_BAR(Info, LANGUAGE(search_finished));
                 HEADER_BAR(ToggleSearching, false);
             });
         });
@@ -92,5 +105,11 @@ namespace PC
     {
         for (auto& searchEntity : m_SearchableList)
             searchEntity->ClearProductList();
+    }
+
+    void RootContent::StopSearch()
+    {
+        for (auto& searchEntity : m_SearchableList)
+            searchEntity->SetIsRunning(false);
     }
 }

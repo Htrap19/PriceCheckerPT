@@ -29,11 +29,8 @@ namespace PC
 
     void SearchableContent::Search(const std::string& url)
     {
-        UIQueue::_().Push([&]()
-        {
-            INFO_BAR(Info, LANGUAGE(fetching_result_from) + " " + m_BriefUrl + "!");
-            m_Spinner.start();
-        });
+        SetIsRunning(true);
+        UI([&](){ m_Spinner.start(); });
         Fetch(url);
     }
 
@@ -44,6 +41,7 @@ namespace PC
         if (m_Products.empty())
             m_EmptyWidget.SetLabel(LANGUAGE(product_not_found));
         m_Spinner.stop();
+        SetIsRunning(false);
     }
 
     void SearchableContent::Increment()
@@ -65,7 +63,11 @@ namespace PC
 
     void SearchableContent::FetchErrCallback(const std::string& what)
     {
-        INFO_BAR(Error, what);
-        m_Spinner.stop();
+        UI([&](const std::string& what)
+        {
+            INFO_BAR(Error, what);
+            m_Spinner.stop();
+            SetIsRunning(false);
+        }, what);
     }
 }

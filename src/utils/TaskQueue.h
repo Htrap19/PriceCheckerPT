@@ -21,6 +21,7 @@ namespace PC
         SINGLE_TON(TaskQueue)
 
         void Quit();
+        void Clear();
 
         template<typename Callable, typename ... Args>
         void Push(Callable&& func, Args&& ... args)

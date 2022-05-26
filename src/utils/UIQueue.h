@@ -38,6 +38,8 @@ namespace PC
         std::mutex m_QueueMutex;
         sigc::connection m_IdleConnection;
     };
+
+#define UI(...) UIQueue::_().Push(__VA_ARGS__)
 }
 
 #endif //PRICECHECKER_UIQUEUE_H

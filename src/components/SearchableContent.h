@@ -6,6 +6,7 @@
 #define PRICECHECKER_SEARCHABLECONTENT_H
 
 #include <gtkmm.h>
+#include <mutex>
 #include "utils/Searchable.h"
 #include "EmptyList.h"
 
@@ -21,6 +22,9 @@ namespace PC
         virtual void ParseSearchableContent(CDocument& doc) = 0;
         [[nodiscard]] inline const std::string& GetName() const override { return m_Name; }
         [[nodiscard]] inline const std::string& GetTitle() const override { return m_Name; }
+        inline bool IsRunning() const { std::lock_guard lock(m_RunningMutex); return m_Running; }
+        inline void SetIsRunning(bool running) { std::lock_guard lock(m_RunningMutex); m_Running = running; }
+        inline bool IsCompleted() const { return m_ProgressBar.get_fraction() >= 1.0; }
         inline Gtk::ListBox& GetListBox() { return m_ListBox; }
         inline Gtk::Spinner& GetSpinner() { return m_Spinner; }
         inline Gtk::ProgressBar& GetProgressBar() { return m_ProgressBar; }
@@ -41,6 +45,8 @@ namespace PC
 
         std::string m_Name;
         std::string m_BriefUrl;
+        bool m_Running = false;
+        mutable std::mutex m_RunningMutex;
 
         // Progress bar
         uint32_t m_TotalItemCount;

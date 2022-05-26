@@ -25,7 +25,7 @@ namespace PC
     {
         auto selection = doc.find("div.product");
         SetTotalItemsCount(selection.nodeNum());
-        for (size_t i = 0; i < selection.nodeNum(); i++)
+        for (size_t i = 0; (i < selection.nodeNum() && IsRunning()); i++)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace PC
                             productImgSrc,
                             true);
 
-                UIQueue::_().Push([&]()
+                UI([&]()
                 {
                     comp.AddToSizeGroup();
                     m_ListBox.append(comp);

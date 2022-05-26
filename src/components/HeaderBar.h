@@ -16,13 +16,13 @@ namespace PC
         SINGLE_TON(HeaderBar)
 
         inline void SetTitle(const std::string& title) { m_TitleLabel.set_label(title); }
-//        inline void SetLoadingText(const std::string& text) { m_LoadingLabel.set_label(text); }
         inline void SetKeyCaptureWidget(Gtk::Widget& key_capture_widget) { m_SearchEntry.set_key_capture_widget(key_capture_widget); }
         void ToggleSearching(bool toggle = true);
         inline Gtk::Button& GetSearchButton() { return m_SearchButton; }
 
     protected:
         void handle_search();
+        void handle_stop_search();
 
     private:
         HeaderBar();
@@ -31,9 +31,8 @@ namespace PC
     private:
         Gtk::SearchEntry m_SearchEntry;
         Gtk::Button m_SearchButton;
+        Gtk::Button m_StopSearchButton;
         Gtk::Label m_TitleLabel;
-//        Gtk::Spinner m_Spinner;
-//        Gtk::Label m_LoadingLabel;
         Gtk::PopoverMenu m_SettingsMenu;
         Gtk::MenuButton m_SettingsButton;
 

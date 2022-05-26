@@ -7,6 +7,7 @@
 #include "components/InfoBar.h"
 #include "components/CompareComponent.h"
 #include "utils/TaskQueue.h"
+#include "utils/UIQueue.h"
 #include "utils/FileCacheManager.h"
 #include "utils/LanguageManager.h"
 #include "utils/ConfigManager.h"
@@ -58,39 +59,45 @@ namespace PC
         m_SettingsMenu.set_position(Gtk::PositionType::BOTTOM);
         m_SettingsMenu.insert_action_group("settings", m_SettingsActionGroup);
 
-//        m_Spinner.set_margin_end(10);
+        m_StopSearchButton.set_icon_name("media-playback-stop");
+        m_StopSearchButton.set_sensitive(false);
+        m_StopSearchButton.signal_clicked().connect(sigc::mem_fun(*this, &HeaderBar::handle_stop_search));
 
         set_title_widget(m_TitleLabel);
         set_show_title_buttons(true);
         pack_start(m_SearchEntry);
         pack_start(m_SearchButton);
+        pack_start(m_StopSearchButton);
         pack_end(m_SettingsButton);
-//        pack_end(m_Spinner);
-//        pack_end(m_LoadingLabel);
     }
 
     void HeaderBar::ToggleSearching(bool toggle)
     {
         m_SearchButton.set_sensitive(!toggle);
         m_SearchEntry.set_sensitive(!toggle);
-//        (toggle ? m_Spinner.start() : m_Spinner.stop());
+        m_StopSearchButton.set_sensitive(toggle);
         m_SettingsActionGroup->action_enabled_changed("clear_cache", !toggle);
         m_SettingsActionGroup->action_enabled_changed("clear_result", !toggle);
         m_SettingsActionGroup->action_enabled_changed("compare", !toggle);
-//        (toggle ? m_LoadingLabel.show() : m_LoadingLabel.hide());
     }
 
     void HeaderBar::handle_search()
     {
         auto search_text = m_SearchEntry.get_text();
-        if (!search_text.empty() && search_text != m_LastSearchedText)
-//            TaskQueue::_().Push(&RootContent::Search, &RootContent::_(), search_text);
+        if (!search_text.empty() && (search_text != m_LastSearchedText || !RootContent::_().IsCompleted()))
             RootContent::_().Search(search_text);
         m_LastSearchedText = search_text;
     }
 
+    void HeaderBar::handle_stop_search()
+    {
+        UI([]() { INFO_BAR(Info, "Trying to stop, please wait"); });
+        m_StopSearchButton.set_sensitive(false);
+        RootContent::_().StopSearch();
+    }
+
     void HeaderBar::ClearCache()
     {
-        INFO_BAR(Ask, LANGUAGE(clear_cache_question), &FileCacheManager::ClearCache);
+        UI([]() { INFO_BAR(Ask, LANGUAGE(clear_cache_question), &FileCacheManager::ClearCache); });
     }
 }

@@ -50,7 +50,7 @@ namespace PC
             return;
 
         auto fraction = m_ProgressBar.get_fraction();
-        m_ProgressBar.set_fraction(fraction + (1.0 / m_TotalItemCount));
+        m_ProgressBar.set_fraction(fraction + (1.0f / static_cast<float>(m_TotalItemCount)));
     }
 
     void SearchableContent::ClearProductList()

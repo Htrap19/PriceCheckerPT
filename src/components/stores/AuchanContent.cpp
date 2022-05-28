@@ -77,7 +77,7 @@ namespace PC
                     Increment(); // Progressbar
                 });
             }
-            catch(std::exception& e)
+            catch (std::exception& e)
             {
 #ifdef PC_DEBUG
                 std::cout << e.what() << std::endl;

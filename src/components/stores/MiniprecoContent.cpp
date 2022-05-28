@@ -9,14 +9,14 @@
 namespace PC
 {
     MiniprecoContent::MiniprecoContent()
-        : SearchableContent("Minipreco", "www.lojaonline.minipreco.pt")
+        : SearchableContent("Minipreco", "www.minipreco.pt")
     {
     }
 
     void MiniprecoContent::Search(const std::string& search_text)
     {
         auto productNameUrlFormat = ConvertToUrlQuery(search_text);
-        auto url = std::string("https://lojaonline.minipreco.pt/search?text=") + productNameUrlFormat;
+        auto url = std::string("https://www.minipreco.pt/search?text=") + productNameUrlFormat;
 
         SearchableContent::Search(url);
     }
@@ -89,8 +89,8 @@ namespace PC
             {
 #ifdef PC_DEBUG
                 std::cout << e.what() << std::endl;
-                SearchableContent::FetchErrCallback(e.what());
 #endif
+                SearchableContent::FetchErrCallback(e.what());
             }
         }
     }

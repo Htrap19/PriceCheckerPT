@@ -91,7 +91,7 @@ namespace PC
 
     void HeaderBar::handle_stop_search()
     {
-        UI([]() { INFO_BAR(Info, "Trying to stop, please wait"); });
+        UI([]() { INFO_BAR(Info, LANGUAGE(stop_text) + "..."); });
         m_StopSearchButton.set_sensitive(false);
         RootContent::_().StopSearch();
     }

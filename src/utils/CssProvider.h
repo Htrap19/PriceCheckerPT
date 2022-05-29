@@ -13,10 +13,6 @@ namespace PC
     {
     public:
         static void LoadProvider(Gtk::Widget& widget);
-
-    private:
-        static Glib::RefPtr<Gtk::CssProvider> s_CssProvider;
-        static bool s_LoadCssFile;
     };
 }
 

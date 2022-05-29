@@ -3,20 +3,17 @@
 //
 
 #include "CssProvider.h"
+#include "utils/AssetManager.h"
+#include <mutex>
 
 namespace PC
 {
-    Glib::RefPtr<Gtk::CssProvider> CssProvider::s_CssProvider = Gtk::CssProvider::create();
-    bool CssProvider::s_LoadCssFile = true;
-    static const std::string s_CssFilePath = "assets/styles/styles.css";
+    static Glib::RefPtr<Gtk::CssProvider> s_CssProvider = Gtk::CssProvider::create();
+    static std::once_flag s_CssLoadedFlag;
 
     void CssProvider::LoadProvider(Gtk::Widget& widget)
     {
-        if (s_LoadCssFile)
-        {
-            s_CssProvider->load_from_path(s_CssFilePath);
-            s_LoadCssFile = false;
-        }
+        std::call_once(s_CssLoadedFlag, []() { s_CssProvider->load_from_data(ASSET(Mics, "styles")); });
 
         widget.get_style_context()->add_provider(s_CssProvider, GTK_STYLE_PROVIDER_PRIORITY_USER);
     }

@@ -4,7 +4,6 @@
 
 #include "ConfigManager.h"
 #include <filesystem>
-#include <iostream>
 #include <fstream>
 
 extern char _binary__default_config_json_start;

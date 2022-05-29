@@ -3,13 +3,14 @@
 //
 
 #include "EmptyList.h"
+#include "utils/AssetManager.h"
 
 namespace PC
 {
     EmptyList::EmptyList(const std::string& nothing_label)
         : Gtk::Box(Gtk::Orientation::VERTICAL, 10),
         m_Nothing(nothing_label),
-        m_OpenBoxImage("assets/image/open-box.png")
+        m_OpenBoxImage(ASSET(Image, "open_box"))
     {
         set_valign(Gtk::Align::CENTER);
         set_halign(Gtk::Align::CENTER);

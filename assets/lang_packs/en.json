@@ -1,0 +1,28 @@
+{
+  "fullname": "English",
+  "strings":
+  {
+    "app_title": "Price Checker PT",
+    "search_button_text": "Search",
+    "compare": "Compare",
+    "clear_cache": "Clear Cache",
+    "clear_cache_question": "Do want to clear the cache ?",
+    "about": "About",
+    "yes": "Yes",
+    "no": "No",
+    "language": "Language",
+    "after_language_changed_text": "This changes will be applied after restart!",
+    "nothing_todo": "Nothing Todo",
+    "product_not_found": "Product Not Found",
+    "stop_text": "Trying to stop, please wait",
+    "search_finished": "Search Finished!",
+    "url_validation_failed": "Url validation failed!",
+    "clear_result": "Clear Result",
+    "name": "Name",
+    "brand": "Brand",
+    "packaging": "Packaging",
+    "price_desc": "Price Description",
+    "original_price": "Original Price",
+    "actual_price": "Actual Price"
+  }
+}

@@ -6,33 +6,49 @@
 #define PRICECHECKER_PRODUCTCOMPONENT_H
 
 #include <gtkmm.h>
-#include <mutex>
 #include "utils/Fetchable.h"
 
 namespace PC
 {
-    class ProductComponent : public Gtk::Box, public Fetchable
+    class ProductComponent : public Gtk::ListBoxRow, public Fetchable
     {
     public:
-        ProductComponent(const std::string& productName, const std::string& price, const std::string& img_url);
+        ProductComponent(const Glib::ustring& productName,
+                         const Glib::ustring& productBrand,
+                         const Glib::ustring& productPackaging,
+                         const Glib::ustring& originalPrice,
+                         const Glib::ustring& actualPrice,
+                         const Glib::ustring& secondaryPriceDesc,
+                         const Glib::ustring& img_url,
+                         bool img_resize = false);
+        void AddToSizeGroup();
 
-        [[nodiscard]] inline std::string GetProductName() const { return m_ProductName.get_text(); }
-        [[nodiscard]] inline std::string GetProductPrice() const { return m_ProductPrice.get_text(); }
-        [[nodiscard]] inline std::string GetProductImagePath() const { return m_ProductImage.get_name(); }
+        inline Glib::ustring GetProductName() const { return m_ProductName.get_text(); }
+        inline Glib::ustring GetProductBrand() const { return m_ProductBrand.get_text(); }
+        inline Glib::ustring GetProductPackaging() const { return m_ProductPackaging.get_text(); }
+        inline Glib::ustring GetProductActualPrice() const { return m_ProductActualPrice.get_text(); }
+        inline Glib::ustring GetProductOriginalPrice() const { return m_ProductOriginalPrice.get_text(); }
+        inline Glib::ustring GetProductSecondaryPriceDesc() const { return m_ProductSecondaryPriceDesc.get_text(); }
 
     protected:
         void FetchErrCallback(const std::string& what) override;
 
     private:
-        void FetchImage(std::string img_url);
+        void FetchImage(std::string img_url, bool img_resize);
 
     private:
+        Gtk::Box m_MainHBox;
         Gtk::Image m_ProductImage;
-        Gtk::Box m_HBox;
+        Gtk::Box m_VBox;
         Gtk::Label m_ProductName;
-        Gtk::Label m_ProductPrice;
-
-        static std::mutex s_FileCacheMutex;
+        Gtk::Box m_ProductDescHBox;
+        Gtk::Label m_ProductBrand;
+        Gtk::Label m_ProductPackaging;
+        Gtk::Box m_ProductPriceVBox;
+        Gtk::Label m_ProductActualPrice;
+        Gtk::Label m_ProductOriginalPrice;
+        Gtk::Label m_ProductSecondaryPriceDesc;
+        Gtk::Separator m_ProductPriceSep;
     };
 }
 

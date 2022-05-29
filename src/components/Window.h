@@ -6,6 +6,8 @@
 #define PRICECHECKER_WINDOW_H
 
 #include <gtkmm.h>
+#include "RootContent.h"
+#include "HeaderBar.h"
 
 namespace PC
 {
@@ -15,10 +17,8 @@ namespace PC
         Window();
 
     private:
-        Gtk::Label m_TitleLabel;
-        Gtk::HeaderBar m_TitleBar;
-
-        Glib::RefPtr<Gtk::CssProvider> m_CssProvider;
+        HeaderBar& m_TitleBar;
+        RootContent& m_RootContent;
     };
 }
 

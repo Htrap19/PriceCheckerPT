@@ -3,21 +3,21 @@
 //
 
 #include "Window.h"
-#include "RootVBox.h"
+#include "utils/LanguageManager.h"
 
 namespace PC
 {
-    static const std::string s_WindowTitle = "Price Checker PT";
-
     Window::Window()
+        : m_RootContent(RootContent::_()),
+          m_TitleBar(HeaderBar::_())
     {
-        m_TitleLabel.set_label(s_WindowTitle);
-        m_TitleBar.set_title_widget(m_TitleLabel);
-        m_TitleBar.set_show_title_buttons(true);
+        m_TitleBar.SetKeyCaptureWidget(*this);
 
+        m_TitleBar.SetTitle(LANGUAGE(app_title));
         set_default_size(640, 480);
+        set_default_widget(m_TitleBar.GetSearchButton());
 
         set_titlebar(m_TitleBar);
-        set_child(RootVBox::_());
+        set_child(m_RootContent);
     }
 }

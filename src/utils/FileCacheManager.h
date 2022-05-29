@@ -6,29 +6,24 @@
 #define PRICECHECKER_FILECACHEMANAGER_H
 
 #include <string>
+#include <filesystem>
+#include "utils/Utils.h"
 
 namespace PC
 {
-    class FileCacheManager // SingleTon
+    namespace fs = std::filesystem;
+    class FileCacheManager
     {
     public:
-        FileCacheManager(FileCacheManager&) = delete;
-        FileCacheManager(FileCacheManager&&) = delete;
-        FileCacheManager& operator=(FileCacheManager&) = delete;
-        FileCacheManager& operator=(FileCacheManager&&) = delete;
-
-        inline static FileCacheManager& _() { static FileCacheManager instance; return instance; }
-
-        std::string Set(const std::string& filename, const std::string& data);
-        std::string Get(const std::string& filename);
-        bool Check(const std::string& filename);
-        inline std::string GetRelativePath(const std::string& filename) { return s_TempFolderLocation + filename; }
+        static void Init();
+        static std::string Set(const std::string& filename, const std::string& data);
+        static std::string Get(const std::string& filename);
+        static inline bool Check(const std::string& filename) { return fs::exists(GetRelativePath(filename)); }
+        static inline std::string GetRelativePath(const std::string& filename) { return (s_CacheFolder / fs::path(filename)).generic_string(); }
+        static inline void ClearCache() { fs::remove_all(s_CacheFolder); fs::create_directory(s_CacheFolder); }
 
     private:
-        FileCacheManager();
-
-    private:
-        static std::string s_TempFolderLocation;
+        static fs::path s_CacheFolder;
     };
 }
 

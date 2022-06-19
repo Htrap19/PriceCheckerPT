@@ -9,7 +9,7 @@
 namespace PC
 {
     SparContent::SparContent()
-        : SearchableContent("Spar", "www.spar.pt")
+        : SearchableContent("Spar")
     {
     }
 

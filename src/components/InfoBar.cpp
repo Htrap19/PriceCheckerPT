@@ -18,6 +18,9 @@ namespace PC
 
         signal_response().connect(sigc::mem_fun(*this, &InfoBar::handle_on_response));
 
+        m_Icon.set_margin_end(10);
+        m_Icon.set_pixel_size(24);
+        add_child(m_Icon);
         add_child(m_Message);
         set_show_close_button();
         set_revealed(false);

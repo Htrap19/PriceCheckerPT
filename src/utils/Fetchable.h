@@ -16,7 +16,7 @@ namespace PC
         Fetchable() = default;
         virtual ~Fetchable() = default;
         virtual void FetchErrCallback(const std::string& what) = 0;
-        virtual std::ostringstream FetchBase(const std::string& url, bool use_encoding = false);
+        virtual std::ostringstream FetchBase(const std::string& url, bool use_encoding = false, const std::string& cookies_file = "");
 
     private:
         curlpp::Easy m_Request;

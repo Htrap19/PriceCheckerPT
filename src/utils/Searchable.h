@@ -26,7 +26,7 @@ namespace PC
         [[nodiscard]] virtual const std::string& GetTitle() const = 0;
 
     protected:
-        virtual void Fetch(const std::string& url);
+        virtual void Fetch(const std::string& url, const std::string& cookies_file = "");
         virtual std::string ConvertToUrlQuery(const std::string& text);
 
     private:

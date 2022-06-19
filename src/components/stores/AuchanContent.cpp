@@ -9,7 +9,7 @@
 namespace PC
 {
     AuchanContent::AuchanContent()
-        : SearchableContent("Auchan", "www.auchan.pt")
+        : SearchableContent("Auchan")
     {
     }
 
@@ -59,8 +59,10 @@ namespace PC
                     originalPrice = originalPriceNode.nodeAt(0).childAt(2).text();
                 Utils::RemoveEmptySpace(originalPrice);
 
-                auto secondaryPriceDescNode = node.find("div.auc-measures");
-                auto secondaryPriceDesc = secondaryPriceDescNode.nodeAt(0).text();
+                auto secondaryPriceDescSelection = node.find("div.auc-measures");
+                if (secondaryPriceDescSelection.nodeNum() == 0)
+                    continue;
+                auto secondaryPriceDesc = secondaryPriceDescSelection.nodeAt(0).text();
                 Utils::RemoveEmptySpace(secondaryPriceDesc);
 
                 auto& comp = m_Products.emplace_back(

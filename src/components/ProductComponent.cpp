@@ -98,7 +98,7 @@ namespace PC
 
     void ProductComponent::FetchImage(std::string img_url, bool img_resize)
     {
-        if (img_url.find("http") == std::string::npos)
+        if (!img_url.starts_with("http"))
         {
             FetchErrCallback(LANGUAGE(url_validation_failed));
             return;

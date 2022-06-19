@@ -15,6 +15,6 @@ namespace PC
     {
         std::call_once(s_CssLoadedFlag, []() { s_CssProvider->load_from_data(ASSET(Mics, "styles")); });
 
-        widget.get_style_context()->add_provider(s_CssProvider, GTK_STYLE_PROVIDER_PRIORITY_USER);
+        widget.get_style_context()->add_provider(s_CssProvider, GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
     }
 }

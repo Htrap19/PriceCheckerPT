@@ -6,12 +6,13 @@
 #include "InfoBar.h"
 #include "utils/CssProvider.h"
 #include "utils/LanguageManager.h"
+#include "utils/ConfigManager.h"
 #include "utils/UIQueue.h"
 
 namespace PC
 {
-    SearchableContent::SearchableContent(const std::string& name, const std::string& briefUrl)
-        : m_Name(name), m_BriefUrl(briefUrl)
+    SearchableContent::SearchableContent(const std::string& name, bool use_cookies)
+        : m_Name(name), m_UseCookies(use_cookies)
     {
         m_Spinner.set_expand();
         m_Spinner.set_halign(Gtk::Align::END);
@@ -31,7 +32,7 @@ namespace PC
     {
         SetIsRunning(true);
         UI([&](){ m_Spinner.start(); });
-        Fetch(url);
+        Fetch(url, (m_UseCookies ? CONFIG(GetCookiesPath, GetName()) : ""));
     }
 
     void SearchableContent::FetchCallback(CDocument& doc)

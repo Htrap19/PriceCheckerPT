@@ -7,9 +7,9 @@
 
 namespace PC
 {
-    void Searchable::Fetch(const std::string& url)
+    void Searchable::Fetch(const std::string& url, const std::string& cookies_file)
     {
-        std::string page_content = FetchBase(url).str();
+        std::string page_content = FetchBase(url, false, cookies_file).str();
 
         m_Doc.parse(page_content);
         FetchCallback(m_Doc);

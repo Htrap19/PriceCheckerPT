@@ -9,7 +9,7 @@
 namespace PC
 {
     MiniprecoContent::MiniprecoContent()
-        : SearchableContent("Minipreco", "www.minipreco.pt")
+        : SearchableContent("Minipreco")
     {
     }
 

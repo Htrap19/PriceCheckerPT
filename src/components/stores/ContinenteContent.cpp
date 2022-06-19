@@ -9,7 +9,7 @@
 namespace PC
 {
     ContinenteContent::ContinenteContent()
-        : SearchableContent("Continente", "www.continente.pt")
+        : SearchableContent("Continente")
     {
     }
 
@@ -69,10 +69,16 @@ namespace PC
                 Utils::RemoveEmptySpace(secondaryPriceDesc);
 
                 // Product Branding
-                auto productBrand = node.find("p.ct-tile--brand").nodeAt(0).text();
+                auto productBrandSelection = node.find("p.ct-tile--brand");
+                std::string productBrand;
+                if (productBrandSelection.nodeNum() > 0)
+                    productBrand = productBrandSelection.nodeAt(0).text();
 
                 // Product Packaging
-                auto productPackaging = node.find("p.ct-tile--quantity").nodeAt(0).text();
+                auto productPackagingSelection = node.find("p.ct-tile--quantity");
+                std::string productPackaging;
+                if (productBrandSelection.nodeNum() > 0)
+                    productPackaging = productPackagingSelection.nodeAt(0).text();
 
                 auto& comp = m_Products.emplace_back(
                             productName,

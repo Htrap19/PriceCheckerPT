@@ -23,6 +23,13 @@
     }
 
 IMPORT_ASSET_FROM_LINKER(open_box_png, Image)
+IMPORT_ASSET_FROM_LINKER(info_png, Image)
+IMPORT_ASSET_FROM_LINKER(error_png, Image)
+IMPORT_ASSET_FROM_LINKER(paragraph_png, Image)
+IMPORT_ASSET_FROM_LINKER(question_png, Image)
+IMPORT_ASSET_FROM_LINKER(warning_png, Image)
+IMPORT_ASSET_FROM_LINKER(cookies_png, Image)
+
 IMPORT_ASSET_FROM_LINKER(styles_css, Mics)
 
 #define ADD_ASSET(name) auto accessKey##name = get_##name##_access_key();\
@@ -45,6 +52,13 @@ namespace PC
     AssetManager::AssetManager()
     {
         ADD_ASSET(open_box_png)
+        ADD_ASSET(info_png)
+        ADD_ASSET(error_png)
+        ADD_ASSET(paragraph_png)
+        ADD_ASSET(question_png)
+        ADD_ASSET(warning_png)
+        ADD_ASSET(cookies_png)
+
         ADD_ASSET(styles_css)
     }
 

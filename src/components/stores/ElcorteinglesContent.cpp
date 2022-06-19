@@ -10,7 +10,7 @@ namespace PC
 {
 
     ElcorteinglesContent::ElcorteinglesContent()
-        : SearchableContent("Elcorteingles", "www.elcorteingles.pt")
+        : SearchableContent("Elcorteingles")
     {
     }
 

@@ -20,6 +20,8 @@ namespace PC
 
         inline std::string GetLang() { return m_Root["lang"].asString(); }
         inline void SetLang(const std::string& lang) { m_Root["lang"] = lang; INFO_BAR(Info, LANGUAGE(after_language_changed_text)); }
+        inline std::string GetCookiesPath(const std::string& name) { return m_Root["cookies"][name].asString(); }
+        inline void SetCookiesPath(const std::string& name, const std::string& path) { m_Root["cookies"][name] = path; }
 
     private:
         ConfigManager();

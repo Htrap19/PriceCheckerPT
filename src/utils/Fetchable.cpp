@@ -7,7 +7,7 @@
 
 namespace PC
 {
-    std::ostringstream Fetchable::FetchBase(const std::string& url, bool use_encoding)
+    std::ostringstream Fetchable::FetchBase(const std::string& url, bool use_encoding, const std::string& cookies_file)
     {
         m_Request.reset();
         std::ostringstream os;
@@ -19,6 +19,9 @@ namespace PC
                 headers.emplace_back("Accept-Encoding: gzip, deflate, br");
                 m_Request.setOpt<curlpp::options::HttpHeader>(headers);
             }
+            if (!cookies_file.empty())
+                m_Request.setOpt<curlpp::options::CookieFile>(cookies_file);
+
             m_Request.setOpt<curlpp::options::Url>(url);
 #ifdef PC_DEBUG
             m_Request.setOpt<curlpp::options::Verbose>(true);

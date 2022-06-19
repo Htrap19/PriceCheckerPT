@@ -15,6 +15,7 @@ This is a cross-platform web-scraping software used to check prices from online 
 - [MiniPreco](https://www.lojaonline.minipreco.pt)
 - [Elcorteingles](https://www.elcorteingles.pt/supermercado)
 - [Spar](https://www.spar.pt)
+- [Recheio](https://www.recheio.pt/)
 
 ### Coming Soon
 - [Mercadao](https://mercadao.pt/store/pingo-doce)

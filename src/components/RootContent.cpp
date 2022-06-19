@@ -10,14 +10,20 @@
 #include "components/stores/MiniprecoContent.h"
 #include "components/stores/ElcorteinglesContent.h"
 #include "components/stores/SparContent.h"
+#include "components/stores/RecheioContent.h"
 #include "components/CompareComponent.h"
 #include "utils/TaskQueue.h"
 #include "utils/LanguageManager.h"
+#include "utils/ConfigManager.h"
 #include "utils/UIQueue.h"
 #include "utils/CssProvider.h"
 
+extern Glib::RefPtr<Gtk::Application> app;
+
 namespace PC
 {
+    static std::unique_ptr<Gtk::FileChooserDialog> s_FileChooserDialog = nullptr;
+
     RootContent::RootContent()
         : m_MainHBox(Gtk::Orientation::HORIZONTAL, 10)
     {
@@ -26,6 +32,7 @@ namespace PC
         m_SearchableList.emplace_back(std::make_shared<MiniprecoContent>());
         m_SearchableList.emplace_back(std::make_shared<ElcorteinglesContent>());
         m_SearchableList.emplace_back(std::make_shared<SparContent>());
+        m_SearchableList.emplace_back(std::make_shared<RecheioContent>());
 
         for (auto& searchable : m_SearchableList)
         {
@@ -60,6 +67,42 @@ namespace PC
         auto sidebarRowVBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::VERTICAL, 0);
         sidebarRowHBox->prepend(*sidebarTitle);
         sidebarRowHBox->append(searchable_content->GetSpinner());
+        if (searchable_content->UseCookies())
+        {
+            auto cookiesImage = Gtk::make_managed<Gtk::Image>(ASSET(Image, "cookies"));
+            auto clicker = Gtk::GestureClick::create();
+            clicker->signal_released().connect([&](int, double, double)
+            {
+                if (s_FileChooserDialog)
+                {
+                    s_FileChooserDialog->show();
+                    return;
+                }
+
+                auto window = app->get_active_window();
+                s_FileChooserDialog = std::make_unique<Gtk::FileChooserDialog>(*window,"Select cookies file", Gtk::FileChooser::Action::OPEN, true);
+                s_FileChooserDialog->set_transient_for(*window);
+                s_FileChooserDialog->set_modal();
+                s_FileChooserDialog->add_button("Select", Gtk::ResponseType::OK);
+                s_FileChooserDialog->add_button("_Cancel", Gtk::ResponseType::CANCEL);
+                s_FileChooserDialog->signal_response().connect([&](int response_id)
+                {
+                    s_FileChooserDialog->hide();
+                    if (response_id == Gtk::ResponseType::OK)
+                    {
+                        auto filePath = s_FileChooserDialog->get_file()->get_path();
+                        CONFIG(SetCookiesPath, searchable_content->GetName(), filePath);
+                    }
+                });
+                s_FileChooserDialog->signal_close_request().connect([]() -> bool
+                {
+                    s_FileChooserDialog->hide();
+                    return true;
+                }, false);
+            });
+            cookiesImage->add_controller(clicker);
+            sidebarRowHBox->append(*cookiesImage);
+        }
         sidebarRowHBox->set_expand();
 
         sidebarRowVBox->set_name(searchable_content->GetTitle());

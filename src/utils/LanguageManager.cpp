@@ -79,7 +79,7 @@ namespace PC
     Json::Value LanguageManager::GetLanguageData(const std::string& lang)
     {
         Json::Value root;
-        auto langData = (s_LangPacks.find(lang) != s_LangPacks.end()) ? s_LangPacks[lang] : s_LangPacks.begin()->second;
+        auto langData = (s_LangPacks.contains(lang)) ? s_LangPacks[lang] : s_LangPacks.begin()->second;
         std::stringstream content;
         content << langData();
         content >> root;

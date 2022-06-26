@@ -23,6 +23,8 @@
     "packaging": "Packaging",
     "price_desc": "Price Description",
     "original_price": "Original Price",
-    "actual_price": "Actual Price"
+    "actual_price": "Actual Price",
+    "add_to_watchlist": "Add to watchlist",
+    "watchlist": "Watch list"
   }
 }

@@ -7,11 +7,10 @@
 #include "utils/FileCacheManager.h"
 #include "utils/CssProvider.h"
 #include "utils/LanguageManager.h"
-#include "utils/TaskQueue.h"
+#include "utils/Utils.h"
 
 namespace PC
 {
-    static constexpr uint8_t s_ImagePixelSize = 64;
     static Glib::RefPtr<Gtk::SizeGroup> s_PriceSizeGroup = Gtk::SizeGroup::create(Gtk::SizeGroup::Mode::BOTH);
 
     ProductComponent::ProductComponent(const Glib::ustring& productName,
@@ -26,18 +25,18 @@ namespace PC
         m_ProductName(productName, Gtk::Align::START),
         m_VBox(Gtk::Orientation::VERTICAL),
         m_ProductDescHBox(Gtk::Orientation::HORIZONTAL, 10),
-        m_ProductBrand((productBrand.empty() ? "-" : productBrand), Gtk::Align::START, Gtk::Align::CENTER),
-        m_ProductPackaging((productPackaging.empty() ? "-" : productPackaging)),
+        m_ProductBrand(CHECK_EMPTY_STRING(productBrand), Gtk::Align::START, Gtk::Align::CENTER),
+        m_ProductPackaging(CHECK_EMPTY_STRING(productPackaging)),
         m_ProductPriceVBox(Gtk::Orientation::VERTICAL, 10),
         m_ProductActualPrice(actualPrice, Gtk::Align::CENTER, Gtk::Align::CENTER),
-        m_ProductSecondaryPriceDesc((secondaryPriceDesc.empty() ? "-" : secondaryPriceDesc), Gtk::Align::CENTER, Gtk::Align::CENTER),
+        m_ProductSecondaryPriceDesc(CHECK_EMPTY_STRING(secondaryPriceDesc), Gtk::Align::CENTER, Gtk::Align::CENTER),
         m_ProductPriceSep(Gtk::Orientation::VERTICAL)
     {
-        m_ProductImage.set_pixel_size(s_ImagePixelSize);
+        m_ProductImage.set_pixel_size(ImagePixelSize);
 
-        m_ProductName.set_markup(Glib::locale_to_utf8("<b>" + productName + "</b>"));
+        m_ProductName.set_markup(Glib::locale_to_utf8(PANGO_BOLD(productName)));
 
-        m_ProductPackaging.set_markup(Glib::locale_to_utf8("<small>" + productPackaging + "</small>"));
+        m_ProductPackaging.set_markup(Glib::locale_to_utf8(PANGO_SMALL(productPackaging)));
 
         m_ProductDescHBox.prepend(m_ProductBrand);
         m_ProductDescHBox.append(m_ProductPackaging);
@@ -53,7 +52,7 @@ namespace PC
         m_MainHBox.append(m_VBox);
         m_VBox.set_expand();
 
-        m_ProductOriginalPrice.set_markup(Glib::locale_to_utf8("<span strikethrough='true'><small>" + (originalPrice.empty() ? "-" : originalPrice) + "</small></span>"));
+        m_ProductOriginalPrice.set_markup(Glib::locale_to_utf8(PANGO_STRIKETHROUGH(PANGO_SMALL(CHECK_EMPTY_STRING(originalPrice)))));
 
         m_ProductPriceVBox.set_valign(Gtk::Align::CENTER);
         m_ProductPriceVBox.set_halign(Gtk::Align::CENTER);
@@ -90,7 +89,7 @@ namespace PC
         auto name = url.substr(lastSlash);
         if (img_resize)
         {
-            std::string sizeStr = "?sw=" + std::to_string(s_ImagePixelSize) +"&sh=" + std::to_string(s_ImagePixelSize);
+            std::string sizeStr = "?sw=" + std::to_string(ProductComponent::ImagePixelSize) + "&sh=" + std::to_string(ProductComponent::ImagePixelSize);
             url += sizeStr;
         }
         return name;

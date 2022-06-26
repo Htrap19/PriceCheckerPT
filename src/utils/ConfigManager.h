@@ -22,6 +22,9 @@ namespace PC
         inline void SetLang(const std::string& lang) { m_Root["lang"] = lang; INFO_BAR(Info, LANGUAGE(after_language_changed_text)); }
         inline std::string GetCookiesPath(const std::string& name) { return m_Root["cookies"][name].asString(); }
         inline void SetCookiesPath(const std::string& name, const std::string& path) { m_Root["cookies"][name] = path; }
+        inline void SetWatchListProduct(const std::string& name, const std::string& product_name, const std::string& details_base64) { m_Root["watch_list"][name][product_name] = details_base64; }
+        [[nodiscard]] inline Json::Value GetWatchList() const { return m_Root["watch_list"]; }
+        [[nodiscard]] inline Json::Value GetWatchListProducts(const std::string& name) const { return GetWatchList()[name]; }
 
     private:
         ConfigManager();

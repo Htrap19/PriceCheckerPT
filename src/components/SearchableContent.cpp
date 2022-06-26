@@ -3,7 +3,7 @@
 //
 
 #include "SearchableContent.h"
-#include "InfoBar.h"
+#include "components/InfoBar.h"
 #include "utils/CssProvider.h"
 #include "utils/LanguageManager.h"
 #include "utils/ConfigManager.h"

@@ -7,6 +7,8 @@
 
 #include <gtkmm.h>
 #include "components/SearchableContent.h"
+#include "components/CompareComponent.h"
+#include "components/WatchListComponent.h"
 #include "utils/Utils.h"
 
 namespace PC
@@ -24,7 +26,9 @@ namespace PC
         void ClearResult();
         void StopSearch();
         inline bool IsCompleted() const { return std::all_of(m_SearchableList.begin(), m_SearchableList.end(), [](const SearchableContentType& searchEntity) { return searchEntity->IsCompleted(); }); }
-        inline void NavigateToCompare() { m_Stack.set_visible_child("compare", Gtk::StackTransitionType::SLIDE_LEFT_RIGHT); }
+        inline void NavigateToCompare() { CompareComponent::_().SetSearchableContentList(m_SearchableList); m_Stack.set_visible_child("compare", Gtk::StackTransitionType::SLIDE_LEFT_RIGHT); }
+        inline void AddToWatchList() { WatchListComponent::_().AddToWatchList(m_SearchableList); }
+        inline void NavigateToWatchList() { WatchListComponent::_().ViewWatchList(); m_Stack.set_visible_child("watch_list", Gtk::StackTransitionType::SLIDE_LEFT_RIGHT); }
         inline const std::list<SearchableContentType>& GetSearchableList() const { return m_SearchableList; }
 
     private:

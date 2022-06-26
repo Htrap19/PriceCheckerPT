@@ -5,8 +5,6 @@
 #include "HeaderBar.h"
 #include "components/RootContent.h"
 #include "components/InfoBar.h"
-#include "components/CompareComponent.h"
-#include "utils/TaskQueue.h"
 #include "utils/UIQueue.h"
 #include "utils/FileCacheManager.h"
 #include "utils/LanguageManager.h"
@@ -27,14 +25,17 @@ namespace PC
         m_SettingsActionGroup->add_action("clear_cache", sigc::mem_fun(*this, &HeaderBar::ClearCache));;
         m_SettingsActionGroup->add_action("clear_result", sigc::mem_fun(RootContent::_(), &RootContent::ClearResult));
         m_SettingsActionGroup->add_action("compare", []()
-        {
-            CompareComponent::_().SetSearchableContentList(RootContent::_().GetSearchableList());
-            RootContent::_().NavigateToCompare();
-        });
+        { RootContent::_().NavigateToCompare(); });
+        m_SettingsActionGroup->add_action("add_to_watch_list", []()
+        { RootContent::_().AddToWatchList(); });
+        m_SettingsActionGroup->add_action("watch_list", []()
+        { RootContent::_().NavigateToWatchList(); });
 
         auto utilsSection = Gio::Menu::create();
         utilsSection->append_item(Gio::MenuItem::create(LANGUAGE(compare), "settings.compare"));
         utilsSection->append_item(Gio::MenuItem::create(LANGUAGE(clear_result), "settings.clear_result"));
+        utilsSection->append_item(Gio::MenuItem::create(LANGUAGE(add_to_watchlist), "settings.add_to_watch_list"));
+        utilsSection->append_item(Gio::MenuItem::create(LANGUAGE(watchlist), "settings.watch_list"));
 
         auto settingsSection = Gio::Menu::create();
         auto languageMenuItem = Gio::MenuItem::create(LANGUAGE(language), "");
@@ -79,6 +80,7 @@ namespace PC
         m_SettingsActionGroup->action_enabled_changed("clear_cache", !toggle);
         m_SettingsActionGroup->action_enabled_changed("clear_result", !toggle);
         m_SettingsActionGroup->action_enabled_changed("compare", !toggle);
+        m_SettingsActionGroup->action_enabled_changed("add_to_watch_list", !toggle);
     }
 
     void HeaderBar::handle_search()

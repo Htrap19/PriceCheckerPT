@@ -23,6 +23,8 @@
     "packaging": "Embalagem",
     "price_desc": "Descrição do preço",
     "original_price": "Preço original",
-    "actual_price": "Preço real"
+    "actual_price": "Preço real",
+    "add_to_watchlist": "Adicionar à lista de interesses",
+    "watchlist": "Lista de observação"
   }
 }

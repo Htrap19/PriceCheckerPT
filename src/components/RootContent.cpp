@@ -12,6 +12,8 @@
 #include "components/stores/SparContent.h"
 #include "components/stores/RecheioContent.h"
 #include "components/CompareComponent.h"
+#include "components/WatchListComponent.h"
+#include "components/WatchListNotification.h"
 #include "utils/TaskQueue.h"
 #include "utils/LanguageManager.h"
 #include "utils/ConfigManager.h"
@@ -34,6 +36,14 @@ namespace PC
         m_SearchableList.emplace_back(std::make_shared<SparContent>());
         m_SearchableList.emplace_back(std::make_shared<RecheioContent>());
 
+        m_Stack.add(WatchListNotification::_(), "watch_list_notifications");
+        auto watchlistNotifications = Gtk::make_managed<Gtk::ListBoxRow>();
+        auto watchListLabel = Gtk::make_managed<Gtk::Label>("Watchlist Notifications", Gtk::Align::START);
+        watchListLabel->set_name("watch_list_notifications");
+        watchListLabel->set_margin(10);
+        watchlistNotifications->set_child(*watchListLabel);
+        m_SidebarListBox.append(*watchlistNotifications);
+
         for (auto& searchable : m_SearchableList)
         {
             m_Stack.add(searchable->GetWidget(), searchable->GetName());
@@ -42,12 +52,13 @@ namespace PC
         }
 
         m_Stack.add(CompareComponent::_(), "compare");
+        m_Stack.add(WatchListComponent::_(), "watch_list");
         m_Stack.set_transition_type(Gtk::StackTransitionType::SLIDE_UP_DOWN);
 
         m_SidebarListBox.set_margin_start(5);
         m_SidebarListBox.signal_row_activated().connect([&](Gtk::ListBoxRow* row)
         {
-            auto box = dynamic_cast<Gtk::Box*>(row->get_child());
+            auto box = dynamic_cast<Gtk::Widget*>(row->get_child());
             m_Stack.set_visible_child(box->get_name());
         });
 

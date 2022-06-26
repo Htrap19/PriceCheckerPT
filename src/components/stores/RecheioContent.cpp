@@ -5,6 +5,7 @@
 #include "RecheioContent.h"
 #include "utils/UIQueue.h"
 #include "utils/ConfigManager.h"
+#include "components/WatchListComponent.h"
 #include <Node.h>
 
 namespace PC
@@ -80,6 +81,7 @@ namespace PC
                     comp.AddToSizeGroup();
                     m_ListBox.append(comp);
                     Increment(); // Progressbar
+                    WatchListComponent::_().CheckWatchList(m_Name, comp);
                 });
             }
             catch (std::exception& e)

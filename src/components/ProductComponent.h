@@ -13,6 +13,9 @@ namespace PC
     class ProductComponent : public Gtk::ListBoxRow, public Fetchable
     {
     public:
+        static constexpr uint32_t ImagePixelSize = 64;
+
+    public:
         ProductComponent(const Glib::ustring& productName,
                          const Glib::ustring& productBrand,
                          const Glib::ustring& productPackaging,
@@ -29,6 +32,7 @@ namespace PC
         inline Glib::ustring GetProductActualPrice() const { return m_ProductActualPrice.get_text(); }
         inline Glib::ustring GetProductOriginalPrice() const { return m_ProductOriginalPrice.get_text(); }
         inline Glib::ustring GetProductSecondaryPriceDesc() const { return m_ProductSecondaryPriceDesc.get_text(); }
+        inline Glib::RefPtr<Gdk::Paintable> GetProductImage() { return m_ProductImage.get_paintable(); }
 
     protected:
         void FetchErrCallback(const std::string& what) override;

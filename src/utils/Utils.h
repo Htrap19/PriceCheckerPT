@@ -9,6 +9,12 @@
 
 namespace PC
 {
+#define CHECK_EMPTY_STRING(str) ((str).empty() ? "-" : (str))
+
+#define PANGO_STRIKETHROUGH(text) ("<span strikethrough='true'>" + (text) + "</span>")
+#define PANGO_SMALL(text) ("<small>" + (text) + "</small>")
+#define PANGO_BOLD(text) ("<b>" + (text) + "</b>")
+
     class Utils
     {
     public:

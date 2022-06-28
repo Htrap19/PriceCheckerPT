@@ -5,6 +5,7 @@
 #include "ConfigManager.h"
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 
 extern char _binary__default_config_json_start;
 extern char _binary__default_config_json_end;
@@ -33,5 +34,17 @@ namespace PC
     {
         std::ofstream config_file(s_ConfigFilePath);
         config_file << m_Root;
+    }
+
+    void ConfigManager::RemoveWatchListStore(const std::string& name)
+    {
+        auto& watchList = GetWatchList();
+        watchList.removeMember(name);
+    }
+
+    void ConfigManager::RemoveWatchListProduct(const std::string& store_name, const std::string& product_name)
+    {
+        auto& watchListStore = GetWatchListStore(store_name);
+        watchListStore.removeMember(product_name);
     }
 }

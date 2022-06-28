@@ -23,8 +23,11 @@ namespace PC
         inline std::string GetCookiesPath(const std::string& name) { return m_Root["cookies"][name].asString(); }
         inline void SetCookiesPath(const std::string& name, const std::string& path) { m_Root["cookies"][name] = path; }
         inline void SetWatchListProduct(const std::string& name, const std::string& product_name, const std::string& details_base64) { m_Root["watch_list"][name][product_name] = details_base64; }
-        [[nodiscard]] inline Json::Value GetWatchList() const { return m_Root["watch_list"]; }
-        [[nodiscard]] inline Json::Value GetWatchListProducts(const std::string& name) const { return GetWatchList()[name]; }
+        [[nodiscard]] inline Json::Value& GetWatchList() { return m_Root["watch_list"]; }
+        [[nodiscard]] inline Json::Value& GetWatchListStore(const std::string& name) { return GetWatchList()[name]; }
+        [[nodiscard]] inline Json::Value& GetWatchListProduct(const std::string& store_name, const std::string& product_name) { return GetWatchListStore(store_name)[product_name]; }
+        void RemoveWatchListStore(const std::string& name);
+        void RemoveWatchListProduct(const std::string& store_name, const std::string& product_name);
 
     private:
         ConfigManager();

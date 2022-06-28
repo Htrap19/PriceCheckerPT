@@ -24,13 +24,43 @@ namespace PC
         : m_TreeModel(Gtk::TreeStore::create(m_Columns)),
         m_TreeView(m_TreeModel)
     {
+        m_DeleteButton.set_icon_name("user-trash");
+        m_DeleteButton.set_halign(Gtk::Align::END);
+        m_DeleteButton.signal_clicked().connect([&]()
+        {
+            auto treeSelection = m_TreeView.get_selection();
+            treeSelection->selected_foreach_iter([&](const Gtk::TreeModel::const_iterator& iter)
+            {
+                auto& row = *iter;
+                auto name = row.get_value(m_Columns.m_ColProductName);
+                if (!row.children().empty())
+                {
+                    CONFIG(RemoveWatchListStore, name);
+                    return;
+                }
+
+                auto store_name = row.parent()->get_value(m_Columns.m_ColProductName);
+                CONFIG(RemoveWatchListProduct, store_name, name);
+                std::cout << "Reached" << std::endl;
+            });
+            ViewWatchList();
+        });
+        auto toolBarHBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL, 10);
+        toolBarHBox->append(m_DeleteButton);
+
         AppendCol(LANGUAGE(name), m_Columns.m_ColProductName);
         AppendCol(LANGUAGE(actual_price), m_Columns.m_ColActualPrice);
         AppendCol(LANGUAGE(original_price), m_Columns.m_ColOriginalPrice);
         AppendCol(LANGUAGE(price_desc), m_Columns.m_ColSecondaryPriceDesc);
         m_TreeView.set_headers_visible();
+        auto treeSelection = m_TreeView.get_selection();
+        treeSelection->set_mode(Gtk::SelectionMode::MULTIPLE);
 
-        set_child(m_TreeView);
+        m_MainVBox.prepend(*toolBarHBox);
+        m_MainVBox.append(m_TreeView);
+        m_TreeView.set_expand();
+
+        set_child(m_MainVBox);
     }
 
     void WatchListComponent::AddToWatchList(const std::list<Glib::RefPtr<SearchableContent>>& searchable_content)
@@ -76,11 +106,12 @@ namespace PC
                             detailsObj["secondary_price_desc"].asString());
             }
         }
+        m_TreeView.expand_all();
     }
 
     void WatchListComponent::CheckWatchList(const std::string& store_name, ProductComponent& comp)
     {
-        auto productWatchList = CONFIG(GetWatchListProducts, store_name);
+        auto productWatchList = CONFIG(GetWatchListStore, store_name);
 
         for (auto& key : productWatchList.getMemberNames())
         {

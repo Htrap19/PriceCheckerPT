@@ -58,6 +58,8 @@ namespace PC
         WatchListColumns m_Columns;
         Glib::RefPtr<Gtk::TreeStore> m_TreeModel;
         Gtk::TreeView m_TreeView;
+        Gtk::Box m_MainVBox = Gtk::Box(Gtk::Orientation::VERTICAL, 10);
+        Gtk::Button m_DeleteButton;
     };
 }
 

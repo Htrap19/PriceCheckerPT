@@ -7,6 +7,8 @@
 
 namespace PC
 {
+    static Glib::RefPtr<Gtk::SizeGroup> s_ProductSizeGroup = Gtk::SizeGroup::create(Gtk::SizeGroup::Mode::BOTH);
+
     WatchListNotification::Component::Component(const Glib::RefPtr<Gdk::Paintable>& image_paintable, const Glib::ustring& name,
                                                 const Glib::ustring& old_actual_price,
                                                 const Glib::ustring& old_original_price,
@@ -42,16 +44,21 @@ namespace PC
         secondSep->set_margin_start(10);
         secondSep->set_margin_end(10);
 
+        auto priceChangesHBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL, 10);
+
+        priceChangesHBox->append(m_OldPriceDesc);
+        priceChangesHBox->append(*firstSep);
+        priceChangesHBox->append(m_OldPriceVBox);
+        priceChangesHBox->append(m_ToArrowImage);
+        priceChangesHBox->append(m_NewPriceDesc);
+        priceChangesHBox->append(*secondSep);
+        priceChangesHBox->append(m_NewPriceVBox);
+        s_ProductSizeGroup->add_widget(*priceChangesHBox);
+
         m_MainHBox.prepend(m_Image);
         m_MainHBox.append(m_Name);
         m_Name.set_expand();
-        m_MainHBox.append(m_OldPriceDesc);
-        m_MainHBox.append(*firstSep);
-        m_MainHBox.append(m_OldPriceVBox);
-        m_MainHBox.append(m_ToArrowImage);
-        m_MainHBox.append(m_NewPriceDesc);
-        m_MainHBox.append(*secondSep);
-        m_MainHBox.append(m_NewPriceVBox);
+        m_MainHBox.append(*priceChangesHBox);
 
         set_child(m_MainHBox);
         CssProvider::LoadProvider((Gtk::Widget&)*this);

@@ -4,7 +4,6 @@
 
 #include "SearchableContent.h"
 #include "components/InfoBar.h"
-#include "utils/CssProvider.h"
 #include "utils/LanguageManager.h"
 #include "utils/ConfigManager.h"
 #include "utils/UIQueue.h"
@@ -17,7 +16,6 @@ namespace PC
         m_Spinner.set_expand();
         m_Spinner.set_halign(Gtk::Align::END);
 
-        CssProvider::LoadProvider(m_ListBox);
         m_ListBox.add_css_class("padding-10");
         m_ListBox.set_selection_mode(Gtk::SelectionMode::MULTIPLE);
         m_ListBox.set_placeholder(m_EmptyWidget);

@@ -19,6 +19,7 @@ namespace PC
         inline void SetKeyCaptureWidget(Gtk::Widget& key_capture_widget) { m_SearchEntry.set_key_capture_widget(key_capture_widget); }
         void ToggleSearching(bool toggle = true);
         inline Gtk::Button& GetSearchButton() { return m_SearchButton; }
+        inline void Notify() { m_NotificationDot.set_markup(PANGO_SMALL(std::to_string(++m_NotificationCount))); m_NotificationDot.show(); }
 
     protected:
         void handle_search();
@@ -35,6 +36,10 @@ namespace PC
         Gtk::Label m_TitleLabel;
         Gtk::PopoverMenu m_SettingsMenu;
         Gtk::MenuButton m_SettingsButton;
+        Gtk::ToggleButton m_NotificationButton;
+        Gtk::Overlay m_NotificationOverlay;
+        Gtk::Label m_NotificationDot;
+        size_t m_NotificationCount = 0;
 
         Glib::RefPtr<Gio::SimpleActionGroup> m_SettingsActionGroup;
         Glib::ustring m_LastSearchedText;

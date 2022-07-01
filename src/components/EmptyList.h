@@ -16,6 +16,7 @@ namespace PC
         explicit EmptyList(const std::string& nothing_label = LANGUAGE(nothing_todo));
 
         inline void SetLabel(const std::string& label) { m_Nothing.set_label(label); }
+        inline void SetIconName(const std::string& icon_name) { m_OpenBoxImage.set_from_icon_name(icon_name); }
 
     private:
         Gtk::Image m_OpenBoxImage;

@@ -24,7 +24,7 @@ namespace PC
         : m_TreeModel(Gtk::TreeStore::create(m_Columns)),
         m_TreeView(m_TreeModel)
     {
-        m_DeleteButton.set_icon_name("user-trash");
+        m_DeleteButton.set_icon_name("user-trash-symbolic");
         m_DeleteButton.set_halign(Gtk::Align::END);
         m_DeleteButton.signal_clicked().connect([&]()
         {
@@ -41,12 +41,12 @@ namespace PC
 
                 auto store_name = row.parent()->get_value(m_Columns.m_ColProductName);
                 CONFIG(RemoveWatchListProduct, store_name, name);
-                std::cout << "Reached" << std::endl;
             });
             ViewWatchList();
         });
         auto toolBarHBox = Gtk::make_managed<Gtk::Box>(Gtk::Orientation::HORIZONTAL, 10);
         toolBarHBox->append(m_DeleteButton);
+        toolBarHBox->set_margin_bottom(5);
 
         AppendCol(LANGUAGE(name), m_Columns.m_ColProductName);
         AppendCol(LANGUAGE(actual_price), m_Columns.m_ColActualPrice);
@@ -56,9 +56,9 @@ namespace PC
         auto treeSelection = m_TreeView.get_selection();
         treeSelection->set_mode(Gtk::SelectionMode::MULTIPLE);
 
-        m_MainVBox.prepend(*toolBarHBox);
         m_MainVBox.append(m_TreeView);
         m_TreeView.set_expand();
+        m_MainVBox.append(*toolBarHBox);
 
         set_child(m_MainVBox);
     }

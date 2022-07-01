@@ -5,7 +5,6 @@
 #include "ProductComponent.h"
 #include "InfoBar.h"
 #include "utils/FileCacheManager.h"
-#include "utils/CssProvider.h"
 #include "utils/LanguageManager.h"
 #include "utils/Utils.h"
 
@@ -67,7 +66,6 @@ namespace PC
 
 //        m_MainHBox.set_margin(10);
         set_child(m_MainHBox);
-        CssProvider::LoadProvider((Gtk::Widget&)*this);
         add_css_class("list_row");
 
         FetchImage(img_url, img_resize);

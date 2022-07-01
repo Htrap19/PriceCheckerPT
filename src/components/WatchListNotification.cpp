@@ -3,13 +3,13 @@
 //
 
 #include "WatchListNotification.h"
-#include "utils/CssProvider.h"
+#include "components/HeaderBar.h"
 
 namespace PC
 {
     static Glib::RefPtr<Gtk::SizeGroup> s_ProductSizeGroup = Gtk::SizeGroup::create(Gtk::SizeGroup::Mode::BOTH);
 
-    WatchListNotification::Component::Component(const Glib::RefPtr<Gdk::Paintable>& image_paintable, const Glib::ustring& name,
+    Component::Component(const Glib::RefPtr<Gdk::Paintable>& image_paintable, const Glib::ustring& name,
                                                 const Glib::ustring& old_actual_price,
                                                 const Glib::ustring& old_original_price,
                                                 const Glib::ustring& old_price_desc)
@@ -23,7 +23,7 @@ namespace PC
 
         m_Image.set_pixel_size((int32_t)ProductComponent::ImagePixelSize);
         m_Image.set_margin_end(5);
-        m_ToArrowImage.set_from_icon_name("object-flip-horizontal");
+        m_ToArrowImage.set_from_icon_name("pan-end-symbolic");
         m_ToArrowImage.set_valign(Gtk::Align::CENTER);
         m_ToArrowImage.set_margin_start(30);
         m_ToArrowImage.set_margin_end(30);
@@ -61,11 +61,10 @@ namespace PC
         m_MainHBox.append(*priceChangesHBox);
 
         set_child(m_MainHBox);
-        CssProvider::LoadProvider((Gtk::Widget&)*this);
         add_css_class("list_row");
     }
 
-    void WatchListNotification::Component::ChangedTo(const Glib::ustring& new_actual_price,
+    void Component::ChangedTo(const Glib::ustring& new_actual_price,
                                                      const Glib::ustring& new_original_price,
                                                      const Glib::ustring& new_price_desc)
     {
@@ -75,11 +74,12 @@ namespace PC
     }
 
     WatchListNotification::WatchListNotification()
-        : m_EmptyList("No notifications")
+        : m_EmptyList(LANGUAGE(no_notifications))
     {
-        CssProvider::LoadProvider(m_ListBox);
+        m_EmptyList.SetIconName("notifications-disabled");
+
         m_ListBox.add_css_class("padding-10");
-        m_ListBox.set_selection_mode(Gtk::SelectionMode::MULTIPLE);
+        m_ListBox.set_selection_mode(Gtk::SelectionMode::NONE);
         m_ListBox.set_show_separators();
         m_ListBox.set_placeholder(m_EmptyList);
 
@@ -87,13 +87,21 @@ namespace PC
         set_child(m_ListBox);
     }
 
-    void WatchListNotification::Notify(ProductComponent& comp, const Glib::ustring& old_actual_price,
-                                       const Glib::ustring& old_original_price, const Glib::ustring& old_price_desc)
+    void WatchListNotification::Notify(ProductComponent& comp,
+                                       const Glib::ustring& old_actual_price,
+                                       const Glib::ustring& old_original_price,
+                                       const Glib::ustring& old_price_desc)
     {
-        Component component(comp.GetProductImage(), comp.GetProductName(), old_actual_price,
+        auto [iter, inserted] = m_Notifications.emplace(comp.GetProductImage(), comp.GetProductName(), old_actual_price,
                             old_original_price, old_price_desc);
-        component.ChangedTo(comp.GetProductActualPrice(), comp.GetProductOriginalPrice(), comp.GetProductSecondaryPriceDesc());
-
-        m_ListBox.append(component);
+        auto& component = const_cast<Component&>(*iter);
+        component.ChangedTo(comp.GetProductActualPrice(),
+                            comp.GetProductOriginalPrice(),
+                            comp.GetProductSecondaryPriceDesc());
+        if (inserted)
+        {
+            m_ListBox.append(component);
+            HeaderBar::_().Notify();
+        }
     }
 }

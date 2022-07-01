@@ -30,6 +30,7 @@ namespace PC
         inline void AddToWatchList() { WatchListComponent::_().AddToWatchList(m_SearchableList); }
         inline void NavigateToWatchList() { WatchListComponent::_().ViewWatchList(); m_Stack.set_visible_child("watch_list", Gtk::StackTransitionType::SLIDE_LEFT_RIGHT); }
         inline const std::list<SearchableContentType>& GetSearchableList() const { return m_SearchableList; }
+        void ToggleNotifications();
 
     private:
         RootContent();
@@ -39,6 +40,7 @@ namespace PC
         Gtk::Box m_MainHBox;
         Gtk::Stack m_Stack;
         Gtk::ListBox m_SidebarListBox;
+        Gtk::Revealer m_NotificationsRevealer;
 
         std::list<SearchableContentType> m_SearchableList;
     };

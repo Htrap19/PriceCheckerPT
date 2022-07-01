@@ -21,6 +21,19 @@ namespace PC
         m_SettingsButton.set_icon_name("open-menu");
         m_SettingsButton.set_popover(m_SettingsMenu);
 
+        m_NotificationDot.hide();
+        m_NotificationDot.set_markup(PANGO_SMALL(std::to_string(m_NotificationCount)));
+        m_NotificationDot.set_valign(Gtk::Align::START);
+        m_NotificationDot.set_halign(Gtk::Align::END);
+        m_NotificationDot.add_css_class("notification-dot");
+
+        m_NotificationButton.set_image_from_icon_name("preferences-system-notifications");
+        m_NotificationButton.signal_toggled().connect([]()
+        { RootContent::_().ToggleNotifications(); });
+
+        m_NotificationOverlay.set_child(m_NotificationButton);
+        m_NotificationOverlay.add_overlay(m_NotificationDot);
+
         m_SettingsActionGroup = Gio::SimpleActionGroup::create();
         m_SettingsActionGroup->add_action("clear_cache", sigc::mem_fun(*this, &HeaderBar::ClearCache));;
         m_SettingsActionGroup->add_action("clear_result", sigc::mem_fun(RootContent::_(), &RootContent::ClearResult));
@@ -70,6 +83,7 @@ namespace PC
         pack_start(m_SearchButton);
         pack_start(m_StopSearchButton);
         pack_end(m_SettingsButton);
+        pack_end(m_NotificationOverlay);
     }
 
     void HeaderBar::ToggleSearching(bool toggle)

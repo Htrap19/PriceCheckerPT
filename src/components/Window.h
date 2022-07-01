@@ -19,6 +19,8 @@ namespace PC
     private:
         HeaderBar& m_TitleBar;
         RootContent& m_RootContent;
+
+        Glib::RefPtr<Gtk::CssProvider> m_CssProvider;
     };
 }
 

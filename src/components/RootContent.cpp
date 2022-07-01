@@ -18,7 +18,6 @@
 #include "utils/LanguageManager.h"
 #include "utils/ConfigManager.h"
 #include "utils/UIQueue.h"
-#include "utils/CssProvider.h"
 
 extern Glib::RefPtr<Gtk::Application> app;
 
@@ -35,14 +34,6 @@ namespace PC
         m_SearchableList.emplace_back(std::make_shared<ElcorteinglesContent>());
         m_SearchableList.emplace_back(std::make_shared<SparContent>());
         m_SearchableList.emplace_back(std::make_shared<RecheioContent>());
-
-        m_Stack.add(WatchListNotification::_(), "watch_list_notifications");
-        auto watchlistNotifications = Gtk::make_managed<Gtk::ListBoxRow>();
-        auto watchListLabel = Gtk::make_managed<Gtk::Label>("Watchlist Notifications", Gtk::Align::START);
-        watchListLabel->set_name("watch_list_notifications");
-        watchListLabel->set_margin(10);
-        watchlistNotifications->set_child(*watchListLabel);
-        m_SidebarListBox.append(*watchlistNotifications);
 
         for (auto& searchable : m_SearchableList)
         {
@@ -66,8 +57,14 @@ namespace PC
         m_MainHBox.append(m_Stack);
         m_Stack.set_expand();
 
+        m_NotificationsRevealer.set_child(WatchListNotification::_());
+        m_NotificationsRevealer.set_can_target(false);
+        m_NotificationsRevealer.set_transition_type(Gtk::RevealerTransitionType::SLIDE_DOWN);
+        m_NotificationsRevealer.set_opacity(0.9);
+
         set_child(m_MainHBox);
         add_overlay(InfoBar::_());
+        add_overlay(m_NotificationsRevealer);
     }
 
     Gtk::ListBoxRow* RootContent::MakeSidebarItem(const Glib::RefPtr<SearchableContent>& searchable_content)
@@ -121,7 +118,6 @@ namespace PC
         sidebarRowVBox->append(searchable_content->GetProgressBar());
 
         sidebarItemRow->set_child(*sidebarRowVBox);
-        CssProvider::LoadProvider(*sidebarItemRow);
         sidebarItemRow->add_css_class("list_row");
         return sidebarItemRow;
     }
@@ -165,5 +161,12 @@ namespace PC
     {
         for (auto& searchEntity : m_SearchableList)
             searchEntity->SetIsRunning(false);
+    }
+
+    void RootContent::ToggleNotifications()
+    {
+        auto toggled = m_NotificationsRevealer.get_reveal_child();
+        m_NotificationsRevealer.set_reveal_child(!toggled);
+        m_NotificationsRevealer.set_can_target(!toggled);
     }
 }

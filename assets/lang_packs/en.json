@@ -25,6 +25,7 @@
     "original_price": "Original Price",
     "actual_price": "Actual Price",
     "add_to_watchlist": "Add to watchlist",
-    "watchlist": "Watch list"
+    "watchlist": "Watch list",
+    "no_notifications": "No notifications"
   }
 }

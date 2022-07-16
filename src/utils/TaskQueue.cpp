@@ -10,7 +10,7 @@ namespace PC
     TaskQueue::TaskQueue()
     {
         uint32_t hardware_concurrency = std::thread::hardware_concurrency();
-        if (hardware_concurrency <= 0)
+        if (hardware_concurrency == 0)
             hardware_concurrency = 1;
 
         m_Threads.reserve(hardware_concurrency);

@@ -26,6 +26,8 @@
     "actual_price": "Actual Price",
     "add_to_watchlist": "Add to watchlist",
     "watchlist": "Watch list",
-    "no_notifications": "No notifications"
+    "no_notifications": "No notifications",
+    "settings": "Settings",
+    "utilities": "Utilities"
   }
 }

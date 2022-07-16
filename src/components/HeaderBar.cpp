@@ -65,8 +65,8 @@ namespace PC
         settingsSection->append_item(Gio::MenuItem::create(LANGUAGE(about), "settings.about"));
 
         auto settingsMenuModel = Gio::Menu::create();
-        settingsMenuModel->append_section(utilsSection);
-        settingsMenuModel->append_section(settingsSection);
+        settingsMenuModel->append_section(LANGUAGE(utilities), utilsSection);
+        settingsMenuModel->append_section(LANGUAGE(settings),settingsSection);
 
         m_SettingsMenu.set_menu_model(settingsMenuModel);
         m_SettingsMenu.set_autohide();

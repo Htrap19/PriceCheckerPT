@@ -1,6 +1,6 @@
 # PriceCheckerPT
 
-This is a cross-platform web-scraping software used to check prices from online stores
+A cross-platform web-scraping software used to check prices from online stores.
 
 ## Supported
 - Windows
